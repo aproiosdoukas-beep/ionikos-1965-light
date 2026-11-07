@@ -363,3 +363,17 @@
   }
 }
 .admin__main .page-head h2 { font-size: var(--fs-2xl); max-width: 28ch; }
+
+/* Το όνομα του συνδεδεμένου χρήστη: σύνδεσμος προς το προφίλ. */
+.web__who {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink-300);
+  text-decoration: none;
+  transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+.web__who:hover { color: #fff; background: rgba(255,255,255,.08); }
+.web__who.hidden { display: none; }

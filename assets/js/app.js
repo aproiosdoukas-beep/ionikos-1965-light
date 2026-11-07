@@ -13,7 +13,7 @@
 
   /* ---- Τοπική κατάσταση -------------------------------------------------- */
   const state = {
-    tab: Store.get("app:tab", "card"),
+    tab: tabFromHash() || Store.get("app:tab", "card"),
     offerFilter: "all",
     chatRoom: "match",
     voted: Store.get("poll:voted", null),
@@ -22,6 +22,12 @@
 
   let liveQR = null;        // handle του ζωντανού QR
   let ambientTimer = null;  // προσομοίωση μηνυμάτων κερκίδας
+
+  /** Άνοιγμα συγκεκριμένης καρτέλας από σύνδεσμο, π.χ. app.html#profile. */
+  function tabFromHash() {
+    const h = (location.hash || "").replace("#", "");
+    return ["card", "offers", "live", "level", "profile"].indexOf(h) > -1 ? h : null;
+  }
 
   const TABS = [
     { id: "card",   label: "Κάρτα",     icon: "card" },
@@ -71,6 +77,7 @@
   }
 
   function go(tab) {
+    if (location.hash && location.hash !== "#" + tab) history.replaceState(null, "", location.pathname + location.search);
     state.tab = tab;
     Store.set("app:tab", tab);
     render();
@@ -601,4 +608,5 @@
   /* ---- Εκκίνηση ---------------------------------------------------------- */
   render();
   window.addEventListener("beforeunload", cleanup);
+  window.addEventListener("hashchange", function () { const t = tabFromHash(); if (t && t !== state.tab) go(t); });
 })();

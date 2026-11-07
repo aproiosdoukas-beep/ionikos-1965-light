@@ -48,7 +48,10 @@
     const btn = $("#authBtn");
     const who = $("#whoami");
     if (acc) {
-      who.textContent = acc.displayName;
+      const HOME = { member: "app.html#profile", admin: "admin.html", gate: "scanner.html", merchant: "merchant.html" };
+      who.innerHTML = icon("user", 16) + "<span></span>";
+      who.lastChild.textContent = acc.displayName;
+      who.href = HOME[acc.role] || "app.html#profile";
       who.classList.remove("hidden");
       btn.textContent = "ΑΠΟΣΥΝΔΕΣΗ";
       btn.href = "#";
