@@ -1,21 +1,22 @@
 /* ==========================================================================
-   ΙΩΝΙΚΟΣ 1965 — Design Tokens
+   ΙΩΝΙΚΟΣ 1965 :: Design Tokens
    Χρώματα δειγματοληπτημένα από το UI/UX Showcase 2026 (PDF).
    Ένα αρχείο, μία αλήθεια: web + app χρησιμοποιούν τα ίδια tokens.
    ========================================================================== */
 
 :root {
   /* ---- Brand ---------------------------------------------------------- */
-  --ion-navy:        #1A3668;  /* κύριο χρώμα συλλόγου */
-  --ion-navy-600:    #16305D;
-  --ion-navy-700:    #122850;
-  --ion-navy-300:    #3C5A96;
-  --ion-navy-100:    #E4EAF5;
+  /* Μπλε και χρυσό ακριβώς από το έμβλημα του συλλόγου. */
+  --ion-navy:        #343795;  /* κύριο χρώμα συλλόγου */
+  --ion-navy-600:    #2B2E80;
+  --ion-navy-700:    #212368;
+  --ion-navy-300:    #6E71C0;
+  --ion-navy-100:    #E8E9F7;
 
-  --ion-gold:        #D3AF37;  /* δευτερεύον / accent */
-  --ion-gold-600:    #BF9C27;
-  --ion-gold-300:    #E8CE77;
-  --ion-gold-100:    #FAF2DA;
+  --ion-gold:        #CF9C1D;  /* δευτερεύον / accent */
+  --ion-gold-600:    #B28514;
+  --ion-gold-300:    #E7C361;
+  --ion-gold-100:    #FAF1D9;
 
   /* ---- Neutrals (dark surfaces από το deck) --------------------------- */
   --ink-900:         #060C1A;  /* βαθύ φόντο παρουσίασης */
@@ -127,4 +128,17 @@
     animation-iteration-count: 1 !important;
     transition-duration: .001ms !important;
   }
+}
+
+/* ---- Φωτεινή επιφάνεια μέσα σε σκοτεινή σελίδα ----------------------- */
+.theme-light {
+  --surface:     var(--paper);
+  --surface-2:   var(--paper-50);
+  --surface-3:   var(--paper-200);
+  --border:      var(--paper-300);
+  --border-soft: var(--paper-200);
+  --text:        var(--ink-700);
+  --text-muted:  var(--ink-400);
+  --text-invert: #FFFFFF;
+  color: var(--text);
 }

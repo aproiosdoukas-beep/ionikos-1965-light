@@ -1,12 +1,12 @@
 /* ==========================================================================
-   ΙΩΝΙΚΟΣ 1965 — Demo data (seed)
+   ΙΩΝΙΚΟΣ 1965 :: Demo data (seed)
    Δεν υπάρχει backend. Όλα τα δεδομένα ζουν εδώ και στο localStorage.
    ========================================================================== */
 (function (global) {
   "use strict";
 
   /* ---- Λογαριασμοί επίδειξης -------------------------------------------
-     Είναι δημόσια στοιχεία επίδειξης για το mockup — όχι πραγματικοί κωδικοί. */
+     Είναι δημόσια στοιχεία επίδειξης για το mockup, όχι πραγματικοί κωδικοί. */
   const ACCOUNTS = [
     {
       id: "u_giorgos",
@@ -53,7 +53,7 @@
       kind: "adult",
       kindLabel: "Γονέας",
       cardCode: "ION-8472",
-      levelId: "fan",
+      levelId: "hooligan",
       monthsMember: 8,
       status: "active",
       statusLabel: "ΕΝΕΡΓΗ",
@@ -68,23 +68,24 @@
       kindLabel: "Κ14",
       squad: "ΑΚΑΔΗΜΙΑ Κ14",
       cardCode: "ION-5513",
-      levelId: "newcomer",
+      levelId: "touristas",
       monthsMember: 5,
       status: "approved",
       statusLabel: "ΕΓΚΕΚΡΙΜΕΝΟ",
       monthlyFee: 10.0,
-      discountLabel: "Εγκεκριμένη Έκπτωση Ακαδημίας (−50%)",
+      discountLabel: "Εγκεκριμένη Έκπτωση Ακαδημίας (-50%)",
       parentConsentStream: true
     }
   };
 
-  /* ---- Τα 5 επίπεδα πιστότητας (Οθόνη 04) -------------------------------- */
+  /* ---- Τα 6 επίπεδα πιστότητας (κερκίδα) --------------------------------- */
   const LEVELS = [
-    { id: "newcomer", order: 1, name: "Νεοφερμένος", en: "Newcomer",  range: "0–2 ΜΗΝΕΣ",   minMonths: 0,  perk: "Ψηφιακή Κάρτα & Εκπτώσεις" },
-    { id: "friend",   order: 2, name: "Φίλος της Ομάδας", en: "",     range: "3–5 ΜΗΝΕΣ",   minMonths: 3,  perk: "Ξεχωριστό Χρώμα στο Chat" },
-    { id: "fan",      order: 3, name: "Οπαδός",      en: "Fan",       range: "6–11 ΜΗΝΕΣ",  minMonths: 6,  perk: "Προτεραιότητα Εισιτηρίων Event" },
-    { id: "ultra",    order: 4, name: "Ultra",       en: "",          range: "12–23 ΜΗΝΕΣ", minMonths: 12, perk: "Συναντήσεις με Παίκτες" },
-    { id: "legend",   order: 5, name: "Θρύλος",      en: "Legend",    range: "24+ ΜΗΝΕΣ",   minMonths: 24, perk: "Αναγραφή Ονόματος στο Γήπεδο" }
+    { id: "touristas", order: 1, name: "Τουρίστας", en: "",  range: "0-2 ΜΗΝΕΣ",   minMonths: 0,  perk: "Ψηφιακή Κάρτα & Εκπτώσεις" },
+    { id: "casual",    order: 2, name: "Casual",    en: "",  range: "3-5 ΜΗΝΕΣ",   minMonths: 3,  perk: "Ξεχωριστό Χρώμα στο Chat" },
+    { id: "hooligan",  order: 3, name: "Hooligan",  en: "",  range: "6-11 ΜΗΝΕΣ",  minMonths: 6,  perk: "Προτεραιότητα Εισιτηρίων Event" },
+    { id: "firm",      order: 4, name: "Firm",      en: "",  range: "12-17 ΜΗΝΕΣ", minMonths: 12, perk: "Ομαδικές Μετακινήσεις Εκτός Έδρας" },
+    { id: "ranger",    order: 5, name: "Ranger",    en: "",  range: "18-23 ΜΗΝΕΣ", minMonths: 18, perk: "Συναντήσεις με Παίκτες" },
+    { id: "ultra",     order: 6, name: "Ultra",     en: "",  range: "24+ ΜΗΝΕΣ",   minMonths: 24, perk: "Αναγραφή Ονόματος στο Γήπεδο" }
   ];
 
   /* ---- Παράσημα (badges) -------------------------------------------------- */
@@ -95,16 +96,16 @@
     { id: "traveler", icon: "🚌", name: "Ταξιδιώτης",   value: "2 Εκτός Έδρας", tone: "muted" }
   ];
 
-  /* ---- Χορηγοί & προσφορές (Οθόνη 03) ------------------------------------ */
+  /* ---- Χορηγοί & προσφορές  ------------------------------------ */
   const OFFERS = [
     { id: "m_burgers",  name: "Nikaia Burgers",   category: "food",  icon: "🍔",
-      discount: "−15%", headline: "−15% σε όλα τα μενού",
+      discount: "-15%", headline: "-15% σε όλα τα μενού",
       meta: "Απομένουν 3/4 χρήσεις", usesLeft: 3, usesTotal: 4, featured: true },
     { id: "m_square",   name: "Square Cafe",      category: "food",  icon: "☕",
-      discount: "−20%", headline: "−20% Καφές & Σνακ",
-      meta: "Καθημερινά 08:00–14:00", usesLeft: 4, usesTotal: 4 },
+      discount: "-20%", headline: "-20% Καφές & Σνακ",
+      meta: "Καθημερινά 08:00-14:00", usesLeft: 4, usesTotal: 4 },
     { id: "m_boutique", name: "Μπουτίκ Ιωνικού",  category: "shop",  icon: "👕",
-      discount: "−10%", headline: "−10% Εμφανίσεις",
+      discount: "-10%", headline: "-10% Εμφανίσεις",
       meta: "Επίσημη εμφάνιση 2026", usesLeft: 2, usesTotal: 4 },
     { id: "m_gym",      name: "Blue Gym Νίκαια",  category: "shop",  icon: "🏋️",
       discount: "ΔΩΡΕΑΝ", headline: "Δωρεάν Εγγραφή",
@@ -117,12 +118,12 @@
     { id: "shop", label: "Αγορές" }
   ];
 
-  /* ---- Live & VOD (Οθόνη 05) --------------------------------------------- */
+  /* ---- Live & VOD  --------------------------------------------- */
   const LIVE = {
     id: "match_k16",
     competition: "Πρωτάθλημα Κ16",
-    title: "Ιωνικός — Προοδευτική",
-    score: "2–1",
+    title: "Ιωνικός vs Προοδευτική",
+    score: "2-1",
     quality: "720p HD",
     clock: "64:18",
     period: "Β′ Ημίχρονο",
@@ -132,10 +133,10 @@
   };
 
   const VOD = [
-    { id: "vod1", title: "Κ14 Ιωνικός – Ατρόμητος", score: "3–0", date: "02/11/2026", dur: "92'" },
-    { id: "vod2", title: "Κ12 Ιωνικός – Εθνικός",   score: "1–1", date: "26/10/2026", dur: "88'" },
-    { id: "vod3", title: "Κ16 Ιωνικός – Ηρακλής",   score: "2–2", date: "19/10/2026", dur: "95'" },
-    { id: "vod4", title: "Κ14 Ιωνικός – Αίας",      score: "4–1", date: "12/10/2026", dur: "90'" }
+    { id: "vod1", title: "Κ14 Ιωνικός - Ατρόμητος", score: "3-0", date: "02/11/2026", dur: "92'" },
+    { id: "vod2", title: "Κ12 Ιωνικός - Εθνικός",   score: "1-1", date: "26/10/2026", dur: "88'" },
+    { id: "vod3", title: "Κ16 Ιωνικός - Ηρακλής",   score: "2-2", date: "19/10/2026", dur: "95'" },
+    { id: "vod4", title: "Κ14 Ιωνικός - Αίας",      score: "4-1", date: "12/10/2026", dur: "90'" }
   ];
 
   const CHAT_ROOMS = [
@@ -147,27 +148,27 @@
   const CHAT_SEED = {
     match: [
       { user: "Μάκης",  levelId: "ultra",  text: "Πάμε γερά!" },
-      { user: "Νίκος",  levelId: "fan",    text: "Γκολάρα το 10!" },
-      { user: "Γιώργος", levelId: "legend", text: "Τρομερή ασίστ!" },
-      { user: "Κώστας", levelId: "ultra",  text: "Πάμε για το 3–1!" }
+      { user: "Νίκος",  levelId: "hooligan",    text: "Γκολάρα το 10!" },
+      { user: "Γιώργος", levelId: "ultra", text: "Τρομερή ασίστ!" },
+      { user: "Κώστας", levelId: "ultra",  text: "Πάμε για το 3-1!" }
     ],
     transfers: [
-      { user: "Σταύρος", levelId: "fan",    text: "Ακούγεται κάτι για τον αριστερό μπακ;" },
-      { user: "Δημήτρης", levelId: "friend", text: "Μόνο φήμες μέχρι στιγμής." }
+      { user: "Σταύρος", levelId: "hooligan",    text: "Ακούγεται κάτι για τον αριστερό μπακ;" },
+      { user: "Δημήτρης", levelId: "casual", text: "Μόνο φήμες μέχρι στιγμής." }
     ],
     academy: [
-      { user: "Ελένη",   levelId: "fan",   text: "Μπράβο στα παιδιά του Κ14!" },
+      { user: "Ελένη",   levelId: "hooligan",   text: "Μπράβο στα παιδιά του Κ14!" },
       { user: "Παναγιώτης", levelId: "ultra", text: "Η προπόνηση άλλαξε ώρα;" }
     ]
   };
 
   const CHAT_AMBIENT = [
-    { user: "Θανάσης", levelId: "fan",    text: "Τι φάση με το κόρνερ;" },
+    { user: "Θανάσης", levelId: "hooligan",    text: "Τι φάση με το κόρνερ;" },
     { user: "Βαγγέλης", levelId: "ultra", text: "Κερκίδα να ακουστείς!" },
-    { user: "Μαρία",   levelId: "friend", text: "Καλή συνέχεια παιδιά 💙" },
-    { user: "Σπύρος",  levelId: "legend", text: "Από το 1965 εδώ." },
-    { user: "Λάκης",   levelId: "newcomer", text: "Πρώτη φορά βλέπω live, τέλειο!" },
-    { user: "Άννα",    levelId: "fan",    text: "Ο τερματοφύλακας τεράστιος." }
+    { user: "Μαρία",   levelId: "casual", text: "Καλή συνέχεια παιδιά 💙" },
+    { user: "Σπύρος",  levelId: "ultra", text: "Από το 1965 εδώ." },
+    { user: "Λάκης",   levelId: "touristas", text: "Πρώτη φορά βλέπω live, τέλειο!" },
+    { user: "Άννα",    levelId: "hooligan",    text: "Ο τερματοφύλακας τεράστιος." }
   ];
 
   const POLL = {
@@ -179,11 +180,12 @@
     ]
   };
 
-  /* ---- Εκδηλώσεις (Οθόνη 07) --------------------------------------------- */
+  /* ---- Εκδηλώσεις  --------------------------------------------- */
   const EVENTS = [
     {
       id: "ev_concert",
       date: "15 ΙΟΥΛΙΟΥ",
+      dateText: "15 Ιουλίου",
       venue: "ΓΗΠΕΔΟ ΝΕΑΠΟΛΗΣ",
       title: "Μεγάλη Καλοκαιρινή Συναυλία Συλλόγου",
       time: "21:00",
@@ -193,11 +195,12 @@
       cta: "ΚΡΑΤΗΣΗ",
       ctaVariant: "primary",
       tone: "gold",
-      requiresLevel: "fan"
+      requiresLevel: "hooligan"
     },
     {
       id: "ev_camp",
       date: "28 ΙΟΥΝΙΟΥ",
+      dateText: "28 Ιουνίου",
       venue: "ΑΚΑΔΗΜΙΕΣ",
       title: "Summer Football Camp & Βραβεύσεις",
       time: "10:00",
@@ -211,7 +214,41 @@
     }
   ];
 
-  /* ---- Χρεώσεις / checkout (Οθόνη 06) ------------------------------------ */
+
+  /* ---- Πακέτα συνδρομής: τι περιλαμβάνει το καθένα ---------------------- */
+  const PLANS = {
+    adult: {
+      id: "adult",
+      name: "Συνδρομή Μέλους",
+      who: "Για ενήλικες φιλάθλους",
+      price: 20.0,
+      priceNote: "ανά μήνα",
+      includes: [
+        { title: "Είσοδος στο γήπεδο", text: "Σε όλους τους εντός έδρας αγώνες, με την ψηφιακή κάρτα QR στο κινητό. Ο κωδικός αλλάζει κάθε 60 δευτερόλεπτα." },
+        { title: "Ιωνικός TV", text: "Ζωντανή μετάδοση των αγώνων των ακαδημιών σε HD και πλήρες αρχείο με όλους τους αγώνες σε επανάληψη." },
+        { title: "Κερκίδα", text: "Live chat κατά τη διάρκεια του αγώνα, δωμάτια για μεταγραφές και ακαδημία, ψηφοφορία για τον MVP." },
+        { title: "Εκπτώσεις χορηγών", text: "-15% στα Nikaia Burgers, -20% στο Square Cafe, -10% στην μπουτίκ του συλλόγου, δωρεάν εγγραφή στο Blue Gym." },
+        { title: "Τιμή μέλους στις εκδηλώσεις", text: "Για παράδειγμα, η καλοκαιρινή συναυλία κοστίζει 5€ αντί για 15€ και το Summer Camp είναι δωρεάν." },
+        { title: "Επίπεδα κερκίδας", text: "Όσο μένετε μέλος ανεβαίνετε επίπεδο: χρώμα στο chat, προτεραιότητα στα εισιτήρια, μετακινήσεις εκτός έδρας, γνωριμία με παίκτες, το όνομά σας στο γήπεδο." },
+        { title: "Οικογενειακό προφίλ", text: "Ένας λογαριασμός για όλη την οικογένεια. Ο γονέας ανοίγει την κάρτα του παιδιού από το δικό του κινητό." }
+      ]
+    },
+    academy: {
+      id: "academy",
+      name: "Συνδρομή Ακαδημίας",
+      who: "Για παιδιά που παίζουν στις ακαδημίες",
+      price: 10.0,
+      priceNote: "ανά μήνα, με έκπτωση 50%",
+      includes: [
+        { title: "Δική του ψηφιακή κάρτα", text: "Κάρτα QR για είσοδο στους αγώνες. Μπορεί να εμφανιστεί και από το κινητό του γονέα." },
+        { title: "Live των αγώνων του τμήματος", text: "Ζωντανή μετάδοση και επανάληψη των αγώνων του παιδιού, μόνο με γονική συναίνεση." },
+        { title: "Summer Camp δωρεάν", text: "Δωρεάν συμμετοχή στο Summer Football Camp και στις βραβεύσεις των ακαδημιών." },
+        { title: "Έκπτωση 50%", text: "Η έκπτωση ενεργοποιείται μετά από έγκριση του γραφείου του συλλόγου." }
+      ]
+    }
+  };
+
+  /* ---- Χρεώσεις / checkout  ------------------------------------ */
   const BILLING = {
     baseFee: 20.0,
     academyFee: 20.0,
@@ -221,7 +258,7 @@
     currency: "€"
   };
 
-  /* ---- Admin (Οθόνη 08) --------------------------------------------------- */
+  /* ---- Admin  --------------------------------------------------- */
   const ADMIN = {
     kpis: {
       activeSubscriptions: 412,
@@ -237,28 +274,28 @@
       { id: "ar2", child: "Ραφαήλ Μήτσου",       squad: "Τμήμα Κ12", parent: "Ειρήνη",  fee: 10.0 }
     ],
     members: [
-      { id: "mb1", name: "Γιώργος Παπαδόπουλος", level: "fan",      status: "active",  since: "03/2025", fee: 20 },
-      { id: "mb2", name: "Κωστής Παπαδόπουλος",  level: "newcomer", status: "active",  since: "06/2025", fee: 10 },
-      { id: "mb3", name: "Νίκος Αντωνίου",       level: "fan",      status: "grace",   since: "01/2024", fee: 20 },
-      { id: "mb4", name: "Δημήτρης Καρράς",      level: "ultra",    status: "pending", since: "11/2024", fee: 20 },
-      { id: "mb5", name: "Σοφία Βλάχου",         level: "legend",   status: "active",  since: "02/2023", fee: 20 },
-      { id: "mb6", name: "Ελένη Ρίζου",          level: "friend",   status: "active",  since: "08/2026", fee: 20 }
+      { id: "mb1", name: "Γιώργος Παπαδόπουλος", level: "hooligan",      status: "active",  since: "03/2025", fee: 20 },
+      { id: "mb2", name: "Κωστής Παπαδόπουλος",  level: "touristas", status: "active",  since: "06/2025", fee: 10 },
+      { id: "mb3", name: "Νίκος Αντωνίου",       level: "hooligan",      status: "grace",   since: "01/2024", fee: 20 },
+      { id: "mb4", name: "Δημήτρης Καρράς",      level: "firm",     status: "pending", since: "11/2024", fee: 20 },
+      { id: "mb5", name: "Σοφία Βλάχου",         level: "ultra",   status: "active",  since: "02/2023", fee: 20 },
+      { id: "mb6", name: "Ελένη Ρίζου",          level: "casual",   status: "active",  since: "08/2026", fee: 20 }
     ],
     matchCosts: [
-      { id: "mc1", match: "Κ16 Ιωνικός – Προοδευτική", date: "07/11/2026", viewers: 312, cost: 12 },
-      { id: "mc2", match: "Κ14 Ιωνικός – Ατρόμητος",   date: "02/11/2026", viewers: 198, cost: 12 },
-      { id: "mc3", match: "Κ12 Ιωνικός – Εθνικός",     date: "26/10/2026", viewers: 141, cost: 14 }
+      { id: "mc1", match: "Κ16 Ιωνικός - Προοδευτική", date: "07/11/2026", viewers: 312, cost: 12 },
+      { id: "mc2", match: "Κ14 Ιωνικός - Ατρόμητος",   date: "02/11/2026", viewers: 198, cost: 12 },
+      { id: "mc3", match: "Κ12 Ιωνικός - Εθνικός",     date: "26/10/2026", viewers: 141, cost: 14 }
     ]
   };
 
-  /* ---- Κατάσταση σάρωσης στη θύρα (Οθόνη 02) ------------------------------ */
+  /* ---- Κατάσταση σάρωσης στη θύρα  ------------------------------ */
   const SCAN_STATES = {
     valid: {
       key: "valid",
       badge: "OFFLINE READY",
       title: "ΕΓΚΥΡΗ ΚΑΡΤΑ",
       icon: "check",
-      action: "+1 Πόντος Badge «Παρών»",
+      action: "+1 πόντος στο παράσημο «Παρών»",
       tone: "ok"
     },
     duplicate: {
@@ -266,7 +303,7 @@
       badge: "ΠΡΟΣΟΧΗ",
       title: "ΗΔΗ ΣΑΡΩΜΕΝΗ",
       icon: "warn",
-      action: "Απαγόρευση 2ης Εισόδου",
+      action: "Δεν επιτρέπεται δεύτερη είσοδος",
       tone: "warn"
     },
     rejected: {
@@ -282,14 +319,14 @@
       badge: "ΑΚΥΡΟ",
       title: "ΛΗΓΜΕΝΗ ΣΥΝΔΡΟΜΗ",
       icon: "cross",
-      action: "Απαιτείται Ανανέωση στο Web",
+      action: "Απαιτείται ανανέωση συνδρομής",
       tone: "danger"
     }
   };
 
   /* ---- Κάρτες εκτός της οικογένειας, για δοκιμή scanner ------------------- */
   const KNOWN_CARDS = {
-    "ION-8472": { name: "Γιώργος Παπαδόπουλος", sub: "Επίπεδο: Οπαδός • Ενήλικας", state: "valid" },
+    "ION-8472": { name: "Γιώργος Παπαδόπουλος", sub: "Επίπεδο: Hooligan • Ενήλικας", state: "valid" },
     "ION-5513": { name: "Κωστής Παπαδόπουλος", sub: "Ακαδημία Κ14 • Ανήλικος",    state: "valid" },
     "ION-3301": { name: "Νίκος Αντωνίου",      sub: "Σε περίοδο χάριτος (Ημέρα 12)", state: "expired" }
   };
@@ -298,6 +335,6 @@
     ACCOUNTS, PROFILES, LEVELS, BADGES,
     OFFERS, OFFER_FILTERS,
     LIVE, VOD, CHAT_ROOMS, CHAT_SEED, CHAT_AMBIENT, POLL,
-    EVENTS, BILLING, ADMIN, SCAN_STATES, KNOWN_CARDS
+    EVENTS, PLANS, BILLING, ADMIN, SCAN_STATES, KNOWN_CARDS
   };
 })(window);

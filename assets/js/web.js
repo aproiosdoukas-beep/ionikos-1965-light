@@ -1,12 +1,12 @@
 /* ==========================================================================
-   ΙΩΝΙΚΟΣ 1965 — Ιστοσελίδα
-   Οθόνη 05 (Live + VOD + Κερκίδα), 06 (Checkout), 07 (Εκδηλώσεις)
+   ΙΩΝΙΚΟΣ 1965 :: Ιστοσελίδα
+   Live + VOD + Κερκίδα, Εκδηλώσεις, Συνδρομή
    ========================================================================== */
 (function () {
   "use strict";
 
   const D = window.ION_DATA;
-  const { Auth, Store, Token, QR, el, $, $$, fmtEuro, levelById, levelColor, toast } = window.ION;
+  const { Auth, Membership, Store, Token, QR, el, $, $$, fmtEuro, levelById, levelColor, toast, upper } = window.ION;
 
   const ROUTES = [
     { id: "live",         label: "Live Αγώνες" },
@@ -80,7 +80,7 @@
   window.addEventListener("hashchange", render);
 
   /* ======================================================================
-     ΟΘΟΝΗ 05 — Ζωντανή μετάδοση, κερκίδα, ψηφοφορία
+     Ζωντανή μετάδοση, κερκίδα, ψηφοφορία
      ====================================================================== */
   function viewLive() {
     const L = D.LIVE;
@@ -92,14 +92,14 @@
       onclick() {
         playing = !playing;
         playBtn.innerHTML = icon(playing ? "pause" : "play", 34, 2);
-        toast(playing ? "Η μετάδοση ξεκίνησε (demo)" : "Παύση", playing ? "ok" : null);
+        toast(playing ? "Η μετάδοση ξεκίνησε" : "Παύση", playing ? "ok" : null);
       }
     });
 
     const player = el("div", { class: "player player--web" }, [
       el("div", { class: "player__bg" }),
       el("span", { class: "badge badge--live player__badge", text: "LIVE " + L.quality }),
-      el("span", { class: "player__watermark", text: "Watermark: " + watermark() }),
+      el("span", { class: "player__watermark", text: "Υδατογράφημα: " + watermark() }),
       playBtn,
       el("div", { class: "player__caption", text: L.camera + " • " + L.watching + " Μέλη Παρακολουθούν" }),
       el("div", { class: "player__meta" }, [
@@ -185,8 +185,7 @@
     D.VOD.slice(0, 2).forEach(v => teaser.appendChild(vodRow(v)));
 
     page.append(
-      head("Οθόνη 05 · Web App: Live Streaming Ακαδημιών & Κερκίδα",
-           "Ζωντανή Μετάδοση Αγώνων, Αρχείο VOD & Δωμάτια Συζήτησης"),
+      head("Ιωνικός TV", "Ζωντανή μετάδοση και κερκίδα"),
       el("div", { class: "grid-live" }, [
         el("div", {}, [title, player, teaser]),
         sidebar
@@ -252,7 +251,7 @@
       class: "row row--clickable",
       type: "button",
       style: "width:100%;text-align:left;background:var(--ink-700);border-color:#22304A;color:inherit;font:inherit",
-      onclick() { toast("Αναπαραγωγή: " + v.title + " (demo)", "ok"); }
+      onclick() { toast("Αναπαραγωγή: " + v.title, "ok"); }
     }, [
       el("div", { class: "row__icon", html: icon("play", 20) }),
       el("div", { class: "row__body" }, [
@@ -268,25 +267,25 @@
     D.VOD.forEach(v => list.appendChild(vodRow(v)));
 
     page.append(
-      head("Αρχείο VOD", "Όλοι οι Αγώνες των Ακαδημιών σε Επανάληψη"),
+      head("Αρχείο VOD", "Οι αγώνες των ακαδημιών σε επανάληψη"),
       el("p", { class: "muted", style: "margin-top:-12px;margin-bottom:24px",
-                text: "Διαθέσιμο σε όλα τα ενεργά μέλη. Κάθε μετάδοση φέρει υδατογράφημα με τον κωδικό του μέλους." }),
+                text: "Διαθέσιμο σε όλα τα ενεργά μέλη. Κάθε βίντεο φέρει υδατογράφημα με τον κωδικό του μέλους." }),
       list
     );
   }
 
   /* ======================================================================
-     ΟΘΟΝΗ 07 — Εκδηλώσεις & ηλεκτρονικά εισιτήρια
+     Εκδηλώσεις & ηλεκτρονικά εισιτήρια
      ====================================================================== */
   function viewEvents() {
     const profile = Auth.activeProfile();
     const level = profile ? levelById(profile.levelId) : null;
 
-    const list = el("div", { class: "card", style: "background:var(--paper);color:var(--ink-700);display:grid;gap:16px" });
+    const list = el("div", { class: "card theme-light", style: "background:var(--paper);display:grid;gap:16px" });
     list.appendChild(
       el("div", { class: "between" }, [
-        el("h3", { class: "card__title", style: "font-size:var(--fs-lg)", text: "Προσεχείς Εκδηλώσεις Ιωνικού" }),
-        el("span", { class: "t-sm display bold", style: "color:var(--ion-navy)", text: "ΠΡΟΠΩΛΗΣΗ ULTRA & LEGEND" })
+        el("h3", { class: "card__title", style: "font-size:var(--fs-lg)", text: "Προσεχείς εκδηλώσεις" }),
+        el("span", { class: "t-sm display bold", style: "color:var(--ion-navy)", text: "ΠΡΟΤΕΡΑΙΟΤΗΤΑ ΑΠΟ HOOLIGAN ΚΑΙ ΠΑΝΩ" })
       ])
     );
 
@@ -323,13 +322,12 @@
     renderTicketPlaceholder(ticketPane);
 
     page.append(
-      head("Οθόνη 07 · Εκδηλώσεις Συλλόγου & Ηλεκτρονικά Εισιτήρια",
-           "Καλοκαιρινά Events, Προτεραιότητα Βάσει Level & Εισιτήριο QR"),
+      head("Εκδηλώσεις", "Εκδηλώσεις του συλλόγου"),
       level
         ? el("p", { class: "muted", style: "margin-top:-12px;margin-bottom:24px",
-                    text: "Το επίπεδό σας: " + level.name + " — " + level.perk })
+                    text: "Το επίπεδό σας: " + level.name + ". " + level.perk })
         : el("p", { class: "muted", style: "margin-top:-12px;margin-bottom:24px",
-                    text: "Συνδεθείτε για τιμές μέλους και προτεραιότητα προπώλησης." }),
+                    text: "Συνδεθείτε για να δείτε τις τιμές μέλους και να κλείσετε θέση νωρίτερα." }),
       el("div", { class: "grid-2" }, [list, ticketPane])
     );
   }
@@ -342,16 +340,16 @@
         style: "display:grid;gap:12px;justify-items:center;text-align:center;min-height:360px;align-content:center"
       }, [
         el("div", { html: icon("ticket", 44, 1.4), style: "color:var(--ink-400)" }),
-        el("div", { class: "card__title", text: "Κανένα εισιτήριο ακόμη" }),
+        el("div", { class: "card__title", text: "Δεν έχετε εισιτήριο ακόμη" }),
         el("p", { class: "t-sm muted", style: "margin:0;max-width:280px",
-                  text: "Επιλέξτε μια εκδήλωση για να εκδοθεί το ηλεκτρονικό σας εισιτήριο με QR." })
+                  text: "Επιλέξτε εκδήλωση και το ηλεκτρονικό εισιτήριο με QR θα εμφανιστεί εδώ." })
       ])
     );
   }
 
   function issueTicket(ev) {
     const acc = Auth.account();
-    if (!acc) { toast("Συνδεθείτε για κράτηση", "danger"); location.href = "login.html?next=web.html"; return; }
+    if (!acc) { toast("Συνδεθείτε για να κάνετε κράτηση", "danger"); location.href = "login.html?next=web.html"; return; }
 
     const profile = Auth.activeProfile();
     const pane = $("#ticketPane");
@@ -373,7 +371,7 @@
           ])
         ]),
         el("div", { class: "card__title", style: "font-size:var(--fs-lg)", text: ev.title }),
-        el("div", { class: "t-sm muted", text: ev.date.toLowerCase() + " " + ev.time + " • " + ev.gate }),
+        el("div", { class: "t-sm muted", text: ev.dateText + ", " + ev.time + " • " + ev.gate }),
         qrBox,
         el("div", { class: "t-sm" }, [
           document.createTextNode("Ανανέωση κωδικού σε "), countdown
@@ -384,7 +382,7 @@
           el("b", { text: profile ? profile.fullName : acc.displayName })
         ]),
         el("button", {
-          class: "btn btn--ghost btn--block", type: "button", text: "Νέα επιλογή",
+          class: "btn btn--ghost btn--block", type: "button", text: "Άλλη εκδήλωση",
           style: "--btn-fg:#F4F7FC;--btn-bd:#2A3A57",
           onclick() { handle.stop(); renderTicketPlaceholder(pane); }
         })
@@ -398,116 +396,407 @@
     });
     onCleanup(() => handle.stop());
 
-    toast(ev.memberPrice === 0 ? "Δωρεάν QR εκδόθηκε" : "Κράτηση ολοκληρώθηκε — " + fmtEuro(ev.memberPrice), "ok");
+    toast(ev.memberPrice === 0 ? "Εκδόθηκε δωρεάν εισιτήριο" : "Η κράτηση ολοκληρώθηκε (" + fmtEuro(ev.memberPrice) + ")", "ok");
   }
 
+
   /* ======================================================================
-     ΟΘΟΝΗ 06 — Checkout: οικογενειακό καλάθι & επανεγγραφή
+     ΣΥΝΔΡΟΜΗ
+     Ίδια λογική με το design document: μία κάρτα «οικογενειακό καλάθι»
+     όταν η συνδρομή είναι ενεργή, μία κάρτα «επιστροφή» όταν είναι σε παύση.
      ====================================================================== */
   function viewSubscription() {
-    const B = D.BILLING;
-    const acc = Auth.account();
-    const profiles = acc ? Auth.profiles() : [D.PROFILES.p_giorgos, D.PROFILES.p_kostis];
+    if (!Auth.account()) {
+      page.append(
+        head("Συνδρομή", "Η συνδρομή της οικογένειας"),
+        el("div", { class: "card card--ink", style: "display:grid;gap:16px;justify-items:start;max-width:640px" }, [
+          el("p", { class: "modal__text", style: "color:var(--ink-300)",
+                    text: "Συνδεθείτε για να δείτε και να αλλάξετε τη συνδρομή της οικογένειάς σας." }),
+          el("a", { class: "btn btn--gold", href: "login.html?next=web.html", text: "ΣΥΝΔΕΣΗ" })
+        ])
+      );
+      return;
+    }
 
-    /* --- 1. Οικογενειακό καλάθι --- */
-    const basket = el("div", {
-      class: "card",
-      style: "background:var(--paper-50);color:var(--ink-700);border-color:var(--paper-200);display:grid;gap:16px"
-    });
+    const M = Membership.get();
+    const t = Membership.totals();
 
-    basket.appendChild(
-      el("div", { class: "between" }, [
-        el("h3", { class: "card__title", style: "font-size:var(--fs-lg)", text: "1. Οικογενειακό Καλάθι Συνδρομής" }),
-        el("span", { class: "t-sm display bold ok", text: "ΧΩΡΙΣ ΚΕΝΟ" })
+    page.append(
+      head("Συνδρομή", "Η συνδρομή της οικογένειας"),
+      el("div", { class: "grid-2", style: "align-items:start" }, [
+        M.status === "cancelled" ? returnCard(t) : basketCard(M, t),
+        plansCard()
       ])
     );
+  }
 
-    let total = 0;
-    profiles.forEach(p => {
-      total += p.monthlyFee;
-      basket.appendChild(
+  /* ---- Τι περιλαμβάνει κάθε πακέτο ------------------------------------- */
+  function perkList(plan, compact) {
+    return el("ul", { class: "perks" + (compact ? " perks--compact" : "") },
+      plan.includes.map(item => el("li", { class: "perks__item" }, [
+        el("span", { class: "perks__icon", html: icon("check", 13, 2.6) }),
+        el("div", {}, [
+          el("div", { class: "perks__title", text: item.title }),
+          el("div", { class: "perks__text", text: item.text })
+        ])
+      ]))
+    );
+  }
+
+  function plansCard() {
+    return el("div", { class: "card card--ink", style: "display:grid;grid-template-columns:minmax(0,1fr);gap:20px" }, [
+      el("h3", { class: "card__title", style: "font-size:var(--fs-lg)", text: "Τι περιλαμβάνει κάθε πακέτο" }),
+      ...["adult", "academy"].map(id => {
+        const plan = D.PLANS[id];
+        return el("section", { class: "plan" }, [
+          el("div", { class: "plan__head" }, [
+            el("div", {}, [
+              el("div", { class: "plan__name", text: plan.name }),
+              el("div", { class: "plan__who", text: plan.who })
+            ]),
+            el("div", { class: "plan__price", html: fmtEuro(plan.price) + "<small>" + plan.priceNote + "</small>" })
+          ]),
+          perkList(plan, false)
+        ]);
+      })
+    ]);
+  }
+
+  /* ---- 1. Οικογενειακό καλάθι (ενεργή συνδρομή) -------------------------- */
+  function basketCard(M, t) {
+    const yearly = M.cycle === "yearly";
+
+    const cycleSwitch = el("div", { class: "segmented", role: "tablist", "aria-label": "Κύκλος χρέωσης" });
+    [["monthly", "Μηνιαία"], ["yearly", "Ετήσια (2 μήνες δώρο)"]].forEach(([id, label]) => {
+      cycleSwitch.appendChild(
+        el("button", {
+          class: "segmented__btn" + (M.cycle === id ? " is-active" : ""),
+          type: "button", role: "tab", "aria-selected": String(M.cycle === id),
+          text: label,
+          onclick() { Membership.setCycle(id); render(); }
+        })
+      );
+    });
+
+    const rows = el("div", { class: "stack-3" });
+    Auth.profiles().forEach(p => {
+      rows.appendChild(
         el("div", { class: "row", style: "background:var(--paper);border-color:var(--paper-200)" }, [
           el("div", { class: "row__body" }, [
-            el("div", { class: "row__title", text: p.fullName + " (" + (p.kind === "academy" ? "Ακαδημία Κ14" : "Ενήλικας") + ")" }),
-            p.discountLabel
-              ? el("div", { class: "t-sm bold ok", text: p.discountLabel })
-              : el("div", { class: "row__meta", text: "Μηνιαία Συνδρομή Μέλους" })
+            el("div", { class: "row__title", text: p.fullName }),
+            p.kind === "academy"
+              ? el("div", { class: "t-sm bold", style: "color:var(--ok-600)",
+                            text: D.PLANS.academy.name + " " + p.kindLabel + ", έκπτωση " + p.discountPct + "%" })
+              : el("div", { class: "t-sm bold", style: "color:var(--ion-navy)",
+                            text: D.PLANS.adult.name + " (ενήλικας)" }),
+            el("div", { class: "row__meta", text: p.kind === "academy"
+              ? "Είσοδος στους αγώνες, live του τμήματος, δωρεάν Summer Camp"
+              : "Είσοδος σε όλους τους εντός έδρας αγώνες, Ιωνικός TV, εκπτώσεις" })
           ]),
           el("div", {
             class: "row__end",
-            style: "font-size:var(--fs-lg);color:" + (p.discountLabel ? "var(--ok-600)" : "var(--ink-700)"),
-            text: fmtEuro(p.monthlyFee)
-          })
+            style: "font-size:var(--fs-lg);color:" + (p.discountPct ? "var(--ok-600)" : "var(--ink-700)"),
+            text: fmtEuro(p.monthlyFee) + "/μήνα"
+          }),
+          p.removable
+            ? el("button", {
+                class: "btn btn--ghost btn--icon btn--sm", type: "button",
+                "aria-label": "Αφαίρεση " + p.fullName, title: "Αφαίρεση",
+                html: icon("cross", 16, 2),
+                onclick() { confirmRemove(p); }
+              })
+            : el("span", { style: "width:36px" })
         ])
       );
     });
 
-    basket.append(
-      el("hr", { class: "divider" }),
+    return el("div", { class: "card theme-light", style: "background:var(--paper-50);border-color:var(--paper-200);display:grid;grid-template-columns:minmax(0,1fr);gap:18px" }, [
       el("div", { class: "between" }, [
-        el("span", { class: "display bold", style: "font-size:var(--fs-md)", text: "Σύνολο Μήνα (Αυτόματη Χρέωση)" }),
-        el("span", { class: "display bold", style: "font-size:var(--fs-xl);color:var(--ion-navy)", text: fmtEuro(total) })
+        el("h3", { class: "card__title", style: "font-size:var(--fs-lg)", text: "Οικογενειακό καλάθι συνδρομής" }),
+        el("span", { class: "t-sm display bold", style: "color:var(--ok-600)", text: "ΕΝΕΡΓΗ" })
       ]),
+      cycleSwitch,
+      rows,
       el("button", {
-        class: "btn btn--primary btn--lg btn--block",
-        type: "button",
-        text: "ΠΛΗΡΩΜΗ ΜΕ ΚΑΡΤΑ / APPLE PAY / VIVA",
-        onclick() {
-          if (!acc) { location.href = "login.html?next=web.html"; return; }
-          toast("Demo: δεν εκτελείται πραγματική πληρωμή", null, 3400);
-        }
+        class: "btn btn--ghost btn--block", type: "button",
+        html: icon("plus", 18) + "<span>Προσθήκη μέλους</span>",
+        onclick: openAddMember
       }),
-      el("p", { class: "t-xs muted center", style: "margin:0",
-                text: "Mockup παρουσίασης — δεν συνδέεται με Stripe/Viva και δεν γίνεται καμία χρέωση." })
-    );
-
-    /* --- 2. Επιστροφή μετά από διακοπή --- */
-    const gapMonths = 2;
-    const reFee = gapMonths * B.reactivationPerMonth;
-    const reTotal = B.baseFee + reFee;
-
-    const reactivate = el("div", {
-      class: "card",
-      style: "background:var(--ink-900);border-color:#1A2639;display:grid;gap:16px"
-    }, [
+      el("hr", { class: "divider", style: "margin:0" }),
       el("div", { class: "between" }, [
-        el("h3", { class: "card__title", style: "font-size:var(--fs-lg)", text: "2. Οθόνη Επιστροφής Μετά από Διακοπή" }),
-        el("span", { class: "t-sm display bold gold", html: "ΚΕΝΟ 60<br>ΗΜΕΡΩΝ", style: "text-align:right" })
+        el("span", { class: "display bold", style: "font-size:var(--fs-md)",
+                     text: yearly ? "Σύνολο έτους (αυτόματη χρέωση)" : "Σύνολο μήνα (αυτόματη χρέωση)" }),
+        el("span", { class: "display bold", style: "font-size:var(--fs-xl);color:var(--ion-navy)", text: fmtEuro(t.base) })
       ]),
-      el("div", {
-        style: "border-left:4px solid var(--ion-gold);padding:12px 16px;border-radius:0 12px 12px 0;background:var(--ink-700)"
-      }, [
-        el("div", { class: "display bold gold", text: "Ενημέρωση Επιπέδου:" }),
-        el("div", { class: "t-sm", text: "Λόγω απουσίας >" + B.downgradeAfterDays + " ημερών, επιστρέφετε ως «Οπαδός» (από Ultra)." })
+      yearly
+        ? el("p", { class: "t-sm bold", style: "margin:-8px 0 0;color:var(--ok-600)",
+                    text: "12 μήνες στην τιμή των 10. Κερδίζετε " + fmtEuro(t.cycleSaving) + "." })
+        : null,
+      el("button", {
+        class: "btn btn--primary btn--lg btn--block", type: "button",
+        text: "ΠΛΗΡΩΜΗ ΜΕ ΚΑΡΤΑ / APPLE PAY / VIVA",
+        onclick() { confirmPay(false); }
+      }),
+      el("div", { class: "between t-sm" }, [
+        el("span", { class: "muted", text: "Επόμενη χρέωση: " + nextCharge(M) }),
+        el("button", {
+          class: "btn btn--ghost btn--sm", type: "button", text: "Παύση συνδρομής",
+          onclick: confirmCancel
+        })
+      ])
+    ]);
+  }
+
+  /* ---- 2. Επιστροφή μετά από διακοπή (συνδρομή σε παύση) ------------------ */
+  function returnCard(t) {
+    const downgrade = t.gapMonths * 30 > D.BILLING.downgradeAfterDays;
+    const months = t.gapMonths === 1 ? "1 μήνας" : t.gapMonths + " μήνες";
+    const gapTag = t.gapMonths === 1 ? "ΚΕΝΟ 1 ΜΗΝΑ" : "ΚΕΝΟ " + t.gapMonths + " ΜΗΝΩΝ";
+
+    return el("div", { class: "card", style: "background:var(--ink-900);border-color:#1A2639;display:grid;grid-template-columns:minmax(0,1fr);gap:16px" }, [
+      el("div", { class: "between", style: "align-items:flex-start" }, [
+        el("h3", { class: "card__title", style: "font-size:var(--fs-lg)", text: "Επιστροφή μετά από διακοπή" }),
+        el("span", { class: "t-sm display bold gold", style: "text-align:right", text: gapTag })
+      ]),
+      el("div", { style: "border-left:4px solid var(--ion-gold);padding:12px 16px;border-radius:0 12px 12px 0;background:var(--ink-700)" }, [
+        el("div", { class: "display bold gold", text: "Ενημέρωση επιπέδου" }),
+        el("div", { class: "t-sm", text: downgrade
+          ? "Λόγω απουσίας άνω των " + D.BILLING.downgradeAfterDays + " ημερών, επιστρέφετε στο επίπεδο «Casual»."
+          : "Επιστρέφοντας μέσα σε " + D.BILLING.downgradeAfterDays + " ημέρες, διατηρείτε το επίπεδό σας." })
       ]),
       el("div", { class: "row", style: "background:var(--ink-700);border-color:#22304A" }, [
-        el("div", { class: "row__body" }, [el("div", { class: "row__title", text: "Βασική Μηνιαία Συνδρομή" })]),
-        el("div", { class: "row__end", style: "font-size:var(--fs-md)", text: fmtEuro(B.baseFee) })
+        el("div", { class: "row__body" }, [el("div", { class: "row__title", text: t.cycle.id === "yearly" ? "Βασική ετήσια συνδρομή" : "Βασική μηνιαία συνδρομή" })]),
+        el("div", { class: "row__end", style: "font-size:var(--fs-md)", text: fmtEuro(t.base) })
       ]),
       el("div", { class: "row", style: "background:var(--ink-700);border-color:#22304A" }, [
         el("div", { class: "row__body" }, [
-          el("div", { class: "row__title danger", text: "Τέλος Επανεγγραφής (" + gapMonths + " μήνες απουσίας)" }),
-          el("div", { class: "row__meta", text: fmtEuro(B.reactivationPerMonth) + " / μήνα κενού (Χρεώνεται μόνο μία φορά)" })
+          el("div", { class: "row__title", style: "color:var(--danger-300)", text: "Τέλος επανεγγραφής (" + months + " απουσίας)" }),
+          el("div", { class: "row__meta", text: fmtEuro(D.BILLING.reactivationPerMonth) + " ανά μήνα κενού, χρεώνεται μία φορά" })
         ]),
-        el("div", { class: "row__end danger", style: "font-size:var(--fs-md)", text: "+" + fmtEuro(reFee) })
+        el("div", { class: "row__end", style: "font-size:var(--fs-md);color:var(--danger-300)", text: "+" + fmtEuro(t.reactivationFee) })
       ]),
+      el("hr", { class: "divider", style: "margin:0;background:#22304A" }),
       el("div", { class: "between" }, [
-        el("span", { class: "display bold", style: "font-size:var(--fs-md)", text: "Πρώτη Πληρωμή Επιστροφής" }),
-        el("span", { class: "display bold gold", style: "font-size:var(--fs-xl)", text: fmtEuro(reTotal) })
+        el("span", { class: "display bold", style: "font-size:var(--fs-md)", text: "Πρώτη πληρωμή επιστροφής" }),
+        el("span", { class: "display bold gold", style: "font-size:var(--fs-xl)", text: fmtEuro(t.total) })
       ]),
       el("button", {
-        class: "btn btn--gold btn--lg btn--block",
-        type: "button",
+        class: "btn btn--gold btn--lg btn--block", type: "button",
         text: "ΕΠΑΝΕΝΕΡΓΟΠΟΙΗΣΗ ΣΥΝΔΡΟΜΗΣ",
-        onclick() { toast("Demo: δεν εκτελείται πραγματική πληρωμή", null, 3400); }
+        onclick() { confirmPay(true); }
       })
     ]);
+  }
 
-    page.append(
-      head("Οθόνη 06 · Web Checkout: Οικογενειακή Πληρωμή & Επανεγγραφή",
-           "Διαφανής Ανάλυση Ποσού Πριν την Πληρωμή"),
-      el("div", { class: "grid-2" }, [basket, reactivate])
+  function nextCharge(M) {
+    const d = new Date(M.lastPaidAt || Date.now());
+    d.setMonth(d.getMonth() + (M.cycle === "yearly" ? 12 : 1));
+    return new Intl.DateTimeFormat("el-GR", { day: "2-digit", month: "2-digit", year: "numeric" }).format(d);
+  }
+
+  /* ---- Modal helper ------------------------------------------------------ */
+  function modal(opts) {
+    const box = el("div", { class: "modal theme-light", role: "dialog", "aria-modal": "true" });
+    const backdrop = el("div", {
+      class: "modal-backdrop",
+      onclick(e) { if (e.target === backdrop) close(); }
+    }, [box]);
+
+    function close() { document.removeEventListener("keydown", onKey); backdrop.remove(); }
+    function onKey(e) { if (e.key === "Escape") close(); }
+    document.addEventListener("keydown", onKey);
+
+    box.append(
+      el("div", { class: "modal__title", text: opts.title }),
+      opts.text ? el("p", { class: "modal__text", text: opts.text }) : null
     );
+    if (opts.body) box.appendChild(opts.body);
+
+    box.appendChild(
+      el("div", { class: "modal__actions", style: opts.noCancel ? "grid-template-columns:1fr" : null }, [
+        el("button", {
+          class: "btn " + (opts.confirmVariant || "btn--primary"),
+          type: "button",
+          text: opts.confirmLabel || "Επιβεβαίωση",
+          onclick() { if (opts.onConfirm && opts.onConfirm() === false) return; close(); }
+        }),
+        opts.noCancel ? null : el("button", { class: "btn btn--ghost", type: "button", text: "Άκυρο", onclick: close })
+      ])
+    );
+
+    document.body.appendChild(backdrop);
+    return { close: close, box: box };
+  }
+
+  /* ---- Προσθήκη μέλους ---------------------------------------------------- */
+  function openAddMember() {
+    const nameInput = el("input", { class: "input", type: "text", placeholder: "Ονοματεπώνυμο", "aria-label": "Ονοματεπώνυμο" });
+    const squadSelect = el("select", { class: "select", "aria-label": "Τμήμα ακαδημίας" },
+      Membership.SQUADS.map(sq => el("option", { value: sq, text: sq, selected: sq === "Κ14" })));
+
+    const squadField = el("div", { class: "field" }, [
+      el("label", { class: "field__label", text: "Τμήμα Ακαδημίας" }),
+      squadSelect
+    ]);
+
+    let kind = "academy";
+    const kindBox = el("div", { class: "options options--row" });
+    [
+      { id: "academy", label: D.PLANS.academy.name, sub: fmtEuro(D.PLANS.academy.price) + " / μήνα" },
+      { id: "adult",   label: D.PLANS.adult.name,   sub: fmtEuro(D.PLANS.adult.price) + " / μήνα" }
+    ].forEach(opt => {
+      kindBox.appendChild(
+        el("button", {
+          class: "option" + (opt.id === kind ? " is-selected" : ""),
+          type: "button",
+          "data-kind": opt.id,
+          onclick() {
+            kind = opt.id;
+            $$(".option", kindBox).forEach(b => b.classList.toggle("is-selected", b.dataset.kind === kind));
+            squadField.classList.toggle("hidden", kind !== "academy");
+            showPerks();
+          }
+        }, [
+          el("span", { class: "option__mark" }),
+          el("span", { class: "option__body" }, [
+            el("span", { class: "option__label", text: opt.label }),
+            el("span", { class: "option__sub", text: opt.sub })
+          ])
+        ])
+      );
+    });
+
+    const error = el("p", { class: "field__error hidden" });
+    const perksBox = el("div", { class: "stack-2" });
+
+    function showPerks() {
+      perksBox.innerHTML = "";
+      perksBox.append(
+        el("div", { class: "field__label", text: "Περιλαμβάνει" }),
+        perkList(D.PLANS[kind], true)
+      );
+    }
+
+    const body = el("div", { class: "stack" }, [
+      el("div", { class: "field" }, [
+        el("label", { class: "field__label", text: "Ονοματεπώνυμο" }),
+        nameInput
+      ]),
+      kindBox,
+      squadField,
+      perksBox,
+      error
+    ]);
+    showPerks();
+
+    modal({
+      title: "Προσθήκη μέλους",
+      text: "Κάθε νέο μέλος παίρνει τη δική του ψηφιακή κάρτα με QR.",
+      body: body,
+      confirmLabel: "Προσθήκη",
+      confirmVariant: "btn--success",
+      onConfirm() {
+        const res = Membership.addMember({
+          fullName: nameInput.value,
+          kind: kind,
+          squad: squadSelect.value
+        });
+        if (!res.ok) {
+          error.textContent = res.error;
+          error.classList.remove("hidden");
+          return false;
+        }
+        toast("Προστέθηκε: " + res.member.fullName + " (" + res.member.cardCode + ")", "ok");
+        render();
+      }
+    });
+
+    setTimeout(() => nameInput.focus(), 60);
+  }
+
+  function confirmRemove(p) {
+    modal({
+      title: "Αφαίρεση μέλους",
+      text: p.fullName + " θα αφαιρεθεί από τη συνδρομή και η κάρτα " + p.cardCode + " θα απενεργοποιηθεί.",
+      confirmLabel: "Αφαίρεση",
+      confirmVariant: "btn--danger",
+      onConfirm() {
+        const res = Membership.removeMember(p.id);
+        toast(res.ok ? "Αφαιρέθηκε: " + p.fullName : res.error, res.ok ? "ok" : "danger");
+        render();
+      }
+    });
+  }
+
+  function confirmCancel() {
+    modal({
+      title: "Παύση συνδρομής",
+      text: "Οι κάρτες της οικογένειας θα σταματήσουν να ανοίγουν τη θύρα. Όταν επιστρέψετε, χρεώνεται τέλος επανεγγραφής "
+        + fmtEuro(D.BILLING.reactivationPerMonth) + " για κάθε μήνα απουσίας.",
+      confirmLabel: "Παύση συνδρομής",
+      confirmVariant: "btn--danger",
+      onConfirm() {
+        Membership.cancel();
+        toast("Η συνδρομή μπήκε σε παύση", "danger");
+        render();
+      }
+    });
+  }
+
+  function confirmPay(reactivating) {
+    const t = Membership.totals();
+    let method = Membership.get().paymentMethod;
+
+    const methods = el("div", { class: "options" });
+    Membership.PAYMENT_METHODS.forEach(pm => {
+      methods.appendChild(
+        el("button", {
+          class: "option" + (pm.id === method ? " is-selected" : ""),
+          type: "button", "data-method": pm.id,
+          onclick() {
+            method = pm.id;
+            $$(".option", methods).forEach(b => b.classList.toggle("is-selected", b.dataset.method === method));
+          }
+        }, [
+          el("span", { class: "option__mark" }),
+          el("span", { class: "option__body" }, [
+            el("span", { class: "option__label", text: pm.label }),
+            el("span", { class: "option__sub", text: pm.sub })
+          ])
+        ])
+      );
+    });
+
+    modal({
+      title: reactivating ? "Επανενεργοποίηση συνδρομής" : "Πληρωμή συνδρομής",
+      text: "Ποσό: " + fmtEuro(t.total) + ". Επιλέξτε τρόπο πληρωμής.",
+      body: el("div", { class: "stack-3" }, [
+        methods,
+        el("p", { class: "t-xs muted", style: "margin:0", text: "Πρωτότυπο παρουσίασης. Δεν πραγματοποιείται χρέωση." })
+      ]),
+      confirmLabel: "Πληρωμή " + fmtEuro(t.total),
+      confirmVariant: "btn--success",
+      onConfirm() {
+        Membership.setPaymentMethod(method);
+        const pm = Membership.PAYMENT_METHODS.find(x => x.id === method);
+        const res = Membership.pay();
+        showReceipt(res.charged, pm.label, res.reactivated);
+        render();
+      }
+    });
+  }
+
+  function showReceipt(amount, method, reactivated) {
+    const no = "A-" + Math.floor(100 + Math.random() * 900);
+    modal({
+      title: reactivated ? "Η συνδρομή επανενεργοποιήθηκε" : "Η πληρωμή ολοκληρώθηκε",
+      text: "Απόδειξη " + no + " · " + fmtEuro(amount) + " με " + method
+        + ". Οι κάρτες της οικογένειας είναι ενεργές.",
+      confirmLabel: "Εντάξει",
+      confirmVariant: "btn--success",
+      noCancel: true,
+      onConfirm() {}
+    });
   }
 
   /* ---- Εκκίνηση ---------------------------------------------------------- */

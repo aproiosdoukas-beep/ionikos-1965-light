@@ -1,11 +1,11 @@
 /* ==========================================================================
-   ΙΩΝΙΚΟΣ 1965 — Οθόνη 03 (δεξιά): Ταμείο καταστήματος-χορηγού
+   ΙΩΝΙΚΟΣ 1965 :: Ταμείο καταστήματος-χορηγού
    ========================================================================== */
 (function () {
   "use strict";
 
   const D = window.ION_DATA;
-  const { Store, Token, el, $, toast, todayKey } = window.ION;
+  const { Store, Token, el, $, toast, todayKey, resolveCard, upper } = window.ION;
 
   $("#sbIcons").innerHTML = icon("signal", 15, 1.6) + icon("wifi", 15, 1.6) + icon("battery", 20, 1.5);
   $("#storeIcon").innerHTML = icon("store", 24);
@@ -15,10 +15,12 @@
   const USES_KEY = "merchant:uses:" + MERCHANT.id;
   const STATS_KEY = "merchant:stats:" + MERCHANT.id + ":" + todayKey();
 
-  /* Αιτιατική πτώση — το Intl επιστρέφει γενική ("Νοεμβρίου"). */
+  /* Αιτιατική πτώση : το Intl επιστρέφει γενική ("Νοεμβρίου"). */
   const MONTHS_ACC = ["Ιανουάριο", "Φεβρουάριο", "Μάρτιο", "Απρίλιο", "Μάιο", "Ιούνιο",
                       "Ιούλιο", "Αύγουστο", "Σεπτέμβριο", "Οκτώβριο", "Νοέμβριο", "Δεκέμβριο"];
   const MONTH = MONTHS_ACC[new Date().getMonth()];
+  const MONTHS_NOM = ["Ιανουάριος", "Φεβρουάριος", "Μάρτιος", "Απρίλιος", "Μάιος", "Ιούνιος",
+                      "Ιούλιος", "Αύγουστος", "Σεπτέμβριος", "Οκτώβριος", "Νοέμβριος", "Δεκέμβριος"];
 
   function uses()  { return Store.get(USES_KEY, {}); }
   function stats() { return Store.get(STATS_KEY, { scans: 148, members: 82 }); }
@@ -53,7 +55,7 @@
       el("div", {
         class: "t-xs display bold",
         style: "letter-spacing:.07em;color:var(--ink-300)",
-        text: "ΣΤΑΤΙΣΤΙΚΑ ΚΑΤΑΣΤΗΜΑΤΟΣ (" + MONTH.toUpperCase() + ")"
+        text: "ΣΤΑΤΙΣΤΙΚΑ ΚΑΤΑΣΤΗΜΑΤΟΣ (" + upper(MONTHS_NOM[new Date().getMonth()]) + ")"
       }),
       el("div", { style: "display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px" }, [
         el("div", { class: "stat" }, [
@@ -101,7 +103,7 @@
 
     view.appendChild(el("div", { class: "stack" }, [
       el("div", { class: "between" }, [
-        el("span", { class: "t-sm muted", text: info.name || "—" }),
+        el("span", { class: "t-sm muted", text: info.name || "..." }),
         el("button", {
           class: "btn btn--ghost btn--sm", type: "button", text: "Άκυρο",
           style: "--btn-fg:#F4F7FC;--btn-bd:#2A3A57",
@@ -145,7 +147,7 @@
     }
 
     const cardCode = check.cardCode.split(":")[0];
-    const card = D.KNOWN_CARDS[cardCode];
+    const card = resolveCard(cardCode);
 
     if (!card || card.state === "expired") {
       renderResult(false, {
@@ -173,9 +175,9 @@
 
   /* ---- Κουμπιά προσομοίωσης ----------------------------------------------- */
   const sims = [
-    { label: "Σάρωση — Γιώργος Παπαδόπουλος", variant: "success", card: "ION-8472", kind: "live" },
-    { label: "Σάρωση — Κωστής Παπαδόπουλος",  variant: "primary", card: "ION-5513", kind: "live" },
-    { label: "Σάρωση — Ληγμένη συνδρομή",     variant: "danger",  card: "ION-3301", kind: "live" },
+    { label: "Σάρωση: Γιώργος Παπαδόπουλος", variant: "success", card: "ION-8472", kind: "live" },
+    { label: "Σάρωση: Κωστής Παπαδόπουλος",  variant: "primary", card: "ION-5513", kind: "live" },
+    { label: "Σάρωση: Ληγμένη συνδρομή",     variant: "danger",  card: "ION-3301", kind: "live" },
     { label: "Σάρωση παλιού QR",              variant: "ghost",   card: "ION-8472", kind: "stale" }
   ];
 

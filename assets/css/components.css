@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ΙΩΝΙΚΟΣ 1965 — Κοινά Components
+   ΙΩΝΙΚΟΣ 1965 :: Κοινά Components
    Τα ΙΔΙΑ κουμπιά, κάρτες, chips, tabs σε app ΚΑΙ web.
    ========================================================================== */
 
@@ -53,7 +53,7 @@ img, svg { max-width: 100%; }
 }
 
 /* ==========================================================================
-   BUTTONS — ένα base, πέντε variants, τρία μεγέθη. Παντού ίδια.
+   BUTTONS : ένα base, πέντε variants, τρία μεγέθη. Παντού ίδια.
    ========================================================================== */
 .btn {
   --btn-bg: var(--ion-navy);
@@ -354,7 +354,7 @@ img, svg { max-width: 100%; }
 }
 
 /* ==========================================================================
-   CREST (placeholder — αντικαταστήστε με το επίσημο logo)
+   CREST (placeholder : αντικαταστήστε με το επίσημο logo)
    ========================================================================== */
 .crest { display: block; width: 36px; height: 44px; flex: 0 0 auto; }
 .crest--sm { width: 26px; height: 32px; }
@@ -433,3 +433,163 @@ img, svg { max-width: 100%; }
 .toast--ok     { background: var(--ok-600); }
 .toast--danger { background: var(--danger-600); }
 @keyframes toast-in { from { opacity: 0; transform: translateY(12px); } }
+
+/* ==========================================================================
+   MODAL
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  z-index: 2000;
+  background: rgba(6, 12, 26, .66);
+  backdrop-filter: blur(3px);
+  display: grid; place-items: center;
+  padding: var(--sp-4);
+  animation: fade-in 160ms var(--ease);
+}
+@keyframes fade-in { from { opacity: 0 } }
+
+.modal {
+  width: min(460px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--paper);
+  color: var(--ink-700);
+  border-radius: var(--r-xl);
+  padding: var(--sp-6);
+  display: grid; gap: var(--sp-4);
+  box-shadow: var(--shadow-lg);
+  animation: modal-in 200ms var(--ease);
+}
+@keyframes modal-in { from { opacity: 0; transform: translateY(14px) scale(.98) } }
+
+.modal__title { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-lg); }
+.modal__text  { font-size: var(--fs-sm); color: var(--ink-400); margin: 0; }
+.modal__actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
+@media (max-width: 420px) { .modal__actions { grid-template-columns: 1fr } }
+
+/* ==========================================================================
+   OPTION CARDS (κύκλος χρέωσης, τρόπος πληρωμής)
+   ========================================================================== */
+.options { display: grid; gap: var(--sp-3); }
+.options--row { grid-auto-flow: column; grid-auto-columns: 1fr; }
+@media (max-width: 560px) { .options--row { grid-auto-flow: row } }
+
+.option {
+  position: relative;
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-4);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  transition: all var(--dur) var(--ease);
+}
+.option:hover { border-color: var(--ion-navy-300); }
+.option.is-selected {
+  border-color: var(--ion-navy);
+  box-shadow: inset 0 0 0 1px var(--ion-navy);
+  background: var(--ion-navy-100);
+}
+.theme-dark .option.is-selected {
+  background: rgba(26, 54, 104, .34);
+  border-color: var(--ion-gold);
+  box-shadow: inset 0 0 0 1px var(--ion-gold);
+}
+.option__mark {
+  flex: 0 0 auto;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: grid; place-items: center;
+}
+.option.is-selected .option__mark { border-color: var(--ion-navy); }
+.theme-dark .option.is-selected .option__mark { border-color: var(--ion-gold); }
+.option.is-selected .option__mark::after {
+  content: "";
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--ion-navy);
+}
+.theme-dark .option.is-selected .option__mark::after { background: var(--ion-gold); }
+.option__body { flex: 1 1 auto; min-width: 0; }
+.option__label { font-family: var(--font-display); font-weight: 700; }
+.option__sub { font-size: var(--fs-sm); color: var(--text-muted); }
+.option__tag {
+  flex: 0 0 auto;
+  font-family: var(--font-display); font-weight: 800;
+  font-size: var(--fs-xs);
+  padding: 4px 9px; border-radius: var(--r-pill);
+  background: rgba(16,185,129,.16); color: var(--ok-600);
+}
+.theme-dark .option__tag { color: var(--ok-300); }
+
+/* ---- Σύνοψη ποσού -------------------------------------------------------- */
+.summary { display: grid; gap: var(--sp-2); }
+.summary__line { display: flex; justify-content: space-between; gap: var(--sp-3); font-size: var(--fs-sm); }
+.summary__line--total {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-md);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border-soft);
+}
+.summary__line.is-credit { color: var(--ok-600); }
+.theme-dark .summary__line.is-credit { color: var(--ok-300); }
+.summary__line.is-charge { color: var(--danger); }
+
+/* ---- Select -------------------------------------------------------------- */
+.select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 var(--sp-4);
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+.select:focus { outline: none; border-color: var(--ion-navy); box-shadow: var(--ring); }
+.option__label, .option__sub { display: block; }
+.theme-light .segmented { background: var(--paper-200); }
+.theme-light .btn--ghost { --btn-fg: var(--ink-700); --btn-bd: var(--paper-300); }
+
+/* ---- Ανθεκτικότητα σε στενές οθόνες -------------------------------------- */
+/* Τα grid παιδιά δεν πρέπει να φουσκώνουν τη στήλη πέρα από το πλάτος. */
+.stack, .stack-2, .stack-3, .stack-6, .card { min-width: 0; }
+.stack, .stack-2, .stack-3, .stack-6 { grid-template-columns: minmax(0, 1fr); }
+.btn--block { white-space: normal; text-align: center; line-height: 1.25; }
+.btn--block.btn--lg { padding-top: 12px; padding-bottom: 12px; }
+.row__end { white-space: nowrap; }
+@media (max-width: 480px) {
+  .row { gap: var(--sp-3); padding: var(--sp-3); }
+  .row__end { font-size: var(--fs-base) !important; }
+  .segmented__btn { white-space: normal; }
+}
+
+/* ---- Λίστα παροχών πακέτου ---------------------------------------------- */
+.perks { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
+.perks__item { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: var(--sp-3); align-items: start; }
+.perks__icon {
+  width: 22px; height: 22px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(207, 156, 29, .18);
+  color: var(--ion-gold);
+  margin-top: 1px;
+}
+.theme-light .perks__icon { background: var(--ion-navy-100); color: var(--ion-navy); }
+.perks__title { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm); }
+.perks__text { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.45; }
+.perks--compact { gap: var(--sp-2); }
+.perks--compact .perks__text { display: none; }
+
+.plan { display: grid; gap: var(--sp-4); }
+.plan + .plan { padding-top: var(--sp-5); border-top: 1px solid var(--border-soft); }
+.plan__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); flex-wrap: wrap; }
+.plan__name { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-md); }
+.plan__who { font-size: var(--fs-sm); color: var(--text-muted); }
+.plan__price { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-lg); color: var(--ion-gold); white-space: nowrap; }
+.plan__price small { font-size: var(--fs-xs); font-weight: 600; color: var(--text-muted); margin-left: 4px; }

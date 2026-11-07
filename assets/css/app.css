@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ΙΩΝΙΚΟΣ 1965 — Στυλ εφαρμογής κινητού
+   ΙΩΝΙΚΟΣ 1965 :: Στυλ εφαρμογής κινητού
    ========================================================================== */
 
 /* ---- Ψηφιακή κάρτα μέλους ---------------------------------------------- */
@@ -11,7 +11,7 @@
   justify-items: center;
   gap: var(--sp-4);
   text-align: center;
-  background: linear-gradient(160deg, #21427A 0%, var(--ion-navy) 46%, #142A54 100%);
+  background: linear-gradient(160deg, #4245AE 0%, var(--ion-navy) 46%, #22246B 100%);
   color: #fff;
   overflow: hidden;
 }
@@ -148,13 +148,13 @@
 .ladder__name { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-md); }
 .ladder__perk { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm); text-align: right; color: var(--ion-navy); }
 .ladder__item.is-current { border-color: var(--ion-navy); background: var(--surface); box-shadow: var(--shadow-sm); }
-.ladder__item.is-ultra  { background: var(--ion-navy); border-color: transparent; color: #fff; }
-.ladder__item.is-ultra .ladder__range { color: var(--ion-gold); }
-.ladder__item.is-ultra .ladder__perk  { color: var(--ion-gold); }
-.ladder__item.is-legend { background: var(--ink-900); border-color: var(--ion-gold); color: #fff; }
-.ladder__item.is-legend .ladder__range { color: var(--ion-gold); }
-.ladder__item.is-legend .ladder__name  { color: var(--ion-gold); }
-.ladder__item.is-legend .ladder__perk  { color: #fff; }
+.ladder__item.is-high  { background: var(--ion-navy); border-color: transparent; color: #fff; }
+.ladder__item.is-high .ladder__range { color: var(--ion-gold); }
+.ladder__item.is-high .ladder__perk  { color: var(--ion-gold); }
+.ladder__item.is-top { background: var(--ink-900); border-color: var(--ion-gold); color: #fff; }
+.ladder__item.is-top .ladder__range { color: var(--ion-gold); }
+.ladder__item.is-top .ladder__name  { color: var(--ion-gold); }
+.ladder__item.is-top .ladder__perk  { color: #fff; }
 
 /* ---- Live (dark) --------------------------------------------------------- */
 .live-head {

@@ -1,38 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 196" role="img" aria-label="Έμβλημα Ιωνικός 1965">
-  <title>Ιωνικός Νικαίας 1965 — placeholder έμβλημα</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 672" role="img" aria-label="Έμβλημα Ιωνικός Νικαίας 1965">
+  <title>Ιωνικός Νικαίας 1965</title>
   <defs>
-    <path id="ion-arc" d="M 36 54 A 52 46 0 0 1 124 54" fill="none"/>
-    <linearGradient id="ion-shieldFill" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#27477E"/>
-      <stop offset="100%" stop-color="#152E5C"/>
-    </linearGradient>
+    <path id="ionArc" d="M 128 212 Q 300 112 472 212" fill="none"/>
+    <clipPath id="ionField"><path d="M 300,16 H 112 C 58,16 34,20 26,48 C 16,84 17,142 21,202 C 30,320 61,432 127,524 C 180,596 243,634 300,656 C 357,634 420,596 473,524 C 539,432 570,320 579,202 C 583,142 584,84 574,48 C 566,20 542,16 488,16 Z" transform="translate(300,336) scale(0.868) translate(-300,-336)"/></clipPath>
   </defs>
-
-  <!-- Εξωτερικό περίγραμμα ασπίδας -->
-  <path d="M8 10 H152 V104 C152 148 118 174 80 190 C42 174 8 148 8 104 Z"
-        fill="#FFFFFF"/>
-  <!-- Χρυσή λεπτή γραμμή -->
-  <path d="M12 14 H148 V104 C148 145 116 170 80 185 C44 170 12 145 12 104 Z"
-        fill="none" stroke="#D3AF37" stroke-width="2.5"/>
-  <!-- Σώμα ασπίδας -->
-  <path d="M18 20 H142 V103 C142 141 112 164 80 178 C48 164 18 141 18 103 Z"
-        fill="url(#ion-shieldFill)"/>
-  <!-- Εσωτερικό λευκό περίγραμμα -->
-  <path d="M26 28 H134 V102 C134 136 107 157 80 169 C53 157 26 136 26 102 Z"
-        fill="none" stroke="#FFFFFF" stroke-width="3"/>
-
-  <!-- ΙΩΝΙΚΟΣ σε τόξο -->
-  <text font-family="Commissioner, system-ui, sans-serif" font-size="19" font-weight="800"
-        fill="#FFFFFF" letter-spacing="2.4">
-    <textPath href="#ion-arc" startOffset="50%" text-anchor="middle">ΙΩΝΙΚΟΣ</textPath>
+  <path d="M 300,16 H 112 C 58,16 34,20 26,48 C 16,84 17,142 21,202 C 30,320 61,432 127,524 C 180,596 243,634 300,656 C 357,634 420,596 473,524 C 539,432 570,320 579,202 C 583,142 584,84 574,48 C 566,20 542,16 488,16 Z" fill="#CF9C1D" transform="translate(300,336) scale(1.0000) translate(-300,-336)"/>
+  <path d="M 300,16 H 112 C 58,16 34,20 26,48 C 16,84 17,142 21,202 C 30,320 61,432 127,524 C 180,596 243,634 300,656 C 357,634 420,596 473,524 C 539,432 570,320 579,202 C 583,142 584,84 574,48 C 566,20 542,16 488,16 Z" fill="#343795" transform="translate(300,336) scale(0.9820) translate(-300,-336)"/>
+  <path d="M 300,16 H 112 C 58,16 34,20 26,48 C 16,84 17,142 21,202 C 30,320 61,432 127,524 C 180,596 243,634 300,656 C 357,634 420,596 473,524 C 539,432 570,320 579,202 C 583,142 584,84 574,48 C 566,20 542,16 488,16 Z" fill="#FFFFFF" transform="translate(300,336) scale(0.9280) translate(-300,-336)"/>
+  <path d="M 300,16 H 112 C 58,16 34,20 26,48 C 16,84 17,142 21,202 C 30,320 61,432 127,524 C 180,596 243,634 300,656 C 357,634 420,596 473,524 C 539,432 570,320 579,202 C 583,142 584,84 574,48 C 566,20 542,16 488,16 Z" fill="#343795" transform="translate(300,336) scale(0.8680) translate(-300,-336)"/>
+  <g clip-path="url(#ionField)">
+    <path d="M -20,160 C 90,274 510,274 620,160 L 620,214 C 510,328 90,328 -20,214 Z" fill="#FFFFFF"/>
+  </g>
+  <text font-family="Commissioner, Arial, system-ui, sans-serif" font-size="82" font-weight="800" fill="#FFFFFF" letter-spacing="5">
+    <textPath href="#ionArc" startOffset="50%" text-anchor="middle">ΙΩΝΙΚΟΣ</textPath>
   </text>
-
-  <!-- 1965 -->
-  <text x="80" y="78" text-anchor="middle"
-        font-family="Commissioner, system-ui, sans-serif" font-size="13" font-weight="700"
-        fill="#D3AF37" letter-spacing="3.5">1965</text>
-
-  <!-- Αστέρι -->
-  <path d="M80 88 L90.6 120.6 L124.9 120.6 L97.2 140.8 L107.8 173.4 L80 153.2 L52.2 173.4 L62.8 140.8 L35.1 120.6 L69.4 120.6 Z"
-        fill="#FFFFFF" transform="translate(0,-8) scale(0.82) translate(17.6, 20)"/>
+  <text x="300" y="230" text-anchor="middle" font-family="Commissioner, system-ui, sans-serif" font-size="50" font-weight="700" fill="#FFFFFF" letter-spacing="8">1965</text>
+  <path d="M 300.0,305.0 L 335.3,406.5 L 442.7,408.6 L 357.1,473.5 L 388.2,576.4 L 300.0,515.0 L 211.8,576.4 L 242.9,473.5 L 157.3,408.6 L 264.7,406.5 L 300.0,305.0 Z" fill="#FFFFFF"/>
+  <path d="M 300.0,455.0 L 300.0,305.0 L 335.3,406.5 Z" fill="#343795"/>
+  <path d="M 300.0,455.0 L 442.7,408.6 L 357.1,473.5 Z" fill="#343795"/>
+  <path d="M 300.0,455.0 L 388.2,576.4 L 300.0,515.0 Z" fill="#343795"/>
+  <path d="M 300.0,455.0 L 211.8,576.4 L 242.9,473.5 Z" fill="#343795"/>
+  <path d="M 300.0,455.0 L 157.3,408.6 L 264.7,406.5 Z" fill="#343795"/>
 </svg>

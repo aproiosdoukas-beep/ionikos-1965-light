@@ -9,10 +9,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/tokens.css?v=20261107a">
-<link rel="stylesheet" href="assets/css/components.css?v=20261107a">
-<link rel="stylesheet" href="assets/css/shell.css?v=20261107a">
-<link rel="stylesheet" href="assets/css/app.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/tokens.css?v=20261107n">
+<link rel="stylesheet" href="assets/css/components.css?v=20261107n">
+<link rel="stylesheet" href="assets/css/shell.css?v=20261107n">
+<link rel="stylesheet" href="assets/css/app.css?v=20261107n">
 </head>
 <body>
 
@@ -21,7 +21,7 @@
     <div class="stage__brand">
       <img class="crest" src="assets/img/crest.svg" alt="">
       <div>
-        <h1>Οθόνη 02 · Εφαρμογή Ελέγχου Θύρας</h1>
+        <h1>Εφαρμογή Ελέγχου Θύρας</h1>
         <p class="t-sm" style="color:var(--ok-300);margin:2px 0 0">Λειτουργεί &amp; Offline</p>
       </div>
     </div>
@@ -55,26 +55,26 @@
       <aside class="card theme-dark" style="background:var(--ink-700);border-color:#22304A;color:#F4F7FC">
         <h2 class="card__title" style="font-size:var(--fs-lg)">Προσομοίωση Σάρωσης</h2>
         <p class="t-sm" style="color:var(--ink-300)">
-          Ο έλεγχος είναι πραγματικός: το QR της κάρτας είναι υπογεγραμμένο και ισχύει
+          Ο έλεγχος είναι πραγματικός: το QR κάθε κάρτας είναι υπογεγραμμένο και ισχύει
           για 60 δευτερόλεπτα. Ανοίξτε την <a href="app.html" class="gold">εφαρμογή μέλους</a>
-          σε άλλη καρτέλα, αντιγράψτε το token και επικολλήστε το εδώ.
+          σε άλλη καρτέλα, αντιγράψτε τον κωδικό και επικολλήστε τον εδώ.
         </p>
 
         <hr class="divider" style="background:#22304A">
 
         <div class="stack-3">
           <button class="btn btn--success btn--block" type="button" data-scan="live:ION-8472">
-            Σάρωση κάρτας — Γιώργος (έγκυρη)
+            Σάρωση κάρτας: Γιώργος (έγκυρη)
           </button>
           <button class="btn btn--primary btn--block" type="button" data-scan="live:ION-5513">
-            Σάρωση κάρτας — Κωστής Κ14
+            Σάρωση κάρτας: Κωστής Κ14
           </button>
           <button class="btn btn--danger btn--block" type="button" data-scan="live:ION-3301">
-            Σάρωση — Ληγμένη συνδρομή
+            Σάρωση: Ληγμένη συνδρομή
           </button>
           <button class="btn btn--ghost btn--block" type="button" data-scan="stale:ION-8472"
                   style="--btn-fg:#F4F7FC;--btn-bd:#2A3A57">
-            Σάρωση παλιού QR (ληγμένο token)
+            Σάρωση παλιού QR (έχει λήξει)
           </button>
           <button class="btn btn--ghost btn--block" type="button" data-scan="forged:ION-8472"
                   style="--btn-fg:#F4F7FC;--btn-bd:#2A3A57">
@@ -85,10 +85,10 @@
         <hr class="divider" style="background:#22304A">
 
         <form class="stack-2" id="manualForm">
-          <label class="field__label" for="tokenInput" style="color:#F4F7FC">Χειροκίνητη εισαγωγή token</label>
+          <label class="field__label" for="tokenInput" style="color:#F4F7FC">Χειροκίνητη εισαγωγή κωδικού</label>
           <input class="input" id="tokenInput" type="text" placeholder="ION1|ION-8472|…"
                  style="background:rgba(255,255,255,.04);border-color:#22304A;color:#fff">
-          <button class="btn btn--gold btn--block" type="submit">ΕΛΕΓΧΟΣ TOKEN</button>
+          <button class="btn btn--gold btn--block" type="submit">ΕΛΕΓΧΟΣ ΚΩΔΙΚΟΥ</button>
         </form>
 
         <hr class="divider" style="background:#22304A">
@@ -113,14 +113,15 @@
 
 <style>
   @media (max-width: 900px) {
-    .scan-layout { grid-template-columns: 1fr !important; justify-items: center; }
+    .scan-layout { grid-template-columns: minmax(0, 1fr) !important; justify-items: center; }
+    .scan-layout > * { width: 100%; max-width: 392px; }
   }
 </style>
 
-<script src="assets/vendor/qrcode.js?v=20261107a"></script>
-<script src="assets/js/data.js?v=20261107a"></script>
-<script src="assets/js/core.js?v=20261107a"></script>
-<script src="assets/js/icons.js?v=20261107a"></script>
-<script src="assets/js/scanner.js?v=20261107a"></script>
+<script src="assets/vendor/qrcode.js?v=20261107n"></script>
+<script src="assets/js/data.js?v=20261107n"></script>
+<script src="assets/js/core.js?v=20261107n"></script>
+<script src="assets/js/icons.js?v=20261107n"></script>
+<script src="assets/js/scanner.js?v=20261107n"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ΙΩΝΙΚΟΣ 1965 — Οθόνη 08: Admin panel γραφείων συλλόγου
+   ΙΩΝΙΚΟΣ 1965 :: Admin panel γραφείων συλλόγου
    ========================================================================== */
 (function () {
   "use strict";
@@ -87,7 +87,7 @@
      Μέλη & Γραφείο
      ====================================================================== */
   function viewDesk() {
-    view.append(head("Οθόνη 08 · Admin Panel Γραφείων Συλλόγου",
+    view.append(head("Διαχείριση",
                      "Διαχείριση Μελών, Έγκριση Ακαδημιών & Πληρωμές στα Γραφεία"), kpis());
 
     /* --- Είσπραξη στο γραφείο --- */
@@ -110,7 +110,7 @@
                   el("button", {
                     class: "btn btn--success", type: "button", html: "ΕΝΕΡΓΟΠΟΙΗΣΗ<br>ΤΩΡΑ",
                     style: "line-height:1.2;text-align:center",
-                    onclick() { markHandled("pay_" + p.id, "activated"); toast("Η κάρτα του " + p.member + " ενεργοποιήθηκε", "ok"); render(); }
+                    onclick() { markHandled("pay_" + p.id, "activated"); toast("Ενεργοποιήθηκε η κάρτα: " + p.member, "ok"); render(); }
                   }),
                   el("button", {
                     class: "btn btn--primary", type: "button", html: "ΕΚΔΟΣΗ<br>ΚΩΔΙΚΟΥ",
@@ -131,7 +131,7 @@
     /* --- Πίνακας μελών --- */
     const STATUS = {
       active:  { label: "Ενεργό",   cls: "badge--ok" },
-      grace:   { label: "Χάριτος",  cls: "badge--warn" },
+      grace:   { label: "Περίοδος χάριτος",  cls: "badge--warn" },
       pending: { label: "Εκκρεμεί", cls: "badge--gold" }
     };
 
@@ -162,7 +162,7 @@
      Εγκρίσεις ακαδημίας
      ====================================================================== */
   function viewAcademy() {
-    view.append(head("Εγκρίσεις Ακαδημίας", "Αιτήματα Έκπτωσης −50% για Παιδιά Ακαδημιών"), kpis());
+    view.append(head("Εγκρίσεις Ακαδημίας", "Αιτήματα Έκπτωσης -50% για Παιδιά Ακαδημιών"), kpis());
 
     const list = el("div", { class: "stack-3" });
     D.ADMIN.academyRequests.forEach(r => {
@@ -172,7 +172,7 @@
           el("div", { class: "between", style: "flex-wrap:wrap;gap:16px" }, [
             el("div", { class: "grow" }, [
               el("div", { class: "t-xs display bold", style: "letter-spacing:.07em;color:var(--ion-gold-600)",
-                          text: "ΑΙΤΗΜΑ ΕΚΠΤΩΣΗΣ ΑΚΑΔΗΜΙΑΣ (−50%)" }),
+                          text: "ΑΙΤΗΜΑ ΕΚΠΤΩΣΗΣ ΑΚΑΔΗΜΙΑΣ (-50%)" }),
               el("div", { class: "card__title", style: "margin-top:4px",
                           text: "Παιδί: " + r.child + " (" + r.squad + ") • Γονέας: " + r.parent })
             ]),

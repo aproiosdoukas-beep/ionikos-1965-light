@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ΙΩΝΙΚΟΣ 1965 — Inline SVG icons (stroke-based, currentColor)
+   ΙΩΝΙΚΟΣ 1965 :: Inline SVG icons (stroke-based, currentColor)
    ========================================================================== */
 (function (global) {
   "use strict";

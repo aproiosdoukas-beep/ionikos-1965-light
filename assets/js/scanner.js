@@ -1,12 +1,12 @@
 /* ==========================================================================
-   ΙΩΝΙΚΟΣ 1965 — Οθόνη 02: Εφαρμογή ελέγχου θύρας
+   ΙΩΝΙΚΟΣ 1965 :: Εφαρμογή ελέγχου θύρας
    Πραγματική επαλήθευση υπογεγραμμένου, χρονικά περιορισμένου token.
    ========================================================================== */
 (function () {
   "use strict";
 
   const D = window.ION_DATA;
-  const { Store, Token, el, $, $$, toast, todayKey, hash32 } = window.ION;
+  const { Store, Token, el, $, $$, toast, todayKey, hash32, resolveCard } = window.ION;
 
   $("#sbIcons").innerHTML = icon("signal", 15, 1.6) + icon("wifi", 15, 1.6) + icon("battery", 20, 1.5);
 
@@ -31,7 +31,7 @@
           el("div", { class: "scan-state__title", text: "ΣΑΡΩΣΤΕ ΚΑΡΤΑ" }),
           el("div", { class: "scan-state__sub", style: "margin-top:8px", text: "Στρέψτε την κάμερα στο QR του μέλους" })
         ]),
-        el("div", { class: "scan-state__action", text: "Λειτουργία Offline — συγχρονισμός αργότερα" })
+        el("div", { class: "scan-state__action", text: "Λειτουργία Offline, συγχρονισμός αργότερα" })
       ])
     );
   }
@@ -84,7 +84,7 @@
       return;
     }
 
-    const card = D.KNOWN_CARDS[check.cardCode];
+    const card = resolveCard(check.cardCode);
     if (!card) {
       renderResult({ state: "rejected", name: check.cardCode, sub: "Η κάρτα δεν βρέθηκε στο μητρώο" });
       return;
@@ -114,7 +114,7 @@
     saveLog(entries);
 
     renderResult({ state: "valid", name: card.name, sub: card.sub });
-    toast("+1 Πόντος Badge «Παρών» — " + card.name, "ok");
+    toast("+1 πόντος «Παρών»: " + card.name, "ok");
   }
 
   /* ---- Παραγωγή tokens για την προσομοίωση -------------------------------- */
@@ -122,7 +122,7 @@
     if (kind === "live") return Token.build(cardCode);
 
     if (kind === "stale") {
-      /* token από πριν 5 λεπτά — σωστή υπογραφή, αλλά εκτός παραθύρου */
+      /* token από πριν 5 λεπτά : σωστή υπογραφή, αλλά εκτός παραθύρου */
       const past = Date.now() - 5 * 60 * 1000;
       return Token.build(cardCode, past);
     }
@@ -145,7 +145,7 @@
   $("#manualForm").addEventListener("submit", function (ev) {
     ev.preventDefault();
     const raw = $("#tokenInput").value.trim();
-    if (!raw) { toast("Επικολλήστε ένα token"); return; }
+    if (!raw) { toast("Επικολλήστε έναν κωδικό"); return; }
     processToken(raw);
   });
 

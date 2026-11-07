@@ -9,10 +9,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/tokens.css?v=20261107a">
-<link rel="stylesheet" href="assets/css/components.css?v=20261107a">
-<link rel="stylesheet" href="assets/css/shell.css?v=20261107a">
-<link rel="stylesheet" href="assets/css/app.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/tokens.css?v=20261107n">
+<link rel="stylesheet" href="assets/css/components.css?v=20261107n">
+<link rel="stylesheet" href="assets/css/shell.css?v=20261107n">
+<link rel="stylesheet" href="assets/css/app.css?v=20261107n">
 </head>
 <body>
 
@@ -21,7 +21,7 @@
     <div class="stage__brand">
       <img class="crest" src="assets/img/crest.svg" alt="">
       <div>
-        <h1>Οθόνη 03 · Εφαρμογή Καταστήματος (Ταμείο)</h1>
+        <h1>Εφαρμογή Καταστήματος (Ταμείο)</h1>
         <p class="t-sm" style="color:var(--ion-gold-300);margin:2px 0 0">Πώς το κατάστημα σαρώνει την προσφορά</p>
       </div>
     </div>
@@ -68,22 +68,23 @@
     </div>
 
     <p class="phone__caption" style="max-width:860px">
-      Το ίδιο QR της κάρτας εξυπηρετεί είσοδο γηπέδου και εκπτώσεις χορηγών —
-      ένα σύστημα, ένα token, πολλαπλά σημεία σάρωσης.
+      Το ίδιο QR της κάρτας εξυπηρετεί είσοδο γηπέδου και εκπτώσεις χορηγών:
+      ένα σύστημα, ένας κωδικός, πολλά σημεία σάρωσης.
     </p>
   </div>
 </div>
 
 <style>
   @media (max-width: 900px) {
-    .scan-layout { grid-template-columns: 1fr !important; justify-items: center; }
+    .scan-layout { grid-template-columns: minmax(0, 1fr) !important; justify-items: center; }
+    .scan-layout > * { width: 100%; max-width: 392px; }
   }
 </style>
 
-<script src="assets/vendor/qrcode.js?v=20261107a"></script>
-<script src="assets/js/data.js?v=20261107a"></script>
-<script src="assets/js/core.js?v=20261107a"></script>
-<script src="assets/js/icons.js?v=20261107a"></script>
-<script src="assets/js/merchant.js?v=20261107a"></script>
+<script src="assets/vendor/qrcode.js?v=20261107n"></script>
+<script src="assets/js/data.js?v=20261107n"></script>
+<script src="assets/js/core.js?v=20261107n"></script>
+<script src="assets/js/icons.js?v=20261107n"></script>
+<script src="assets/js/merchant.js?v=20261107n"></script>
 </body>
 </html>

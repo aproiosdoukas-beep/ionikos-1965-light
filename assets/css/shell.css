@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ΙΩΝΙΚΟΣ 1965 — Shells: phone frame, web chrome, auth screen
+   ΙΩΝΙΚΟΣ 1965 :: Shells: phone frame, web chrome, auth screen
    ========================================================================== */
 
 /* ---------------------------------------------------------------- AUTH --- */
@@ -70,8 +70,7 @@
 .stage__inner { max-width: 1200px; margin: 0 auto; display: grid; justify-items: center; gap: var(--sp-6); }
 
 .phone {
-  width: 392px;
-  max-width: 100%;
+  width: min(392px, 100%);
   background: #0B1220;
   border-radius: 46px;
   padding: 12px;
@@ -262,7 +261,8 @@
 .admin__navbtn:hover { background: rgba(255,255,255,.06); color: #fff; }
 .admin__navbtn.is-active { background: var(--ion-navy); color: #fff; }
 .admin__foot { margin-top: auto; font-size: var(--fs-sm); color: var(--ok-300); font-weight: 700; }
-.admin__main { padding: var(--sp-8); overflow-x: hidden; }
+.admin__main { padding: var(--sp-8); min-width: 0; }
+.admin__main .card:has(> .table), .admin__main .card > .table { overflow-x: auto; }
 .admin__wrap { max-width: 1120px; }
 
 @media (max-width: 860px) {
@@ -316,5 +316,4 @@
   .web__brand strong { font-size: var(--fs-xs); letter-spacing: 0; }
 }
 
-/* Καμία οριζόντια κύλιση σε καμία σελίδα */
-html, body { max-width: 100%; overflow-x: hidden; }
+.admin__main .card { overflow-x: auto; }
