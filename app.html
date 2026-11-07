@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Εφαρμογή Μέλους · Ιωνικός 1965</title>
+<meta name="description" content="Ψηφιακή κάρτα μέλους, προσφορές χορηγών, live μεταδόσεις και επίπεδα πιστότητας.">
+<link rel="icon" href="assets/img/crest.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/components.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/shell.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/app.css?v=20261107a">
+</head>
+<body>
+
+<div class="stage">
+  <header class="stage__head">
+    <div class="stage__brand">
+      <img class="crest" src="assets/img/crest.svg" alt="">
+      <div>
+        <h1>ΙΩΝΙΚΟΣ 1965 · Εφαρμογή Μέλους</h1>
+        <p class="t-sm" style="color:var(--ion-gold-300);margin:2px 0 0">iOS &amp; Android UI</p>
+      </div>
+    </div>
+    <nav class="cluster">
+      <a class="btn btn--ghost btn--sm" href="index.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Αρχική</a>
+      <a class="btn btn--ghost btn--sm" href="web.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Ιστοσελίδα</a>
+      <a class="btn btn--ghost btn--sm" href="scanner.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Scanner Θύρας</a>
+      <button class="btn btn--outline btn--sm" id="logoutBtn" type="button">Αποσύνδεση</button>
+    </nav>
+  </header>
+
+  <div class="stage__inner">
+    <div class="phone" id="phone">
+      <div class="phone__screen">
+
+        <div class="statusbar" id="statusbar">
+          <span>9:41</span>
+          <span class="statusbar__notch"></span>
+          <span class="statusbar__icons" id="sbIcons"></span>
+        </div>
+
+        <div class="appbar" id="appbar"></div>
+
+        <div class="phone__body" id="view"></div>
+
+        <nav class="tabbar" id="tabbar" aria-label="Κύρια πλοήγηση"></nav>
+      </div>
+    </div>
+
+    <p class="phone__caption" id="caption"></p>
+  </div>
+</div>
+
+<script src="assets/vendor/qrcode.js?v=20261107a"></script>
+<script src="assets/js/data.js?v=20261107a"></script>
+<script src="assets/js/core.js?v=20261107a"></script>
+<script src="assets/js/icons.js?v=20261107a"></script>
+<script src="assets/js/app.js?v=20261107a"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scanner Θύρας · Ιωνικός 1965</title>
+<meta name="description" content="Εφαρμογή ελέγχου θύρας: οι τρεις καταστάσεις σάρωσης στην είσοδο του γηπέδου.">
+<link rel="icon" href="assets/img/crest.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/components.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/shell.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/app.css?v=20261107a">
+</head>
+<body>
+
+<div class="stage">
+  <header class="stage__head">
+    <div class="stage__brand">
+      <img class="crest" src="assets/img/crest.svg" alt="">
+      <div>
+        <h1>Οθόνη 02 · Εφαρμογή Ελέγχου Θύρας</h1>
+        <p class="t-sm" style="color:var(--ok-300);margin:2px 0 0">Λειτουργεί &amp; Offline</p>
+      </div>
+    </div>
+    <nav class="cluster">
+      <a class="btn btn--ghost btn--sm" href="index.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Αρχική</a>
+      <a class="btn btn--ghost btn--sm" href="app.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Εφαρμογή Μέλους</a>
+      <a class="btn btn--ghost btn--sm" href="merchant.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Ταμείο Καταστήματος</a>
+    </nav>
+  </header>
+
+  <div class="stage__inner" style="justify-items:stretch">
+    <div style="display:grid;grid-template-columns:minmax(0,392px) minmax(300px,1fr);gap:32px;align-items:start"
+         class="scan-layout">
+
+      <div class="phone phone--dark">
+        <div class="phone__screen theme-dark">
+          <div class="statusbar">
+            <span>9:41</span>
+            <span class="statusbar__notch"></span>
+            <span class="statusbar__icons" id="sbIcons"></span>
+          </div>
+          <div class="appbar appbar--ink">
+            <span class="appbar__title">SCANNER ΘΥΡΑΣ 1</span>
+            <span class="grow"></span>
+            <span class="badge badge--ok" id="netBadge">OFFLINE READY</span>
+          </div>
+          <div class="phone__body" id="scanView" style="padding:12px"></div>
+        </div>
+      </div>
+
+      <aside class="card theme-dark" style="background:var(--ink-700);border-color:#22304A;color:#F4F7FC">
+        <h2 class="card__title" style="font-size:var(--fs-lg)">Προσομοίωση Σάρωσης</h2>
+        <p class="t-sm" style="color:var(--ink-300)">
+          Ο έλεγχος είναι πραγματικός: το QR της κάρτας είναι υπογεγραμμένο και ισχύει
+          για 60 δευτερόλεπτα. Ανοίξτε την <a href="app.html" class="gold">εφαρμογή μέλους</a>
+          σε άλλη καρτέλα, αντιγράψτε το token και επικολλήστε το εδώ.
+        </p>
+
+        <hr class="divider" style="background:#22304A">
+
+        <div class="stack-3">
+          <button class="btn btn--success btn--block" type="button" data-scan="live:ION-8472">
+            Σάρωση κάρτας — Γιώργος (έγκυρη)
+          </button>
+          <button class="btn btn--primary btn--block" type="button" data-scan="live:ION-5513">
+            Σάρωση κάρτας — Κωστής Κ14
+          </button>
+          <button class="btn btn--danger btn--block" type="button" data-scan="live:ION-3301">
+            Σάρωση — Ληγμένη συνδρομή
+          </button>
+          <button class="btn btn--ghost btn--block" type="button" data-scan="stale:ION-8472"
+                  style="--btn-fg:#F4F7FC;--btn-bd:#2A3A57">
+            Σάρωση παλιού QR (ληγμένο token)
+          </button>
+          <button class="btn btn--ghost btn--block" type="button" data-scan="forged:ION-8472"
+                  style="--btn-fg:#F4F7FC;--btn-bd:#2A3A57">
+            Σάρωση πλαστού QR (λάθος υπογραφή)
+          </button>
+        </div>
+
+        <hr class="divider" style="background:#22304A">
+
+        <form class="stack-2" id="manualForm">
+          <label class="field__label" for="tokenInput" style="color:#F4F7FC">Χειροκίνητη εισαγωγή token</label>
+          <input class="input" id="tokenInput" type="text" placeholder="ION1|ION-8472|…"
+                 style="background:rgba(255,255,255,.04);border-color:#22304A;color:#fff">
+          <button class="btn btn--gold btn--block" type="submit">ΕΛΕΓΧΟΣ TOKEN</button>
+        </form>
+
+        <hr class="divider" style="background:#22304A">
+
+        <div class="between">
+          <span class="t-sm" style="color:var(--ink-300)">Σαρώσεις σήμερα στη Θύρα 1</span>
+          <span class="display bold t-lg gold" id="scanCount">0</span>
+        </div>
+        <button class="btn btn--ghost btn--sm btn--block" type="button" id="resetBtn"
+                style="--btn-fg:#F4F7FC;--btn-bd:#2A3A57;margin-top:12px">
+          Μηδενισμός ημέρας
+        </button>
+      </aside>
+    </div>
+
+    <p class="phone__caption" style="max-width:860px">
+      Οι τρεις καταστάσεις της Οθόνης 02: <b>ΕΓΚΥΡΗ ΚΑΡΤΑ</b> (+1 πόντος στο badge «Παρών»),
+      <b>ΗΔΗ ΣΑΡΩΜΕΝΗ</b> (απαγόρευση 2ης εισόδου) και <b>ΛΗΓΜΕΝΗ ΣΥΝΔΡΟΜΗ</b>.
+    </p>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 900px) {
+    .scan-layout { grid-template-columns: 1fr !important; justify-items: center; }
+  }
+</style>
+
+<script src="assets/vendor/qrcode.js?v=20261107a"></script>
+<script src="assets/js/data.js?v=20261107a"></script>
+<script src="assets/js/core.js?v=20261107a"></script>
+<script src="assets/js/icons.js?v=20261107a"></script>
+<script src="assets/js/scanner.js?v=20261107a"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Σύνδεση · Ιωνικός 1965</title>
+<meta name="description" content="Σύνδεση μέλους στην επίσημη εφαρμογή του Ιωνικού Νικαίας 1965.">
+<link rel="icon" href="assets/img/crest.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/components.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/shell.css?v=20261107a">
+</head>
+<body>
+
+<main class="auth">
+  <div class="auth__card">
+    <div class="auth__head">
+      <img class="crest crest--lg" src="assets/img/crest.svg" alt="Έμβλημα Ιωνικού">
+      <div>
+        <h1 class="auth__title">ΙΩΝΙΚΟΣ 1965</h1>
+        <p class="auth__sub">Σύνδεση Μέλους · Επίσημη Εφαρμογή 2026</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <form id="loginForm" class="stack" novalidate>
+      <div class="field">
+        <label class="field__label" for="email">Email</label>
+        <input class="input" id="email" name="email" type="email"
+               autocomplete="username" placeholder="to-email-sas@example.gr" required>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="password">Κωδικός Πρόσβασης</label>
+        <input class="input" id="password" name="password" type="password"
+               autocomplete="current-password" placeholder="••••••••" required>
+      </div>
+
+      <p id="formError" class="field__error hidden" role="alert"></p>
+
+      <button class="btn btn--primary btn--lg btn--block" type="submit">ΣΥΝΔΕΣΗ</button>
+      <button class="btn btn--ghost btn--block" type="button" id="guestBtn">Συνέχεια ως Επισκέπτης</button>
+    </form>
+
+    <hr class="divider">
+
+    <div class="auth__demos">
+      <p class="t-xs muted bold display" style="letter-spacing:.06em;text-transform:uppercase;margin:0">
+        Λογαριασμοί επίδειξης — πατήστε για συμπλήρωση
+      </p>
+      <div id="demoList" class="stack-2"></div>
+    </div>
+  </div>
+</main>
+
+<script src="assets/js/data.js?v=20261107a"></script>
+<script src="assets/js/core.js?v=20261107a"></script>
+<script>
+(function () {
+  "use strict";
+  const { Auth, $, el, toast } = window.ION;
+
+  const HOME_BY_ROLE = {
+    member:   "app.html",
+    admin:    "admin.html",
+    gate:     "scanner.html",
+    merchant: "merchant.html"
+  };
+
+  const DEMO_LABELS = {
+    member:   "Μέλος / Γονέας",
+    admin:    "Γραφείο Συλλόγου",
+    gate:     "Προσωπικό Θύρας",
+    merchant: "Κατάστημα-Χορηγός"
+  };
+
+  /* ---- Λίστα demo λογαριασμών ---- */
+  const list = $("#demoList");
+  window.ION_DATA.ACCOUNTS.forEach(acc => {
+    list.appendChild(
+      el("button", {
+        class: "auth__demo",
+        type: "button",
+        onclick() {
+          $("#email").value = acc.email;
+          $("#password").value = acc.password;
+          $("#formError").classList.add("hidden");
+          $("#password").focus();
+        }
+      }, [
+        el("b", { text: DEMO_LABELS[acc.role] || acc.role }),
+        el("span", { text: acc.email })
+      ])
+    );
+  });
+
+  /* ---- Υποβολή ---- */
+  $("#loginForm").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    const errBox = $("#formError");
+    const res = Auth.login($("#email").value, $("#password").value);
+
+    if (!res.ok) {
+      errBox.textContent = res.error;
+      errBox.classList.remove("hidden");
+      $("#password").classList.add("input--error");
+      return;
+    }
+
+    errBox.classList.add("hidden");
+    $("#password").classList.remove("input--error");
+
+    const params = new URLSearchParams(location.search);
+    const next = params.get("next");
+    const home = HOME_BY_ROLE[res.account.role] || "app.html";
+    location.href = next && /^[a-z0-9_-]+\.html$/i.test(next) ? next : home;
+  });
+
+  $("#guestBtn").addEventListener("click", function () {
+    location.href = "web.html";
+  });
+
+  /* ---- Ήδη συνδεδεμένος; ---- */
+  const existing = Auth.account();
+  if (existing) {
+    toast("Είστε ήδη συνδεδεμένοι ως " + existing.displayName, "ok");
+    $("#email").value = existing.email;
+  }
+})();
+</script>
+</body>
+</html>

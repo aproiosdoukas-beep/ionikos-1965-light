@@ -1,0 +1,573 @@
+/* ==========================================================================
+   ΙΩΝΙΚΟΣ 1965 — Εφαρμογή Μέλους (κινητό)
+   Οθόνες 01, 03 (πλευρά μέλους), 04 και το Live tab.
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  const D = window.ION_DATA;
+  const { Auth, Store, Token, QR, el, $, fmtEuro, mmss, levelById, levelColor, toast } = window.ION;
+
+  const account = Auth.require(["member"]);
+  if (!account) return;
+
+  /* ---- Τοπική κατάσταση -------------------------------------------------- */
+  const state = {
+    tab: Store.get("app:tab", "card"),
+    offerFilter: "all",
+    chatRoom: "match",
+    voted: Store.get("poll:voted", null),
+    playing: false
+  };
+
+  let liveQR = null;        // handle του ζωντανού QR
+  let ambientTimer = null;  // προσομοίωση μηνυμάτων κερκίδας
+
+  const TABS = [
+    { id: "card",   label: "Κάρτα",     icon: "card" },
+    { id: "offers", label: "Προσφορές", icon: "tag" },
+    { id: "live",   label: "Live",      icon: "play" },
+    { id: "level",  label: "Επίπεδο",   icon: "medal" },
+    { id: "profile",label: "Προφίλ",    icon: "user" }
+  ];
+
+  const CAPTIONS = {
+    card:   "Οθόνη 01 · Ψηφιακή κάρτα & οικογενειακό προφίλ — εναλλαγή ενήλικα/παιδιού με 1 tap. Το QR ανανεώνεται αυτόματα κάθε 60 δευτερόλεπτα.",
+    offers: "Οθόνη 03 · Εκπτώσεις χορηγών. Πατήστε μια προσφορά για να εμφανιστεί ο κωδικός σάρωσης στο κατάστημα.",
+    live:   "Οθόνη 05 (mobile) · Ζωντανή μετάδοση ακαδημιών με κερκίδα και ψηφοφορία MVP.",
+    level:  "Οθόνη 04 · Επίπεδα πιστότητας, προνόμια και παράσημα του φιλάθλου.",
+    profile:"Προφίλ μέλους · συνδρομή, οικογένεια και αποσύνδεση."
+  };
+
+  /* ======================================================================
+     Σκελετός
+     ====================================================================== */
+  const phone    = $("#phone");
+  const view     = $("#view");
+  const appbar   = $("#appbar");
+  const tabbar   = $("#tabbar");
+  const caption  = $("#caption");
+
+  $("#sbIcons").innerHTML = icon("signal", 15, 1.6) + icon("wifi", 15, 1.6) + icon("battery", 20, 1.5);
+
+  $("#logoutBtn").addEventListener("click", function () {
+    Auth.logout();
+    location.href = "login.html";
+  });
+
+  function renderTabs() {
+    tabbar.innerHTML = "";
+    TABS.forEach(t => {
+      tabbar.appendChild(
+        el("button", {
+          class: "tabbar__btn" + (state.tab === t.id ? " is-active" : ""),
+          type: "button",
+          "aria-current": state.tab === t.id ? "page" : null,
+          html: icon(t.icon, 22) + "<span>" + t.label + "</span>",
+          onclick() { go(t.id); }
+        })
+      );
+    });
+  }
+
+  function go(tab) {
+    state.tab = tab;
+    Store.set("app:tab", tab);
+    render();
+  }
+
+  function cleanup() {
+    if (liveQR) { liveQR.stop(); liveQR = null; }
+    if (ambientTimer) { clearInterval(ambientTimer); ambientTimer = null; }
+  }
+
+  function render() {
+    cleanup();
+    const dark = state.tab === "live";
+    phone.classList.toggle("phone--dark", dark);
+    phone.querySelector(".phone__screen").classList.toggle("theme-dark", dark);
+
+    view.innerHTML = "";
+    appbar.className = "appbar" + (dark ? " appbar--ink" : "");
+    appbar.innerHTML = "";
+
+    ({
+      card:    viewCard,
+      offers:  viewOffers,
+      live:    viewLive,
+      level:   viewLevel,
+      profile: viewProfile
+    })[state.tab]();
+
+    caption.textContent = CAPTIONS[state.tab] || "";
+    renderTabs();
+  }
+
+  /* ======================================================================
+     ΟΘΟΝΗ 01 — Ψηφιακή κάρτα
+     ====================================================================== */
+  function viewCard() {
+    const profile = Auth.activeProfile();
+
+    appbar.append(
+      el("img", { class: "crest crest--sm", src: "assets/img/crest.svg", alt: "" }),
+      el("span", { class: "appbar__title", text: "ΙΩΝΙΚΟΣ PASS" }),
+      el("button", {
+        class: "appbar__action",
+        type: "button",
+        "aria-label": "Ειδοποιήσεις",
+        html: icon("bell", 20),
+        style: "color:var(--ion-gold)",
+        onclick() { toast("Καμία νέα ειδοποίηση", null); }
+      })
+    );
+
+    /* --- Εναλλαγή προφίλ --- */
+    const switcher = el("div", { class: "segmented", role: "tablist" });
+    Auth.profiles().forEach(p => {
+      const active = p.id === profile.id;
+      switcher.appendChild(
+        el("button", {
+          class: "segmented__btn" + (active ? " is-active" : ""),
+          type: "button",
+          role: "tab",
+          "aria-selected": String(active),
+          "data-tone": p.kind === "academy" ? "gold" : null,
+          text: p.shortName + (p.kind === "academy" ? " (Κ14)" : " (Γονέας)"),
+          onclick() { Auth.setActiveProfile(p.id); render(); }
+        })
+      );
+    });
+
+    /* --- Κάρτα --- */
+    const isAcademy = profile.kind === "academy";
+    const level = levelById(profile.levelId);
+
+    const qrBox = el("div", { class: "qr" });
+    const countdown = el("span", { class: "qr-countdown", text: "60s" });
+
+    const card = el("div", {
+      class: "membercard" + (isAcademy ? " membercard--academy" : "")
+    }, [
+      el("div", { class: "membercard__top" }, [
+        el("span", { class: "membercard__tier", html: isAcademy
+          ? "ΑΚΑΔΗΜΙΑ Κ14<br>(−50%)"
+          : "ΕΠΙΠΕΔΟ: " + level.name.toUpperCase() }),
+        el("span", { class: "membercard__state" }, [
+          el("span", { class: "dot" }),
+          document.createTextNode(profile.statusLabel)
+        ])
+      ]),
+      el("div", { class: "membercard__name", text: profile.fullName }),
+      qrBox,
+      el("div", { class: "membercard__foot" }, [
+        el("div", {}, [
+          document.createTextNode("Κωδικός: " + profile.cardCode + " • Ανανέωση "),
+          countdown
+        ]),
+        isAcademy
+          ? el("div", { class: "membercard__consent", text: "Γονική Συναίνεση Stream: Ενεργή" })
+          : null
+      ])
+    ]);
+
+    view.append(
+      el("div", { class: "stack" }, [
+        switcher,
+        card,
+        el("div", { class: "info" }, [
+          el("div", { class: "info__icon", html: icon("refresh", 20) }),
+          el("div", {}, [
+            el("div", { class: "info__title", text: "Live QR Token" }),
+            el("div", { class: "info__text", text: "Κάθε QR ανανεώνεται αυτόματα κάθε 60 δευτερόλεπτα. Ο κωδικός είναι υπογεγραμμένος και λήγει — δεν μπορεί να προωθηθεί σε τρίτο." })
+          ])
+        ]),
+        el("div", { class: "info" }, [
+          el("div", { class: "info__icon info__icon--navy", html: icon("users", 20) }),
+          el("div", {}, [
+            el("div", { class: "info__title", text: "Profile Switcher" }),
+            el("div", { class: "info__text", text: "Ο γονέας αλλάζει κάρτα στην είσοδο του γηπέδου χωρίς αποσύνδεση." })
+          ])
+        ]),
+        el("button", {
+          class: "btn btn--outline btn--block",
+          type: "button",
+          html: icon("refresh", 18) + "<span>Ανανέωση κωδικού τώρα</span>",
+          onclick() { if (liveQR) { liveQR.refresh(); toast("Ο κωδικός ανανεώθηκε", "ok"); } }
+        })
+      ])
+    );
+
+    liveQR = QR.live(qrBox, profile.cardCode, {
+      size: 168,
+      dark: isAcademy ? "#1A3668" : "#0F172A",
+      onTick(left) { countdown.textContent = left + "s"; }
+    });
+  }
+
+  /* ======================================================================
+     ΟΘΟΝΗ 03 — Προσφορές χορηγών (πλευρά μέλους)
+     ====================================================================== */
+  function viewOffers() {
+    appbar.append(
+      el("span", { class: "appbar__title", text: "Χορηγοί & Προσφορές" }),
+      el("button", {
+        class: "appbar__action", type: "button",
+        "aria-label": "Φίλτρα", html: icon("sliders", 20),
+        onclick() { toast("Φίλτρα: κατηγορία, απόσταση, λήξη"); }
+      })
+    );
+
+    const filters = el("div", { class: "cluster" });
+    D.OFFER_FILTERS.forEach(f => {
+      const count = f.id === "all"
+        ? D.OFFERS.length
+        : D.OFFERS.filter(o => o.category === f.id).length;
+      filters.appendChild(
+        el("button", {
+          class: "chip" + (state.offerFilter === f.id ? " is-active" : ""),
+          type: "button",
+          text: f.label + " (" + count + ")",
+          onclick() { state.offerFilter = f.id; render(); }
+        })
+      );
+    });
+
+    const list = el("div", { class: "stack-3" });
+    const visible = D.OFFERS.filter(
+      o => state.offerFilter === "all" || o.category === state.offerFilter
+    );
+
+    visible.forEach((o, i) => {
+      if (i === 0) {
+        list.appendChild(
+          el("div", {
+            class: "offer-hero", role: "button", tabindex: "0",
+            onclick() { openRedeem(o); },
+            onkeydown(e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openRedeem(o); } }
+          }, [
+            el("div", { class: "grow" }, [
+              el("div", { class: "offer-hero__name", text: o.name }),
+              el("div", { class: "offer-hero__sub", text: o.headline })
+            ]),
+            el("div", { class: "offer-hero__qr", html: icon("card", 22) })
+          ])
+        );
+        return;
+      }
+      list.appendChild(
+        el("div", {
+          class: "row row--clickable", role: "button", tabindex: "0",
+          onclick() { openRedeem(o); },
+          onkeydown(e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openRedeem(o); } }
+        }, [
+          el("div", { class: "row__icon", text: o.icon, style: "font-size:20px" }),
+          el("div", { class: "row__body" }, [
+            el("div", { class: "row__title", text: o.name }),
+            el("div", { class: "row__meta", text: o.meta })
+          ]),
+          el("div", { class: "row__end ok", text: o.discount })
+        ])
+      );
+    });
+
+    view.append(el("div", { class: "stack" }, [filters, list]));
+  }
+
+  /** Bottom sheet με το QR εξαργύρωσης. */
+  function openRedeem(offer) {
+    const profile = Auth.activeProfile();
+    const qrBox = el("div", { class: "qr" });
+    const countdown = el("span", { class: "qr-countdown", text: "60s" });
+
+    const sheet = el("div", { class: "sheet" }, [
+      el("div", { class: "sheet__grab" }),
+      el("div", { class: "sheet__title", text: offer.name }),
+      el("div", { class: "badge badge--ok", text: offer.headline }),
+      qrBox,
+      el("p", { class: "t-sm muted", html: "Δείξτε τον κωδικό στο ταμείο. Ανανέωση σε " }),
+      el("div", {}, [countdown]),
+      el("p", { class: "t-sm muted", text: "Απομένουν " + offer.usesLeft + "/" + offer.usesTotal + " χρήσεις αυτόν τον μήνα" }),
+      el("button", {
+        class: "btn btn--ghost btn--block", type: "button", text: "Κλείσιμο",
+        onclick() { close(); }
+      })
+    ]);
+
+    const backdrop = el("div", { class: "sheet-backdrop", onclick(e) { if (e.target === backdrop) close(); } }, [sheet]);
+    phone.querySelector(".phone__screen").appendChild(backdrop);
+
+    const handle = QR.live(qrBox, profile.cardCode + ":" + offer.id, {
+      size: 164,
+      onTick(left) { countdown.textContent = left + "s"; }
+    });
+
+    function close() { handle.stop(); backdrop.remove(); }
+  }
+
+  /* ======================================================================
+     LIVE tab (mobile εκδοχή της Οθόνης 05)
+     ====================================================================== */
+  function viewLive() {
+    const L = D.LIVE;
+
+    appbar.append(
+      el("span", { class: "badge badge--live", text: "LIVE" }),
+      el("span", { class: "grow" }),
+      el("span", { class: "display bold t-sm", text: "Κ16 Ακαδημία" })
+    );
+
+    const playBtn = el("button", {
+      class: "player__play", type: "button",
+      "aria-label": state.playing ? "Παύση" : "Αναπαραγωγή",
+      html: icon(state.playing ? "pause" : "play", 32, 2),
+      onclick() {
+        state.playing = !state.playing;
+        playBtn.innerHTML = icon(state.playing ? "pause" : "play", 32, 2);
+        toast(state.playing ? "Η μετάδοση ξεκίνησε (demo)" : "Παύση", state.playing ? "ok" : null);
+      }
+    });
+
+    const player = el("div", { class: "player" }, [
+      el("div", { class: "player__bg" }),
+      playBtn,
+      el("div", { class: "player__caption", text: L.camera + " • " + L.watching + " Μέλη Παρακολουθούν" }),
+      el("div", { class: "player__meta" }, [
+        el("span", { class: "mono", text: L.clock + " • " + L.period })
+      ])
+    ]);
+
+    /* --- Κερκίδα --- */
+    const chatScroll = el("div", { class: "chat__scroll" });
+    const seeded = (D.CHAT_SEED[state.chatRoom] || []).slice();
+    seeded.forEach(m => chatScroll.appendChild(chatMsg(m)));
+
+    const input = el("input", {
+      class: "chat__input", type: "text",
+      placeholder: "Γράψτε μήνυμα στην κερκίδα…",
+      maxlength: "140", "aria-label": "Μήνυμα κερκίδας"
+    });
+
+    const form = el("form", {
+      class: "chat__form",
+      onsubmit(e) {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text) return;
+        const p = Auth.activeProfile();
+        pushMsg(chatScroll, { user: p.shortName, levelId: p.levelId, text: text, own: true });
+        input.value = "";
+      }
+    }, [
+      input,
+      el("button", { class: "btn btn--gold btn--icon", type: "submit", "aria-label": "Αποστολή", html: icon("send", 18) })
+    ]);
+
+    view.append(el("div", { class: "stack" }, [
+      player,
+      el("div", { class: "display bold", text: L.title + " " + L.score }),
+      pollBlock(),
+      el("div", { class: "display bold gold t-sm", text: "Κερκίδα Live (" + L.stand + " online)" }),
+      chatScroll,
+      form
+    ]));
+
+    /* Προσομοίωση κίνησης στην κερκίδα */
+    ambientTimer = setInterval(function () {
+      const m = D.CHAT_AMBIENT[Math.floor(Math.random() * D.CHAT_AMBIENT.length)];
+      pushMsg(chatScroll, m);
+    }, 5200);
+  }
+
+  function chatMsg(m) {
+    return el("div", { class: "chat__msg" }, [
+      el("span", {
+        class: "chat__user",
+        style: "color:" + levelColor(m.levelId),
+        text: m.user + " (" + (levelById(m.levelId).en || levelById(m.levelId).name) + "): "
+      }),
+      document.createTextNode(m.text)
+    ]);
+  }
+
+  function pushMsg(scroll, m) {
+    scroll.appendChild(chatMsg(m));
+    while (scroll.children.length > 40) scroll.removeChild(scroll.firstChild);
+    scroll.scrollTop = scroll.scrollHeight;
+  }
+
+  function pollBlock() {
+    const poll = D.POLL;
+    const votes = Store.get("poll:counts", poll.options.reduce((a, o) => (a[o.id] = o.votes, a), {}));
+    const total = Object.values(votes).reduce((a, b) => a + b, 0) || 1;
+
+    const box = el("div", { class: "poll" }, [el("div", { class: "poll__q", text: poll.question })]);
+
+    poll.options.forEach(o => {
+      const pct = Math.round((votes[o.id] / total) * 100);
+      const picked = state.voted === o.id;
+      box.appendChild(
+        el("button", {
+          class: "poll__opt" + (picked ? " is-picked" : ""),
+          type: "button",
+          disabled: !!state.voted,
+          onclick() {
+            votes[o.id] += 1;
+            Store.set("poll:counts", votes);
+            Store.set("poll:voted", o.id);
+            state.voted = o.id;
+            toast("Η ψήφος σας καταγράφηκε", "ok");
+            render();
+          }
+        }, [
+          el("span", { class: "poll__fill", style: "width:" + pct + "%" }),
+          el("span", { class: "poll__label", text: o.label }),
+          el("span", { class: "poll__pct", text: pct + "%" })
+        ])
+      );
+    });
+
+    if (state.voted) {
+      box.appendChild(el("p", { class: "t-xs muted", style: "margin:0", text: "Ψηφίσατε. Τα ποσοστά ενημερώνονται ζωντανά." }));
+    }
+    return box;
+  }
+
+  /* ======================================================================
+     ΟΘΟΝΗ 04 — Επίπεδα & παράσημα
+     ====================================================================== */
+  function viewLevel() {
+    const profile = Auth.activeProfile();
+    const level = levelById(profile.levelId);
+    const next = D.LEVELS.find(l => l.order === level.order + 1);
+
+    appbar.append(
+      el("span", { class: "appbar__title", text: "Το Επίπεδό μου" }),
+      el("span", { class: "grow" }),
+      el("span", { class: "display bold t-sm gold", text: profile.monthsMember + " Μήνες Μέλος" })
+    );
+
+    const span = next ? next.minMonths - level.minMonths : 1;
+    const done = Math.min(span, profile.monthsMember - level.minMonths);
+    const pct = Math.round((done / span) * 100);
+    const remaining = next ? Math.max(0, next.minMonths - profile.monthsMember) : 0;
+
+    const card = el("div", { class: "levelcard" }, [
+      el("div", { class: "levelcard__row" }, [
+        el("div", { class: "levelcard__name", html: level.name.toUpperCase() + (level.en ? "<br>(" + level.en.toUpperCase() + ")" : "") }),
+        next ? el("div", { class: "levelcard__next", text: "Επόμενο: " + next.name.toUpperCase() + " (" + next.minMonths + "μ.)" }) : null
+      ]),
+      el("div", { class: "progress" }, [el("div", { class: "progress__bar", style: "width:" + pct + "%" })]),
+      el("div", {
+        class: "levelcard__hint",
+        text: next
+          ? remaining + " μήνες ακόμα για ξεκλείδωμα " + next.name
+          : "Έχετε φτάσει στο ανώτατο επίπεδο."
+      })
+    ]);
+
+    const badges = el("div", { class: "badge-grid" });
+    D.BADGES.forEach(b => {
+      badges.appendChild(
+        el("div", { class: "badge-tile" }, [
+          el("div", { class: "badge-tile__icon" + (b.tone === "ok" ? " badge-tile__icon--ok" : ""), text: b.icon, style: "font-size:22px" }),
+          el("div", { class: "badge-tile__name", text: b.name }),
+          el("div", { class: "badge-tile__value" + (b.tone === "ok" ? " is-ok" : ""), text: b.value })
+        ])
+      );
+    });
+
+    const ladder = el("div", { class: "ladder" });
+    D.LEVELS.forEach(l => {
+      let cls = "ladder__item";
+      if (l.id === level.id) cls += " is-current";
+      if (l.id === "ultra")  cls += " is-ultra";
+      if (l.id === "legend") cls += " is-legend";
+      ladder.appendChild(
+        el("div", { class: cls }, [
+          el("div", {}, [
+            el("div", { class: "ladder__range", text: l.range }),
+            el("div", { class: "ladder__name", text: l.order + ". " + l.name + (l.en ? " (" + l.en + ")" : "") })
+          ]),
+          el("div", { class: "ladder__perk", text: l.perk })
+        ])
+      );
+    });
+
+    view.append(el("div", { class: "stack" }, [
+      card,
+      el("h3", { class: "card__title", text: "Τα Παράσημά μου (Badges)" }),
+      badges,
+      el("h3", { class: "card__title", text: "Τα 5 Επίπεδα" }),
+      ladder
+    ]));
+  }
+
+  /* ======================================================================
+     Προφίλ
+     ====================================================================== */
+  function viewProfile() {
+    const profile = Auth.activeProfile();
+    const B = D.BILLING;
+
+    appbar.append(
+      el("span", { class: "appbar__title", text: "Προφίλ" }),
+      el("button", {
+        class: "appbar__action", type: "button", "aria-label": "Ρυθμίσεις",
+        html: icon("gear", 20), onclick() { toast("Ρυθμίσεις λογαριασμού"); }
+      })
+    );
+
+    const family = el("div", { class: "stack-3" });
+    Auth.profiles().forEach(p => {
+      family.appendChild(
+        el("div", { class: "row" }, [
+          el("div", { class: "row__icon", html: icon(p.kind === "academy" ? "shield" : "user", 20) }),
+          el("div", { class: "row__body" }, [
+            el("div", { class: "row__title", text: p.fullName }),
+            el("div", { class: "row__meta", text: p.kindLabel + " • " + levelById(p.levelId).name + " • " + p.cardCode })
+          ]),
+          el("div", { class: "row__end", text: fmtEuro(p.monthlyFee) })
+        ])
+      );
+    });
+
+    const total = Auth.profiles().reduce((s, p) => s + p.monthlyFee, 0);
+
+    view.append(el("div", { class: "stack" }, [
+      el("div", { class: "card" }, [
+        el("div", { class: "between" }, [
+          el("div", {}, [
+            el("div", { class: "card__title", text: account.displayName }),
+            el("div", { class: "card__meta", text: account.email })
+          ]),
+          el("span", { class: "badge badge--ok", text: "ΕΝΕΡΓΟ" })
+        ])
+      ]),
+
+      el("h3", { class: "card__title", text: "Η Οικογένειά μου" }),
+      family,
+
+      el("div", { class: "card" }, [
+        el("div", { class: "between" }, [
+          el("span", { class: "bold", text: "Σύνολο Μήνα (Αυτόματη Χρέωση)" }),
+          el("span", { class: "display bold t-lg", text: fmtEuro(total) })
+        ]),
+        el("p", { class: "t-sm muted", style: "margin:8px 0 0", text: "Βασική συνδρομή " + fmtEuro(B.baseFee) + " • Ακαδημία με έκπτωση −" + B.academyDiscountPct + "%" })
+      ]),
+
+      el("a", { class: "btn btn--primary btn--block", href: "web.html#subscription", text: "ΔΙΑΧΕΙΡΙΣΗ ΣΥΝΔΡΟΜΗΣ ΣΤΟ WEB" }),
+      el("a", { class: "btn btn--ghost btn--block", href: "web.html#events", text: "Εκδηλώσεις & Εισιτήρια" }),
+      el("button", {
+        class: "btn btn--ghost btn--block", type: "button",
+        html: icon("logout", 18) + "<span>Αποσύνδεση</span>",
+        onclick() { Auth.logout(); location.href = "login.html"; }
+      }),
+      el("p", { class: "t-xs muted center", text: "Ενεργό προφίλ: " + profile.fullName })
+    ]));
+  }
+
+  /* ---- Εκκίνηση ---------------------------------------------------------- */
+  render();
+  window.addEventListener("beforeunload", cleanup);
+})();

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ιωνικός 1965 · UI/UX Πρωτότυπο Εφαρμογής &amp; Ιστοσελίδας 2026</title>
+<meta name="description" content="Διαδραστικό mockup: επίσημη εφαρμογή κινητού και ιστοσελίδα του Ιωνικού Νικαίας 1965.">
+<link rel="icon" href="assets/img/crest.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/components.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/shell.css?v=20261107a">
+<style>
+  .hero {
+    padding: 72px 24px 56px;
+    background:
+      radial-gradient(1000px 560px at 18% -10%, rgba(26,54,104,.6), transparent 62%),
+      radial-gradient(760px 480px at 88% 0%, rgba(211,175,55,.14), transparent 58%),
+      var(--ink-900);
+    color: #fff;
+  }
+  .hero__wrap { max-width: 1120px; margin: 0 auto; }
+  .hero__brand { display: flex; align-items: center; gap: 18px; margin-bottom: 28px; }
+  .hero h1 { font-size: clamp(30px, 5vw, 50px); font-weight: 800; line-height: 1.06; }
+  .hero p.lead { color: var(--ink-300); font-size: var(--fs-md); max-width: 62ch; margin: 16px 0 28px; }
+
+  .main { background: var(--paper-100); padding: 56px 24px 80px; }
+  .main__wrap { max-width: 1120px; margin: 0 auto; }
+
+  .mock-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 48px; }
+  .mock {
+    display: grid; gap: 14px;
+    padding: 28px;
+    border-radius: var(--r-xl);
+    background: var(--paper);
+    border: 1px solid var(--paper-200);
+    box-shadow: var(--shadow-sm);
+  }
+  .mock__kicker { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-sm); letter-spacing: .08em; text-transform: uppercase; color: var(--ion-navy-300); }
+  .mock__title { font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 800; }
+  .mock__list { margin: 0; padding-left: 20px; color: var(--text-muted); font-size: var(--fs-sm); display: grid; gap: 4px; }
+
+  .screens { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .screen-link {
+    display: grid; gap: 6px;
+    padding: 20px;
+    border-radius: var(--r-lg);
+    background: var(--paper);
+    border: 1px solid var(--paper-200);
+    text-decoration: none;
+    color: inherit;
+    transition: all var(--dur) var(--ease);
+  }
+  .screen-link:hover { border-color: var(--ion-navy); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .screen-link__no { font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 800; letter-spacing: .08em; color: var(--ion-gold-600); }
+  .screen-link__name { font-family: var(--font-display); font-weight: 700; }
+  .screen-link__desc { font-size: var(--fs-sm); color: var(--text-muted); }
+
+  .palette { display: flex; flex-wrap: wrap; gap: 12px; }
+  .sw { display: grid; gap: 6px; justify-items: center; font-size: var(--fs-xs); font-family: var(--font-display); font-weight: 700; }
+  .sw__chip { width: 56px; height: 56px; border-radius: var(--r-md); border: 1px solid rgba(0,0,0,.12); }
+
+  @media (max-width: 860px) {
+    .mock-grid, .screens { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero__wrap">
+    <div class="hero__brand">
+      <img class="crest crest--lg" src="assets/img/crest.svg" alt="Έμβλημα Ιωνικού Νικαίας">
+      <div>
+        <div class="eyebrow" style="color:var(--ion-gold)">UI / UX Πρωτότυπο Εφαρμογής</div>
+        <strong class="display" style="font-size:var(--fs-lg)">ΙΩΝΙΚΟΣ 1965</strong>
+      </div>
+    </div>
+
+    <h1>Επίσημη Εφαρμογή &amp; Ιστοσελίδα 2026</h1>
+    <p class="lead">
+      Διαδραστικό mockup για τον Ιωνικό Νικαίας. Δύο προϊόντα, ένα σύστημα σχεδίασης:
+      η εφαρμογή στο κινητό και η ιστοσελίδα του συλλόγου. Τα QR είναι πραγματικά και
+      ανανεώνονται κάθε 60 δευτερόλεπτα· η σύνδεση, οι σαρώσεις και οι εγκρίσεις λειτουργούν.
+      Δεν υπάρχει backend — όλα εκτελούνται τοπικά στον browser.
+    </p>
+
+    <div class="cluster">
+      <a class="btn btn--gold btn--lg" href="login.html">ΣΥΝΔΕΣΗ &amp; ΕΝΑΡΞΗ</a>
+      <a class="btn btn--outline btn--lg" href="app.html" style="--btn-fg:#fff;--btn-bd:#3C5A96">Εφαρμογή Κινητού</a>
+      <a class="btn btn--outline btn--lg" href="web.html" style="--btn-fg:#fff;--btn-bd:#3C5A96">Ιστοσελίδα</a>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <div class="main__wrap">
+
+    <section class="mock-grid">
+      <article class="mock">
+        <div class="mock__kicker">Mockup 1</div>
+        <h2 class="mock__title">Η Εφαρμογή στο Κινητό</h2>
+        <ul class="mock__list">
+          <li>Ψηφιακή κάρτα μέλους με ζωντανό QR (ανανέωση 60s)</li>
+          <li>Οικογενειακό προφίλ: ενήλικας ⇄ παιδί ακαδημίας με 1 tap</li>
+          <li>Εκπτώσεις χορηγών με κωδικό εξαργύρωσης</li>
+          <li>Live μετάδοση, κερκίδα και ψηφοφορία MVP</li>
+          <li>5 επίπεδα πιστότητας και παράσημα</li>
+        </ul>
+        <a class="btn btn--primary btn--block" href="app.html">Άνοιγμα Εφαρμογής</a>
+      </article>
+
+      <article class="mock">
+        <div class="mock__kicker">Mockup 2</div>
+        <h2 class="mock__title">Η Ιστοσελίδα</h2>
+        <ul class="mock__list">
+          <li>Ζωντανή μετάδοση αγώνων ακαδημιών με υδατογράφημα</li>
+          <li>Live chat κερκίδας σε τρία δωμάτια συζήτησης</li>
+          <li>Αρχείο VOD προηγούμενων αγώνων</li>
+          <li>Εκδηλώσεις με ηλεκτρονικό εισιτήριο QR</li>
+          <li>Διαφανές checkout οικογενειακής συνδρομής</li>
+        </ul>
+        <a class="btn btn--primary btn--block" href="web.html">Άνοιγμα Ιστοσελίδας</a>
+      </article>
+    </section>
+
+    <h2 class="display" style="font-size:var(--fs-xl);font-weight:800;margin-bottom:6px">Όλες οι Οθόνες</h2>
+    <p class="muted" style="margin:0 0 20px">Όπως στο showcase, προσαρμοσμένες σε έναν σύλλογο.</p>
+
+    <section class="screens" style="margin-bottom:48px">
+      <a class="screen-link" href="app.html">
+        <span class="screen-link__no">ΟΘΟΝΗ 01</span>
+        <span class="screen-link__name">Ψηφιακή Κάρτα &amp; Οικογενειακό Προφίλ</span>
+        <span class="screen-link__desc">Κάρτα ενήλικα και κάρτα παιδιού ακαδημίας με 1 tap.</span>
+      </a>
+      <a class="screen-link" href="scanner.html">
+        <span class="screen-link__no">ΟΘΟΝΗ 02</span>
+        <span class="screen-link__name">Scanner Θύρας Γηπέδου</span>
+        <span class="screen-link__desc">Έγκυρη κάρτα, ήδη σαρωμένη, ληγμένη συνδρομή.</span>
+      </a>
+      <a class="screen-link" href="merchant.html">
+        <span class="screen-link__no">ΟΘΟΝΗ 03</span>
+        <span class="screen-link__name">Ταμείο Καταστήματος</span>
+        <span class="screen-link__desc">Επιβεβαίωση έκπτωσης και καταγραφή σάρωσης.</span>
+      </a>
+      <a class="screen-link" href="app.html">
+        <span class="screen-link__no">ΟΘΟΝΗ 04</span>
+        <span class="screen-link__name">Επίπεδα Πιστότητας &amp; Badges</span>
+        <span class="screen-link__desc">Από Νεοφερμένος έως Θρύλος, με προνόμια.</span>
+      </a>
+      <a class="screen-link" href="web.html#live">
+        <span class="screen-link__no">ΟΘΟΝΗ 05</span>
+        <span class="screen-link__name">Live Streaming &amp; Κερκίδα</span>
+        <span class="screen-link__desc">Μετάδοση, chat, ψηφοφορία MVP και VOD.</span>
+      </a>
+      <a class="screen-link" href="web.html#subscription">
+        <span class="screen-link__no">ΟΘΟΝΗ 06</span>
+        <span class="screen-link__name">Web Checkout</span>
+        <span class="screen-link__desc">Οικογενειακή πληρωμή και επανεγγραφή.</span>
+      </a>
+      <a class="screen-link" href="web.html#events">
+        <span class="screen-link__no">ΟΘΟΝΗ 07</span>
+        <span class="screen-link__name">Εκδηλώσεις &amp; Εισιτήρια QR</span>
+        <span class="screen-link__desc">Προτεραιότητα βάσει level, εισιτήριο με QR.</span>
+      </a>
+      <a class="screen-link" href="admin.html">
+        <span class="screen-link__no">ΟΘΟΝΗ 08</span>
+        <span class="screen-link__name">Admin Γραφείων Συλλόγου</span>
+        <span class="screen-link__desc">Μέλη, εγκρίσεις ακαδημίας, πληρωμές, αναφορές.</span>
+      </a>
+      <a class="screen-link" href="login.html">
+        <span class="screen-link__no">ΣΥΝΔΕΣΗ</span>
+        <span class="screen-link__name">Είσοδος Μέλους</span>
+        <span class="screen-link__desc">Τέσσερις ρόλοι επίδειξης: μέλος, γραφείο, θύρα, κατάστημα.</span>
+      </a>
+    </section>
+
+    <section class="card">
+      <h2 class="display" style="font-size:var(--fs-lg);font-weight:800;margin-bottom:16px">Παλέτα Συλλόγου</h2>
+      <div class="palette">
+        <div class="sw"><span class="sw__chip" style="background:#1A3668"></span>#1A3668</div>
+        <div class="sw"><span class="sw__chip" style="background:#D3AF37"></span>#D3AF37</div>
+        <div class="sw"><span class="sw__chip" style="background:#0F172A"></span>#0F172A</div>
+        <div class="sw"><span class="sw__chip" style="background:#060C1A"></span>#060C1A</div>
+        <div class="sw"><span class="sw__chip" style="background:#1E293B"></span>#1E293B</div>
+        <div class="sw"><span class="sw__chip" style="background:#F1F4F9"></span>#F1F4F9</div>
+        <div class="sw"><span class="sw__chip" style="background:#10B981"></span>#10B981</div>
+        <div class="sw"><span class="sw__chip" style="background:#EF4444"></span>#EF4444</div>
+      </div>
+      <p class="t-sm muted" style="margin:16px 0 0">
+        Το έμβλημα είναι προσωρινό placeholder. Αντικαταστήστε το αρχείο
+        <code>assets/img/crest.svg</code> με το επίσημο λογότυπο και ενημερώνεται παντού.
+      </p>
+    </section>
+
+  </div>
+</main>
+
+<footer class="web__foot" style="background:var(--ink-900);color:var(--ink-300)">
+  <div style="max-width:1120px;margin:0 auto">
+    © 2026 Ιωνικός Νικαίας 1965 · Πλήρες Οικοσύστημα iOS, Android &amp; Web ·
+    Mockup παρουσίασης χωρίς backend
+  </div>
+</footer>
+
+</body>
+</html>

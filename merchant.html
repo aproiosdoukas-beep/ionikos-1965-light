@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ταμείο Καταστήματος · Ιωνικός 1965</title>
+<meta name="description" content="Εφαρμογή καταστήματος-χορηγού: επιβεβαίωση έκπτωσης μέλους και καταγραφή σάρωσης.">
+<link rel="icon" href="assets/img/crest.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/components.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/shell.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/app.css?v=20261107a">
+</head>
+<body>
+
+<div class="stage">
+  <header class="stage__head">
+    <div class="stage__brand">
+      <img class="crest" src="assets/img/crest.svg" alt="">
+      <div>
+        <h1>Οθόνη 03 · Εφαρμογή Καταστήματος (Ταμείο)</h1>
+        <p class="t-sm" style="color:var(--ion-gold-300);margin:2px 0 0">Πώς το κατάστημα σαρώνει την προσφορά</p>
+      </div>
+    </div>
+    <nav class="cluster">
+      <a class="btn btn--ghost btn--sm" href="index.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Αρχική</a>
+      <a class="btn btn--ghost btn--sm" href="app.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Εφαρμογή Μέλους</a>
+      <a class="btn btn--ghost btn--sm" href="scanner.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Scanner Θύρας</a>
+    </nav>
+  </header>
+
+  <div class="stage__inner" style="justify-items:stretch">
+    <div class="scan-layout" style="display:grid;grid-template-columns:minmax(0,392px) minmax(300px,1fr);gap:32px;align-items:start">
+
+      <div class="phone phone--dark">
+        <div class="phone__screen theme-dark">
+          <div class="statusbar">
+            <span>9:41</span>
+            <span class="statusbar__notch"></span>
+            <span class="statusbar__icons" id="sbIcons"></span>
+          </div>
+          <div class="appbar appbar--ink" style="align-items:flex-start">
+            <div class="grow">
+              <div class="display bold t-sm gold" style="letter-spacing:.06em">NIKAIA BURGERS • ΤΑΜΕΙΟ</div>
+              <div class="appbar__title">Επιβεβαίωση Έκπτωσης</div>
+            </div>
+            <span class="gold" id="storeIcon"></span>
+          </div>
+          <div class="phone__body" id="tillView"></div>
+        </div>
+      </div>
+
+      <aside class="card theme-dark" style="background:var(--ink-700);border-color:#22304A;color:#F4F7FC">
+        <h2 class="card__title" style="font-size:var(--fs-lg)">Προσομοίωση Ταμείου</h2>
+        <p class="t-sm" style="color:var(--ink-300)">
+          Το κατάστημα σαρώνει το QR του μέλους. Ο κωδικός επαληθεύεται τοπικά και
+          η χρήση μειώνει το υπόλοιπο του μήνα.
+        </p>
+        <hr class="divider" style="background:#22304A">
+        <div class="stack-3" id="simButtons"></div>
+        <hr class="divider" style="background:#22304A">
+        <button class="btn btn--ghost btn--sm btn--block" type="button" id="resetBtn"
+                style="--btn-fg:#F4F7FC;--btn-bd:#2A3A57">Επαναφορά υπολοίπων</button>
+      </aside>
+    </div>
+
+    <p class="phone__caption" style="max-width:860px">
+      Το ίδιο QR της κάρτας εξυπηρετεί είσοδο γηπέδου και εκπτώσεις χορηγών —
+      ένα σύστημα, ένα token, πολλαπλά σημεία σάρωσης.
+    </p>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 900px) {
+    .scan-layout { grid-template-columns: 1fr !important; justify-items: center; }
+  }
+</style>
+
+<script src="assets/vendor/qrcode.js?v=20261107a"></script>
+<script src="assets/js/data.js?v=20261107a"></script>
+<script src="assets/js/core.js?v=20261107a"></script>
+<script src="assets/js/icons.js?v=20261107a"></script>
+<script src="assets/js/merchant.js?v=20261107a"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Γραφείου · Ιωνικός 1965</title>
+<meta name="description" content="Διαχείριση μελών, εγκρίσεις ακαδημιών και πληρωμές στα γραφεία του συλλόγου.">
+<link rel="icon" href="assets/img/crest.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/components.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/shell.css?v=20261107a">
+<link rel="stylesheet" href="assets/css/app.css?v=20261107a">
+</head>
+<body>
+
+<div class="admin">
+  <aside class="admin__side">
+    <div class="admin__brand">
+      <img class="crest crest--sm" src="assets/img/crest.svg" alt="">
+      <strong>ΙΩΝΙΚΟΣ ADMIN</strong>
+    </div>
+    <nav class="admin__nav" id="adminNav" aria-label="Ενότητες διαχείρισης"></nav>
+    <div class="admin__foot">
+      <span class="dot"></span> 2FA Ασφάλεια Ενεργή
+      <div style="margin-top:14px;display:grid;gap:8px">
+        <a class="btn btn--ghost btn--sm btn--block" href="index.html"
+           style="--btn-fg:#fff;--btn-bd:#2A3A57">Αρχική</a>
+        <button class="btn btn--outline btn--sm btn--block" type="button" id="logoutBtn">Αποσύνδεση</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="admin__main">
+    <div class="admin__wrap" id="adminView"></div>
+  </main>
+</div>
+
+<script src="assets/js/data.js?v=20261107a"></script>
+<script src="assets/js/core.js?v=20261107a"></script>
+<script src="assets/js/icons.js?v=20261107a"></script>
+<script src="assets/js/admin.js?v=20261107a"></script>
+</body>
+</html>

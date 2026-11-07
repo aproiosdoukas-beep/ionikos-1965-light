@@ -1,0 +1,130 @@
+/* ==========================================================================
+   ΙΩΝΙΚΟΣ 1965 — Design Tokens
+   Χρώματα δειγματοληπτημένα από το UI/UX Showcase 2026 (PDF).
+   Ένα αρχείο, μία αλήθεια: web + app χρησιμοποιούν τα ίδια tokens.
+   ========================================================================== */
+
+:root {
+  /* ---- Brand ---------------------------------------------------------- */
+  --ion-navy:        #1A3668;  /* κύριο χρώμα συλλόγου */
+  --ion-navy-600:    #16305D;
+  --ion-navy-700:    #122850;
+  --ion-navy-300:    #3C5A96;
+  --ion-navy-100:    #E4EAF5;
+
+  --ion-gold:        #D3AF37;  /* δευτερεύον / accent */
+  --ion-gold-600:    #BF9C27;
+  --ion-gold-300:    #E8CE77;
+  --ion-gold-100:    #FAF2DA;
+
+  /* ---- Neutrals (dark surfaces από το deck) --------------------------- */
+  --ink-900:         #060C1A;  /* βαθύ φόντο παρουσίασης */
+  --ink-800:         #0B1220;
+  --ink-700:         #0F172A;  /* κάρτες σε dark */
+  --ink-600:         #1E293B;  /* surface raised */
+  --ink-500:         #334155;
+  --ink-400:         #64748B;
+  --ink-300:         #94A3B8;
+
+  /* ---- Neutrals (light surfaces) -------------------------------------- */
+  --paper:           #FFFFFF;
+  --paper-50:        #F9FAFC;
+  --paper-100:       #F1F4F9;
+  --paper-200:       #E9EDF3;
+  --paper-300:       #D7DEE8;
+
+  /* ---- Semantic ------------------------------------------------------- */
+  --ok:              #10B981;
+  --ok-600:          #059669;
+  --ok-300:          #30D599;
+  --ok-soft:         #0E3A2E;
+
+  --warn:            #F5A623;
+  --warn-soft:       #5A3310;
+
+  --danger:          #EF4444;
+  --danger-600:      #DC2626;
+  --danger-300:      #F87072;
+  --danger-soft:     #4A1114;
+
+  --live:            #FF3B30;
+
+  /* ---- Ρόλοι (light theme = προεπιλογή) ------------------------------- */
+  --bg:              var(--paper-100);
+  --surface:         var(--paper);
+  --surface-2:       var(--paper-50);
+  --surface-3:       var(--paper-200);
+  --border:          var(--paper-300);
+  --border-soft:     var(--paper-200);
+  --text:            var(--ink-700);
+  --text-muted:      var(--ink-400);
+  --text-invert:     #FFFFFF;
+
+  /* ---- Typography ------------------------------------------------------ */
+  --font-display: "Commissioner", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body:    "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --fs-xs:    11px;
+  --fs-sm:    13px;
+  --fs-base:  15px;
+  --fs-md:    17px;
+  --fs-lg:    20px;
+  --fs-xl:    26px;
+  --fs-2xl:   34px;
+  --fs-3xl:   44px;
+
+  --lh-tight: 1.15;
+  --lh-snug:  1.35;
+  --lh-base:  1.55;
+
+  /* ---- Space / radius / elevation -------------------------------------- */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-8:  32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  --r-sm:   8px;
+  --r-md:   12px;
+  --r-lg:   16px;
+  --r-xl:   22px;
+  --r-2xl:  28px;
+  --r-pill: 999px;
+
+  --shadow-sm:  0 1px 2px rgba(6, 12, 26, .06), 0 1px 3px rgba(6, 12, 26, .08);
+  --shadow-md:  0 4px 10px rgba(6, 12, 26, .08), 0 2px 4px rgba(6, 12, 26, .05);
+  --shadow-lg:  0 18px 40px rgba(6, 12, 26, .14), 0 6px 14px rgba(6, 12, 26, .08);
+  --shadow-gold: 0 0 0 1px var(--ion-gold), 0 8px 24px rgba(211, 175, 55, .22);
+
+  --ring: 0 0 0 3px rgba(26, 54, 104, .28);
+
+  --dur: 180ms;
+  --ease: cubic-bezier(.2, .7, .3, 1);
+}
+
+/* ---- Dark surfaces (χρησιμοποιείται σε Live / Scanner / Studio) -------- */
+.theme-dark,
+:root[data-theme="dark"] {
+  --bg:          var(--ink-900);
+  --surface:     var(--ink-700);
+  --surface-2:   var(--ink-800);
+  --surface-3:   var(--ink-600);
+  --border:      #22304A;
+  --border-soft: #1A2639;
+  --text:        #F4F7FC;
+  --text-muted:  var(--ink-300);
+  --text-invert: var(--ink-900);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
