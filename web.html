@@ -8,24 +8,27 @@
 <link rel="icon" href="assets/img/crest.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/tokens.css?v=20261107n">
-<link rel="stylesheet" href="assets/css/components.css?v=20261107n">
-<link rel="stylesheet" href="assets/css/shell.css?v=20261107n">
-<link rel="stylesheet" href="assets/css/app.css?v=20261107n">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wdth,wght@62.5..100,500..900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css?v=20261107h">
+<link rel="stylesheet" href="assets/css/components.css?v=20261107h">
+<link rel="stylesheet" href="assets/css/shell.css?v=20261107h">
+<link rel="stylesheet" href="assets/css/app.css?v=20261107h">
 </head>
 <body>
 
-<div class="web theme-dark">
+<div class="web">
 
-  <header class="web__nav">
-    <a class="web__brand" href="index.html">
-      <img class="crest crest--sm" src="assets/img/crest.svg" alt="Έμβλημα Ιωνικού">
-      <strong>ΙΩΝΙΚΟΣ TV &amp; ΚΟΙΝΟΤΗΤΑ</strong>
+  <header class="web__nav theme-dark">
+    <a class="web__brand brandmark" href="index.html">
+      <img class="crest" src="assets/img/crest.svg" alt="Έμβλημα Ιωνικού">
+      <div class="brandmark__text">
+        <strong class="brandmark__name">Ιωνικός Νικαίας</strong>
+        <span class="cluster" style="gap:8px"><span class="seal">ΑΠΟ ΤΟ 1965</span><span class="brandmark__sub">Ιωνικός TV και κοινότητα</span></span>
+      </div>
     </a>
     <nav class="web__links" id="webLinks" aria-label="Κύρια πλοήγηση"></nav>
     <div class="cluster" style="gap:8px">
-      <span class="t-sm muted hidden" id="whoami"></span>
+      <span class="t-sm hidden" id="whoami" style="color:var(--ink-300)"></span>
       <a class="btn btn--gold btn--sm" id="authBtn" href="login.html">ΣΥΝΔΕΣΗ</a>
     </div>
   </header>
@@ -34,9 +37,9 @@
     <div class="web__wrap" id="page"></div>
   </main>
 
-  <footer class="web__foot">
+  <footer class="web__foot theme-dark">
     <div class="web__wrap between" style="flex-wrap:wrap">
-      <span>© 2026 Ιωνικός Νικαίας 1965 · Πλήρες Οικοσύστημα iOS, Android &amp; Web</span>
+      <span class="cluster" style="gap:10px"><img class="crest crest--sm" src="assets/img/crest.svg" alt=""> © 2026 Ιωνικός Νικαίας 1965. Εφαρμογή iOS, Android και ιστοσελίδα.</span>
       <span class="cluster" style="gap:16px">
         <a href="app.html">Εφαρμογή Μέλους</a>
         <a href="scanner.html">Scanner Θύρας</a>
@@ -46,10 +49,10 @@
   </footer>
 </div>
 
-<script src="assets/vendor/qrcode.js?v=20261107n"></script>
-<script src="assets/js/data.js?v=20261107n"></script>
-<script src="assets/js/core.js?v=20261107n"></script>
-<script src="assets/js/icons.js?v=20261107n"></script>
-<script src="assets/js/web.js?v=20261107n"></script>
+<script src="assets/vendor/qrcode.js?v=20261107h"></script>
+<script src="assets/js/data.js?v=20261107h"></script>
+<script src="assets/js/core.js?v=20261107h"></script>
+<script src="assets/js/icons.js?v=20261107h"></script>
+<script src="assets/js/web.js?v=20261107h"></script>
 </body>
 </html>

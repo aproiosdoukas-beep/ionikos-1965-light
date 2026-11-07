@@ -8,27 +8,27 @@
 <link rel="icon" href="assets/img/crest.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/tokens.css?v=20261107n">
-<link rel="stylesheet" href="assets/css/components.css?v=20261107n">
-<link rel="stylesheet" href="assets/css/shell.css?v=20261107n">
-<link rel="stylesheet" href="assets/css/app.css?v=20261107n">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wdth,wght@62.5..100,500..900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css?v=20261107h">
+<link rel="stylesheet" href="assets/css/components.css?v=20261107h">
+<link rel="stylesheet" href="assets/css/shell.css?v=20261107h">
+<link rel="stylesheet" href="assets/css/app.css?v=20261107h">
 </head>
 <body>
 
 <div class="stage">
-  <header class="stage__head">
-    <div class="stage__brand">
-      <img class="crest" src="assets/img/crest.svg" alt="">
-      <div>
-        <h1>Εφαρμογή Καταστήματος (Ταμείο)</h1>
-        <p class="t-sm" style="color:var(--ion-gold-300);margin:2px 0 0">Πώς το κατάστημα σαρώνει την προσφορά</p>
+  <header class="stage__head theme-dark">
+    <a class="brandmark" href="index.html">
+      <img class="crest" src="assets/img/crest.svg" alt="Έμβλημα Ιωνικού">
+      <div class="brandmark__text">
+        <h1 class="brandmark__name">Ταμείο καταστήματος</h1>
+        <span class="cluster" style="gap:8px"><span class="seal">ΑΠΟ ΤΟ 1965</span><span class="brandmark__sub">Πώς το κατάστημα σαρώνει την προσφορά</span></span>
       </div>
-    </div>
+    </a>
     <nav class="cluster">
-      <a class="btn btn--ghost btn--sm" href="index.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Αρχική</a>
-      <a class="btn btn--ghost btn--sm" href="app.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Εφαρμογή Μέλους</a>
-      <a class="btn btn--ghost btn--sm" href="scanner.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Scanner Θύρας</a>
+      <a class="btn btn--ghost btn--sm" href="index.html">Αρχική</a>
+      <a class="btn btn--ghost btn--sm" href="app.html">Εφαρμογή Μέλους</a>
+      <a class="btn btn--ghost btn--sm" href="scanner.html">Scanner Θύρας</a>
     </nav>
   </header>
 
@@ -53,17 +53,17 @@
         </div>
       </div>
 
-      <aside class="card theme-dark" style="background:var(--ink-700);border-color:#22304A;color:#F4F7FC">
+      <aside class="card card--ink theme-dark">
         <h2 class="card__title" style="font-size:var(--fs-lg)">Προσομοίωση Ταμείου</h2>
-        <p class="t-sm" style="color:var(--ink-300)">
+        <p class="t-sm muted">
           Το κατάστημα σαρώνει το QR του μέλους. Ο κωδικός επαληθεύεται τοπικά και
           η χρήση μειώνει το υπόλοιπο του μήνα.
         </p>
-        <hr class="divider" style="background:#22304A">
+        <hr class="divider">
         <div class="stack-3" id="simButtons"></div>
-        <hr class="divider" style="background:#22304A">
+        <hr class="divider">
         <button class="btn btn--ghost btn--sm btn--block" type="button" id="resetBtn"
-                style="--btn-fg:#F4F7FC;--btn-bd:#2A3A57">Επαναφορά υπολοίπων</button>
+               >Επαναφορά υπολοίπων</button>
       </aside>
     </div>
 
@@ -81,10 +81,10 @@
   }
 </style>
 
-<script src="assets/vendor/qrcode.js?v=20261107n"></script>
-<script src="assets/js/data.js?v=20261107n"></script>
-<script src="assets/js/core.js?v=20261107n"></script>
-<script src="assets/js/icons.js?v=20261107n"></script>
-<script src="assets/js/merchant.js?v=20261107n"></script>
+<script src="assets/vendor/qrcode.js?v=20261107h"></script>
+<script src="assets/js/data.js?v=20261107h"></script>
+<script src="assets/js/core.js?v=20261107h"></script>
+<script src="assets/js/icons.js?v=20261107h"></script>
+<script src="assets/js/merchant.js?v=20261107h"></script>
 </body>
 </html>

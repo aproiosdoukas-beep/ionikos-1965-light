@@ -1,6 +1,6 @@
 /* ==========================================================================
    ΙΩΝΙΚΟΣ 1965 :: Design Tokens
-   Χρώματα δειγματοληπτημένα από το UI/UX Showcase 2026 (PDF).
+   Heritage matchday: όλα τα χρώματα βγαίνουν από το έμβλημα.
    Ένα αρχείο, μία αλήθεια: web + app χρησιμοποιούν τα ίδια tokens.
    ========================================================================== */
 
@@ -8,44 +8,47 @@
   /* ---- Brand ---------------------------------------------------------- */
   /* Μπλε και χρυσό ακριβώς από το έμβλημα του συλλόγου. */
   --ion-navy:        #343795;  /* κύριο χρώμα συλλόγου */
-  --ion-navy-600:    #2B2E80;
-  --ion-navy-700:    #212368;
+  --ion-navy-600:    #2A2D7E;
+  --ion-navy-700:    #1F2163;
   --ion-navy-300:    #6E71C0;
-  --ion-navy-100:    #E8E9F7;
+  --ion-navy-100:    #E4E5F5;
 
-  --ion-gold:        #CF9C1D;  /* δευτερεύον / accent */
-  --ion-gold-600:    #B28514;
+  --ion-gold:        #CF9C1D;  /* μόνο για τόνους: γραμμές, ενεργά, κύρια ενέργεια */
+  --ion-gold-600:    #9E7612;  /* χρυσό για κείμενο πάνω σε ανοιχτό φόντο */
   --ion-gold-300:    #E7C361;
-  --ion-gold-100:    #FAF1D9;
+  --ion-gold-100:    #F8EDCF;
 
-  /* ---- Neutrals (dark surfaces από το deck) --------------------------- */
-  --ink-900:         #060C1A;  /* βαθύ φόντο παρουσίασης */
-  --ink-800:         #0B1220;
-  --ink-700:         #0F172A;  /* κάρτες σε dark */
-  --ink-600:         #1E293B;  /* surface raised */
-  --ink-500:         #334155;
-  --ink-400:         #64748B;
-  --ink-300:         #94A3B8;
+  /* ---- Νύχτα αγώνα: σκοτεινές επιφάνειες βαμμένες με το μπλε του εμβλήματος */
+  --ink-900:         #0B0C2A;  /* φόντο γηπέδου τη νύχτα */
+  --ink-800:         #111339;
+  --ink-700:         #181B4A;  /* κάρτες σε dark, κείμενο σε light */
+  --ink-600:         #23266A;
+  --ink-500:         #3A3D7A;
+  --ink-400:         #5F6290;
+  --ink-300:         #A9ABCF;
 
-  /* ---- Neutrals (light surfaces) -------------------------------------- */
+  --line-dark:       #2E3275;  /* περίγραμμα σε σκοτεινές επιφάνειες */
+  --line-dark-soft:  #20235C;
+
+  /* ---- Χαρτί: ανοιχτές επιφάνειες με απόχρωση μπλε, όχι μπεζ ---------- */
   --paper:           #FFFFFF;
-  --paper-50:        #F9FAFC;
-  --paper-100:       #F1F4F9;
-  --paper-200:       #E9EDF3;
-  --paper-300:       #D7DEE8;
+  --paper-50:        #F8F8FC;
+  --paper-100:       #EEEFF7;
+  --paper-200:       #E3E5F1;
+  --paper-300:       #CDD0E4;
 
   /* ---- Semantic ------------------------------------------------------- */
-  --ok:              #10B981;
-  --ok-600:          #059669;
-  --ok-300:          #30D599;
+  --ok:              #12A874;
+  --ok-600:          #0B7F57;
+  --ok-300:          #3DDBA0;
   --ok-soft:         #0E3A2E;
 
-  --warn:            #F5A623;
+  --warn:            #F0A020;
   --warn-soft:       #5A3310;
 
-  --danger:          #EF4444;
-  --danger-600:      #DC2626;
-  --danger-300:      #F87072;
+  --danger:          #E5484D;
+  --danger-600:      #C8363B;
+  --danger-300:      #FF7A7E;
   --danger-soft:     #4A1114;
 
   --live:            #FF3B30;
@@ -62,19 +65,24 @@
   --text-invert:     #FFFFFF;
 
   /* ---- Typography ------------------------------------------------------ */
-  --font-display: "Commissioner", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Noto Sans Display (μεταβλητό πλάτος, πλήρη ελληνικά) για τίτλους.
+     Open Sans για το κείμενο. Το πλάτος κληρονομείται: οι τίτλοι
+     στενεύουν, η Open Sans δεν έχει άξονα πλάτους και μένει ίδια. */
+  --font-display: "Noto Sans Display", "Commissioner", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-body:    "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --stretch-ui:       88%;   /* κουμπιά, ετικέτες */
+  --stretch-headline: 72%;   /* μεγάλοι τίτλοι, σκορ */
 
-  --fs-xs:    11px;
+  --fs-xs:    12px;
   --fs-sm:    13px;
   --fs-base:  15px;
   --fs-md:    17px;
-  --fs-lg:    20px;
-  --fs-xl:    26px;
-  --fs-2xl:   34px;
-  --fs-3xl:   44px;
+  --fs-lg:    21px;
+  --fs-xl:    28px;
+  --fs-2xl:   38px;
+  --fs-3xl:   52px;
 
-  --lh-tight: 1.15;
+  --lh-tight: 1.08;
   --lh-snug:  1.35;
   --lh-base:  1.55;
 
@@ -90,34 +98,53 @@
   --sp-12: 48px;
   --sp-16: 64px;
 
-  --r-sm:   8px;
-  --r-md:   12px;
-  --r-lg:   16px;
-  --r-xl:   22px;
+  /* Ιεραρχία γωνιών: τα χειριστήρια είναι πιο τετράγωνα από τις κάρτες. */
+  --r-sm:   6px;
+  --r-md:   10px;
+  --r-lg:   14px;
+  --r-xl:   20px;
   --r-2xl:  28px;
   --r-pill: 999px;
 
-  --shadow-sm:  0 1px 2px rgba(6, 12, 26, .06), 0 1px 3px rgba(6, 12, 26, .08);
-  --shadow-md:  0 4px 10px rgba(6, 12, 26, .08), 0 2px 4px rgba(6, 12, 26, .05);
-  --shadow-lg:  0 18px 40px rgba(6, 12, 26, .14), 0 6px 14px rgba(6, 12, 26, .08);
-  --shadow-gold: 0 0 0 1px var(--ion-gold), 0 8px 24px rgba(211, 175, 55, .22);
+  --shadow-sm:  0 1px 0 rgba(24, 27, 74, .04), 0 1px 2px rgba(24, 27, 74, .08);
+  --shadow-md:  0 2px 0 rgba(24, 27, 74, .04), 0 8px 18px -6px rgba(24, 27, 74, .18);
+  --shadow-lg:  0 24px 48px -12px rgba(11, 12, 42, .42), 0 4px 10px rgba(11, 12, 42, .12);
+  --shadow-gold: 0 0 0 1px var(--ion-gold), 0 10px 28px -8px rgba(207, 156, 29, .45);
 
-  --ring: 0 0 0 3px rgba(26, 54, 104, .28);
+  --ring: 0 0 0 3px rgba(207, 156, 29, .55);
+
+  /* ---- Υπογραφή συλλόγου ------------------------------------------------ */
+  /* Ρίγα κασκόλ: μπλε, λευκή λωρίδα, χρυσή λωρίδα. */
+  --stripe: repeating-linear-gradient(90deg,
+              var(--ion-gold) 0 28px,
+              #fff 28px 32px,
+              var(--ion-navy) 32px 60px,
+              #fff 60px 64px);
+  /* Διαγώνια υφή σκαλιών κερκίδας, μόνο σε σκοτεινές επιφάνειες. */
+  --terrace: repeating-linear-gradient(135deg,
+              rgba(255, 255, 255, .035) 0 2px,
+              transparent 2px 13px);
+  /* Ουρανός γηπέδου: προβολείς πάνω από το μπλε της νύχτας. */
+  --floodlight:
+    radial-gradient(900px 420px at 50% -12%, rgba(110, 113, 192, .42), transparent 64%),
+    radial-gradient(520px 300px at 100% 0%, rgba(207, 156, 29, .14), transparent 60%);
 
   --dur: 180ms;
   --ease: cubic-bezier(.2, .7, .3, 1);
 }
 
-/* ---- Dark surfaces (χρησιμοποιείται σε Live / Scanner / Studio) -------- */
+html { font-stretch: var(--stretch-ui); }
+
+/* ---- Dark surfaces (Live / Scanner / headers / ήρωες) ------------------ */
 .theme-dark,
 :root[data-theme="dark"] {
   --bg:          var(--ink-900);
   --surface:     var(--ink-700);
   --surface-2:   var(--ink-800);
   --surface-3:   var(--ink-600);
-  --border:      #22304A;
-  --border-soft: #1A2639;
-  --text:        #F4F7FC;
+  --border:      var(--line-dark);
+  --border-soft: var(--line-dark-soft);
+  --text:        #F3F4FC;
   --text-muted:  var(--ink-300);
   --text-invert: var(--ink-900);
 }

@@ -22,8 +22,9 @@ h1, h2, h3, h4, h5 {
   font-family: var(--font-display);
   line-height: var(--lh-tight);
   margin: 0;
-  letter-spacing: -.01em;
+  letter-spacing: -.005em;
 }
+h1, h2 { font-stretch: var(--stretch-headline); font-weight: 800; }
 
 a { color: inherit; }
 
@@ -35,14 +36,22 @@ img, svg { max-width: 100%; }
   border-radius: var(--r-sm);
 }
 
-/* ---- Eyebrow / τίτλοι οθόνης ------------------------------------------ */
+/* ---- Eyebrow: πεζά, με χρυσή εγκοπή μπροστά ---------------------------- */
 .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-display);
   font-size: var(--fs-sm);
   font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--ion-navy-300);
+  letter-spacing: .01em;
+  color: var(--ion-navy);
+}
+.eyebrow::before {
+  content: "";
+  width: 18px; height: 3px;
+  border-radius: 2px;
+  background: var(--ion-gold);
 }
 .theme-dark .eyebrow { color: var(--ion-gold-300); }
 
@@ -77,7 +86,8 @@ img, svg { max-width: 100%; }
   min-height: 46px;
   padding: 0 var(--sp-5);
   border: 1.5px solid var(--btn-bd);
-  border-radius: var(--r-md);
+  border-radius: var(--r-sm);
+  font-stretch: var(--stretch-ui);
   background: var(--btn-bg);
   color: var(--btn-fg);
   cursor: pointer;
@@ -87,12 +97,14 @@ img, svg { max-width: 100%; }
               background-color var(--dur) var(--ease),
               box-shadow var(--dur) var(--ease);
 }
-.btn:hover:not(:disabled) { filter: brightness(1.08); }
+.btn:hover:not(:disabled) { filter: brightness(1.1); }
+.btn:focus-visible { box-shadow: var(--ring); border-radius: var(--r-sm); }
 .btn:active:not(:disabled) { transform: translateY(1px) scale(.995); }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
 
 .btn--primary { --btn-bg: var(--ion-navy); --btn-fg: #fff; }
-.btn--gold    { --btn-bg: var(--ion-gold); --btn-fg: var(--ink-900); }
+.btn--gold    { --btn-bg: var(--ion-gold); --btn-fg: var(--ink-900); box-shadow: inset 0 -2px 0 rgba(0,0,0,.14); }
+.btn--primary { box-shadow: inset 0 -2px 0 rgba(0,0,0,.22); }
 .btn--success { --btn-bg: var(--ok);       --btn-fg: #fff; }
 .btn--danger  { --btn-bg: var(--danger);   --btn-fg: #fff; }
 
@@ -108,10 +120,12 @@ img, svg { max-width: 100%; }
   --btn-fg: var(--ion-navy);
   --btn-bd: var(--ion-navy);
 }
-.theme-dark .btn--outline { --btn-fg: var(--ion-gold); --btn-bd: var(--ion-gold); }
+.theme-dark .btn--outline { --btn-fg: var(--ion-gold-300); --btn-bd: var(--ion-gold); }
+.theme-dark .btn--ghost { --btn-fg: var(--text); --btn-bd: rgba(255,255,255,.22); }
+.theme-dark .btn--ghost:hover:not(:disabled) { background: rgba(255,255,255,.08); }
 
-.btn--sm { min-height: 36px; padding: 0 var(--sp-4); font-size: var(--fs-sm); border-radius: var(--r-sm); }
-.btn--lg { min-height: 56px; padding: 0 var(--sp-8); font-size: var(--fs-md); border-radius: var(--r-lg); }
+.btn--sm { min-height: 36px; padding: 0 var(--sp-4); font-size: var(--fs-sm); }
+.btn--lg { min-height: 56px; padding: 0 var(--sp-8); font-size: var(--fs-md); border-radius: var(--r-md); }
 .btn--block { display: flex; width: 100%; }
 .btn--icon { padding: 0; width: 46px; min-height: 46px; }
 .btn--icon.btn--sm { width: 36px; min-height: 36px; }
@@ -136,21 +150,34 @@ img, svg { max-width: 100%; }
 .card--flat   { box-shadow: none; }
 .card--raised { box-shadow: var(--shadow-md); }
 .card--navy {
-  background: var(--ion-navy);
+  background: var(--terrace), linear-gradient(165deg, var(--ion-navy) 0%, var(--ion-navy-700) 100%);
   border-color: transparent;
   color: #fff;
 }
 .card--ink {
-  background: var(--ink-700);
-  border-color: #22304A;
-  color: #F4F7FC;
+  background: var(--terrace), var(--ink-700);
+  border-color: var(--line-dark);
+  color: #F3F4FC;
+}
+/* Κάρτα με χρυσή γραμμή στην κορυφή: για τα σημαντικά (συνδρομή, πακέτα). */
+.card--rule {
+  position: relative;
+  border-top: 0;
+  padding-top: calc(var(--sp-5) + 4px);
+  overflow: hidden;
+}
+.card--rule::before {
+  content: "";
+  position: absolute; left: 0; right: 0; top: 0;
+  height: 4px;
+  background: var(--stripe);
 }
 .card--gold-ring { box-shadow: var(--shadow-gold); border-color: transparent; }
 
 .card__title {
   font-family: var(--font-display);
   font-size: var(--fs-md);
-  font-weight: 700;
+  font-weight: 800;
 }
 .card__meta { font-size: var(--fs-sm); color: var(--text-muted); }
 
@@ -196,7 +223,12 @@ img, svg { max-width: 100%; }
 .badge--ok     { background: rgba(16,185,129,.16); color: var(--ok-300); }
 .badge--warn   { background: rgba(245,166,35,.18); color: var(--warn); }
 .badge--danger { background: rgba(239,68,68,.16);  color: var(--danger-300); }
-.badge--gold   { background: rgba(211,175,55,.18); color: var(--ion-gold); }
+.badge--gold   { background: rgba(207, 156, 29,.18); color: var(--ion-gold-600); }
+.theme-dark .badge--gold { color: var(--ion-gold-300); }
+.badge--ok     { color: var(--ok-600); }
+.theme-dark .badge--ok, .scan-state .badge--ok { color: var(--ok-300); }
+.badge--danger { color: var(--danger-600); }
+.theme-dark .badge--danger { color: var(--danger-300); }
 .badge--navy   { background: var(--ion-navy); color: #fff; }
 
 .badge--live {
@@ -229,10 +261,10 @@ img, svg { max-width: 100%; }
   display: flex;
   gap: var(--sp-1);
   padding: var(--sp-1);
-  background: var(--paper-100);
+  background: var(--paper-200);
   border-radius: var(--r-md);
 }
-.theme-dark .segmented { background: var(--ink-600); }
+.theme-dark .segmented { background: var(--ink-800); }
 
 .segmented__btn {
   flex: 1;
@@ -252,7 +284,7 @@ img, svg { max-width: 100%; }
 .segmented__btn.is-active {
   background: var(--ion-navy);
   color: #fff;
-  box-shadow: var(--shadow-sm);
+  box-shadow: inset 0 -2px 0 var(--ion-gold), var(--shadow-sm);
 }
 .segmented__btn.is-active[data-tone="gold"] {
   background: var(--ion-gold);
@@ -281,13 +313,14 @@ img, svg { max-width: 100%; }
   background: var(--ion-navy-100);
   color: var(--ion-navy);
 }
-.theme-dark .row__icon { background: rgba(26,54,104,.5); color: var(--ion-gold-300); }
+.theme-dark .row__icon { background: rgba(52, 55, 149,.5); color: var(--ion-gold-300); }
 .row__body { flex: 1 1 auto; min-width: 0; }
 .row__title { font-weight: 700; font-family: var(--font-display); }
 .row__meta  { font-size: var(--fs-sm); color: var(--text-muted); }
 .row__end   { flex: 0 0 auto; font-family: var(--font-display); font-weight: 800; }
 .row--clickable { cursor: pointer; }
-.row--clickable:hover { border-color: var(--ion-navy-300); box-shadow: var(--shadow-sm); }
+.row--clickable:hover { border-color: var(--ion-navy-300); box-shadow: var(--shadow-md); }
+.row--clickable:hover .row__icon { background: var(--ion-navy); color: var(--ion-gold-300); }
 
 /* ==========================================================================
    STATS
@@ -297,11 +330,14 @@ img, svg { max-width: 100%; }
   font-family: var(--font-display);
   font-size: var(--fs-2xl);
   font-weight: 800;
+  font-stretch: var(--stretch-headline);
+  font-variant-numeric: tabular-nums;
   line-height: 1;
 }
 .stat__label { font-size: var(--fs-sm); color: var(--text-muted); }
 .stat--ok   .stat__value { color: var(--ok); }
-.stat--gold .stat__value { color: var(--ion-gold); }
+.stat--gold .stat__value { color: var(--ion-gold-600); }
+.theme-dark .stat--gold .stat__value { color: var(--ion-gold); }
 .stat--navy .stat__value { color: var(--ion-navy); }
 .theme-dark .stat--navy .stat__value { color: #fff; }
 
@@ -440,8 +476,8 @@ img, svg { max-width: 100%; }
 .modal-backdrop {
   position: fixed; inset: 0;
   z-index: 2000;
-  background: rgba(6, 12, 26, .66);
-  backdrop-filter: blur(3px);
+  background: rgba(11, 12, 42, .7);
+  backdrop-filter: blur(4px);
   display: grid; place-items: center;
   padding: var(--sp-4);
   animation: fade-in 160ms var(--ease);
@@ -456,13 +492,17 @@ img, svg { max-width: 100%; }
   color: var(--ink-700);
   border-radius: var(--r-xl);
   padding: var(--sp-6);
+  padding-top: calc(var(--sp-6) + 4px);
   display: grid; gap: var(--sp-4);
   box-shadow: var(--shadow-lg);
   animation: modal-in 200ms var(--ease);
+  background-image: var(--stripe);
+  background-size: 100% 4px;
+  background-repeat: no-repeat;
 }
 @keyframes modal-in { from { opacity: 0; transform: translateY(14px) scale(.98) } }
 
-.modal__title { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-lg); }
+.modal__title { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-xl); font-stretch: var(--stretch-headline); line-height: 1.1; }
 .modal__text  { font-size: var(--fs-sm); color: var(--ink-400); margin: 0; }
 .modal__actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
 @media (max-width: 420px) { .modal__actions { grid-template-columns: 1fr } }
@@ -494,7 +534,7 @@ img, svg { max-width: 100%; }
   background: var(--ion-navy-100);
 }
 .theme-dark .option.is-selected {
-  background: rgba(26, 54, 104, .34);
+  background: rgba(52, 55, 149, .34);
   border-color: var(--ion-gold);
   box-shadow: inset 0 0 0 1px var(--ion-gold);
 }
@@ -591,5 +631,230 @@ img, svg { max-width: 100%; }
 .plan__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); flex-wrap: wrap; }
 .plan__name { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-md); }
 .plan__who { font-size: var(--fs-sm); color: var(--text-muted); }
-.plan__price { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-lg); color: var(--ion-gold); white-space: nowrap; }
+.plan__name { font-size: var(--fs-lg); font-stretch: var(--stretch-headline); }
+.plan__price { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-xl); font-stretch: var(--stretch-headline); font-variant-numeric: tabular-nums; color: var(--ion-gold-600); white-space: nowrap; }
+.theme-dark .plan__price, .card--navy .plan__price { color: var(--ion-gold-300); }
 .plan__price small { font-size: var(--fs-xs); font-weight: 600; color: var(--text-muted); margin-left: 4px; }
+
+/* ==========================================================================
+   ΥΠΟΓΡΑΦΗ ΣΥΛΛΟΓΟΥ: ρίγα κασκόλ, σφραγίδα 1965, υδατογράφημα εμβλήματος
+   Ίδια κομμάτια σε εφαρμογή, ιστοσελίδα και εργαλεία προσωπικού.
+   ========================================================================== */
+
+/* Λεπτή ρίγα κασκόλ στην άκρη ενός header ή ήρωα. */
+.has-stripe { position: relative; }
+.has-stripe::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 4px;
+  background: var(--stripe);
+  pointer-events: none;
+}
+.has-stripe--top::after { top: 0; bottom: auto; }
+
+/* Σφραγίδα «από το 1965» δίπλα στο έμβλημα. */
+.seal {
+  display: inline-flex; align-items: center;
+  padding: 3px 9px 2px;
+  border: 1px solid currentColor;
+  border-radius: var(--r-pill);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  letter-spacing: .14em;
+  color: var(--ion-gold-600);
+  white-space: nowrap;
+  line-height: 1.4;
+}
+.theme-dark .seal { color: var(--ion-gold-300); }
+
+/* Μπλοκ μάρκας: έμβλημα + όνομα + σφραγίδα. */
+.brandmark { display: flex; align-items: center; gap: var(--sp-3); min-width: 0; text-decoration: none; color: inherit; }
+.brandmark__text { display: grid; gap: 3px; min-width: 0; }
+.brandmark__name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: var(--stretch-headline);
+  font-size: var(--fs-lg);
+  line-height: 1;
+  letter-spacing: .01em;
+}
+.brandmark__sub { font-size: var(--fs-xs); color: var(--text-muted); line-height: 1.2; }
+
+/* Μεγάλο, αχνό έμβλημα σε σκοτεινές επιφάνειες. */
+.crest-watermark { position: relative; overflow: hidden; isolation: isolate; }
+.crest-watermark::before {
+  content: "";
+  position: absolute;
+  right: -6%; top: 50%;
+  width: min(46%, 420px);
+  aspect-ratio: 600 / 672;
+  transform: translateY(-50%) rotate(-8deg);
+  background: url("../img/crest.svg") center / contain no-repeat;
+  opacity: .07;
+  filter: grayscale(1) brightness(2.4);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Νύχτα αγώνα: σκοτεινή ζώνη σε όλο το πλάτος, μέσα σε ανοιχτή σελίδα. */
+.matchday {
+  position: relative;
+  margin-inline: calc(50% - 50vw);
+  padding: var(--sp-8) calc(50vw - 50%) var(--sp-10);
+  background: var(--terrace), var(--floodlight), var(--ink-900);
+  color: var(--text);
+}
+.matchday + * { margin-top: var(--sp-8); }
+
+/* Κενή κατάσταση: πρόσκληση για ενέργεια, όχι διάθεση. */
+.empty {
+  display: grid; gap: var(--sp-3);
+  justify-items: center; align-content: center;
+  text-align: center;
+  min-height: 320px;
+  padding: var(--sp-8) var(--sp-6);
+  border: 1.5px dashed var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+}
+.empty__icon { color: var(--ion-navy-300); }
+
+/* Τίτλος ενότητας μέσα σε σελίδα/οθόνη. */
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: var(--stretch-headline);
+  font-size: var(--fs-lg);
+  line-height: 1.1;
+}
+
+/* ==========================================================================
+   ΔΙΑΡΚΕΙΑΣ (season pass): η κάρτα μέλους και το εισιτήριο εκδήλωσης
+   Το ένα στοιχείο όπου η σχεδίαση «τολμά».
+   ========================================================================== */
+.pass {
+  --pass-a: #4447B0;
+  --pass-b: var(--ion-navy);
+  --pass-c: var(--ion-navy-700);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--r-xl);
+  color: #fff;
+  background:
+    var(--terrace),
+    radial-gradient(120% 70% at 100% 0%, rgba(207, 156, 29, .22), transparent 55%),
+    linear-gradient(165deg, var(--pass-a) 0%, var(--pass-b) 45%, var(--pass-c) 100%);
+  box-shadow: 0 1px 0 rgba(255,255,255,.18) inset, var(--shadow-lg);
+  text-align: left;
+}
+.pass--academy {
+  --pass-a: #1E2160;
+  --pass-b: var(--ink-700);
+  --pass-c: var(--ink-900);
+  box-shadow: var(--shadow-gold);
+}
+.pass::before {           /* υδατογράφημα εμβλήματος */
+  content: "";
+  position: absolute;
+  right: -18%; top: -6%;
+  width: 62%;
+  aspect-ratio: 600 / 672;
+  background: url("../img/crest.svg") center / contain no-repeat;
+  opacity: .09;
+  filter: grayscale(1) brightness(2.6);
+  transform: rotate(-10deg);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.pass__band {             /* χρυσή ζώνη επιπέδου */
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-3);
+  padding: 9px var(--sp-5);
+  background: var(--ion-gold);
+  color: var(--ink-900);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-sm);
+  line-height: 1.2;
+}
+.pass--academy .pass__band { background: linear-gradient(90deg, var(--ion-gold), var(--ion-gold-300)); }
+.pass__state { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
+.pass__state .dot { background: #0B6B49; box-shadow: 0 0 0 3px rgba(11,107,73,.18); }
+.pass__state.is-off .dot { background: var(--danger-600); box-shadow: 0 0 0 3px rgba(200,54,59,.2); }
+
+.pass__head { padding: var(--sp-5) var(--sp-5) var(--sp-4); display: grid; gap: 6px; }
+.pass__club {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--ion-gold-300);
+}
+.pass__name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: var(--stretch-headline);
+  font-size: 34px;
+  line-height: .98;
+  letter-spacing: -.005em;
+  overflow-wrap: anywhere;
+}
+.pass__meta { font-size: var(--fs-sm); color: rgba(255,255,255,.78); }
+
+/* Διάτρηση: σαν το αποκόμμα εισιτηρίου διαρκείας. */
+.pass__perf {
+  position: relative;
+  height: 0;
+  margin: 0 var(--sp-5);
+  border-top: 2px dashed rgba(255,255,255,.28);
+}
+.pass__perf::before, .pass__perf::after {
+  content: "";
+  position: absolute; top: -12px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--pass-hole, var(--paper-50));
+}
+.pass__perf::before { left: calc(-1 * var(--sp-5) - 11px); }
+.pass__perf::after  { right: calc(-1 * var(--sp-5) - 11px); }
+
+.pass__stub {
+  padding: var(--sp-5);
+  display: grid; justify-items: center; gap: var(--sp-3);
+  text-align: center;
+}
+.pass__qr {
+  position: relative;
+  padding: 10px;
+  background: #fff;
+  border-radius: var(--r-lg);
+  line-height: 0;
+  box-shadow: 0 12px 26px -10px rgba(0,0,0,.55);
+}
+.pass__qr .qr { padding: 0; border-radius: 0; }
+.pass__timer {
+  width: min(188px, 100%);
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.18);
+  overflow: hidden;
+}
+.pass__timer > span {
+  display: block; height: 100%;
+  background: var(--ion-gold);
+  border-radius: inherit;
+  transition: width 250ms linear;
+}
+.pass__code {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px;
+  font-size: var(--fs-sm);
+  color: rgba(255,255,255,.82);
+  font-variant-numeric: tabular-nums;
+}
+.pass__code b { font-family: var(--font-display); color: #fff; letter-spacing: .04em; }
+.pass__consent { font-size: var(--fs-sm); color: var(--ion-gold-300); font-weight: 700; }

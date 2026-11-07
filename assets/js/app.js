@@ -146,28 +146,35 @@
 
     const qrBox = el("div", { class: "qr" });
     const countdown = el("span", { class: "qr-countdown", text: "60s" });
+    const timerFill = el("span", { style: "width:100%" });
 
     const card = el("div", {
-      class: "membercard" + (isAcademy ? " membercard--academy" : "")
+      class: "pass" + (isAcademy ? " pass--academy" : "")
     }, [
-      el("div", { class: "membercard__top" }, [
-        el("span", { class: "membercard__tier", html: isAcademy
-          ? (profile.squad || "ΑΚΑΔΗΜΙΑ") + "<br>(-" + profile.discountPct + "%)"
-          : "ΕΠΙΠΕΔΟ: " + upper(level.name) }),
-        el("span", { class: "membercard__state", style: paused ? "color:var(--danger-300)" : null }, [
-          el("span", { class: "dot" + (paused ? " dot--red" : "") }),
+      el("div", { class: "pass__band" }, [
+        el("span", { text: isAcademy
+          ? "Ακαδημία " + (profile.squad || "") + " (-" + profile.discountPct + "%)"
+          : "Επίπεδο " + level.name }),
+        el("span", { class: "pass__state" + (paused ? " is-off" : "") }, [
+          el("span", { class: "dot" }),
           document.createTextNode(profile.statusLabel)
         ])
       ]),
-      el("div", { class: "membercard__name", text: profile.fullName }),
-      qrBox,
-      el("div", { class: "membercard__foot" }, [
-        el("div", {}, [
-          document.createTextNode("Κωδικός: " + profile.cardCode + " • Ανανέωση "),
-          countdown
+      el("div", { class: "pass__head" }, [
+        el("div", { class: "pass__club", text: "ΙΩΝΙΚΟΣ ΝΙΚΑΙΑΣ 1965" }),
+        el("div", { class: "pass__name", text: profile.fullName }),
+        el("div", { class: "pass__meta", text: isAcademy ? "Κάρτα παιδιού ακαδημίας" : "Κάρτα διαρκείας 2026" })
+      ]),
+      el("div", { class: "pass__perf", "aria-hidden": "true" }),
+      el("div", { class: "pass__stub" }, [
+        el("div", { class: "pass__qr" }, [qrBox]),
+        el("div", { class: "pass__timer", "aria-hidden": "true" }, [timerFill]),
+        el("div", { class: "pass__code" }, [
+          el("span", {}, [document.createTextNode("Κωδικός "), el("b", { text: profile.cardCode })]),
+          el("span", {}, [document.createTextNode("Νέο QR σε "), countdown])
         ]),
         isAcademy
-          ? el("div", { class: "membercard__consent", text: "Γονική Συναίνεση Stream: Ενεργή" })
+          ? el("div", { class: "pass__consent", text: "Γονική συναίνεση για μετάδοση: ενεργή" })
           : null
       ])
     ]);
@@ -210,8 +217,11 @@
 
     liveQR = QR.live(qrBox, profile.cardCode, {
       size: 168,
-      dark: isAcademy ? "#343795" : "#0F172A",
-      onTick(left) { countdown.textContent = left + "s"; }
+      dark: isAcademy ? "#343795" : "#181B4A",
+      onTick(left, ttl) {
+        countdown.textContent = left + "s";
+        timerFill.style.width = Math.round((left / (ttl || 60)) * 100) + "%";
+      }
     });
   }
 
@@ -493,7 +503,7 @@
       if (l.order === D.LEVELS.length - 1) cls += " is-high";
       if (l.order === D.LEVELS.length)     cls += " is-top";
       ladder.appendChild(
-        el("div", { class: cls }, [
+        el("div", { class: cls, "data-level": l.id }, [
           el("div", {}, [
             el("div", { class: "ladder__range", text: l.range }),
             el("div", { class: "ladder__name", text: l.order + ". " + l.name + (l.en ? " (" + l.en + ")" : "") })
@@ -505,9 +515,9 @@
 
     view.append(el("div", { class: "stack" }, [
       card,
-      el("h3", { class: "card__title", text: "Τα Παράσημά μου (Badges)" }),
+      el("h3", { class: "section-title", text: "Τα παράσημά μου" }),
       badges,
-      el("h3", { class: "card__title", text: "Τα 6 Επίπεδα" }),
+      el("h3", { class: "section-title", text: "Τα 6 επίπεδα της κερκίδας" }),
       ladder
     ]));
   }
@@ -545,7 +555,7 @@
     const total = T.perMonth;
 
     view.append(el("div", { class: "stack" }, [
-      el("div", { class: "card" }, [
+      el("div", { class: "card card--rule" }, [
         el("div", { class: "between" }, [
           el("div", {}, [
             el("div", { class: "card__title", text: account.displayName }),
@@ -557,7 +567,7 @@
         ])
       ]),
 
-      el("h3", { class: "card__title", text: "Η Οικογένειά μου" }),
+      el("h3", { class: "section-title", text: "Η οικογένειά μου" }),
       family,
 
       el("div", { class: "card" }, [

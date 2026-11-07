@@ -8,20 +8,21 @@
 <link rel="icon" href="assets/img/crest.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/tokens.css?v=20261107n">
-<link rel="stylesheet" href="assets/css/components.css?v=20261107n">
-<link rel="stylesheet" href="assets/css/shell.css?v=20261107n">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wdth,wght@62.5..100,500..900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css?v=20261107h">
+<link rel="stylesheet" href="assets/css/components.css?v=20261107h">
+<link rel="stylesheet" href="assets/css/shell.css?v=20261107h">
 </head>
 <body>
 
-<main class="auth">
-  <div class="auth__card">
+<main class="auth theme-dark crest-watermark">
+  <div class="auth__card theme-light">
     <div class="auth__head">
       <img class="crest crest--lg" src="assets/img/crest.svg" alt="Έμβλημα Ιωνικού">
-      <div>
-        <h1 class="auth__title">ΙΩΝΙΚΟΣ 1965</h1>
-        <p class="auth__sub">Σύνδεση Μέλους · Επίσημη Εφαρμογή 2026</p>
+      <div style="display:grid;gap:8px;justify-items:center">
+        <h1 class="auth__title">Ιωνικός Νικαίας</h1>
+        <span class="seal">ΑΠΟ ΤΟ 1965</span>
+        <p class="auth__sub" style="margin:0">Σύνδεση μέλους στην εφαρμογή του συλλόγου</p>
       </div>
     </div>
 
@@ -35,7 +36,7 @@
       </div>
 
       <div class="field">
-        <label class="field__label" for="password">Κωδικός Πρόσβασης</label>
+        <label class="field__label" for="password">Κωδικός πρόσβασης</label>
         <input class="input" id="password" name="password" type="password"
                autocomplete="current-password" placeholder="••••••••" required>
       </div>
@@ -43,22 +44,22 @@
       <p id="formError" class="field__error hidden" role="alert"></p>
 
       <button class="btn btn--primary btn--lg btn--block" type="submit">ΣΥΝΔΕΣΗ</button>
-      <button class="btn btn--ghost btn--block" type="button" id="guestBtn">Συνέχεια ως Επισκέπτης</button>
+      <button class="btn btn--ghost btn--block" type="button" id="guestBtn">Συνέχεια ως επισκέπτης</button>
     </form>
 
     <hr class="divider">
 
     <div class="auth__demos">
-      <p class="t-xs muted bold display" style="letter-spacing:.06em;text-transform:uppercase;margin:0">
-        Λογαριασμοί επίδειξης: πατήστε για συμπλήρωση
+      <p class="t-sm muted bold display" style="margin:0">
+        Λογαριασμοί επίδειξης: πατήστε έναν για συμπλήρωση
       </p>
       <div id="demoList" class="stack-2"></div>
     </div>
   </div>
 </main>
 
-<script src="assets/js/data.js?v=20261107n"></script>
-<script src="assets/js/core.js?v=20261107n"></script>
+<script src="assets/js/data.js?v=20261107h"></script>
+<script src="assets/js/core.js?v=20261107h"></script>
 <script>
 (function () {
   "use strict";

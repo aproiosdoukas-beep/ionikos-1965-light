@@ -106,7 +106,7 @@
         el("span", { class: "t-sm muted", text: info.name || "..." }),
         el("button", {
           class: "btn btn--ghost btn--sm", type: "button", text: "Άκυρο",
-          style: "--btn-fg:#F4F7FC;--btn-bd:#2A3A57",
+          
           onclick: renderIdle
         })
       ]),
@@ -188,7 +188,7 @@
         class: "btn btn--" + s.variant + " btn--block",
         type: "button",
         text: s.label,
-        style: s.variant === "ghost" ? "--btn-fg:#F4F7FC;--btn-bd:#2A3A57" : null,
+        style: s.variant === "ghost" ? null : null,
         onclick() {
           const at = s.kind === "stale" ? Date.now() - 5 * 60 * 1000 : undefined;
           processToken(Token.build(s.card + ":" + MERCHANT.id, at));

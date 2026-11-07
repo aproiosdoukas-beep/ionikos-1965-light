@@ -2,57 +2,7 @@
    ΙΩΝΙΚΟΣ 1965 :: Στυλ εφαρμογής κινητού
    ========================================================================== */
 
-/* ---- Ψηφιακή κάρτα μέλους ---------------------------------------------- */
-.membercard {
-  position: relative;
-  border-radius: var(--r-xl);
-  padding: var(--sp-5);
-  display: grid;
-  justify-items: center;
-  gap: var(--sp-4);
-  text-align: center;
-  background: linear-gradient(160deg, #4245AE 0%, var(--ion-navy) 46%, #22246B 100%);
-  color: #fff;
-  overflow: hidden;
-}
-.membercard::after {
-  content: "";
-  position: absolute;
-  inset: auto -30% -55% -30%;
-  height: 160px;
-  background: radial-gradient(closest-side, rgba(211,175,55,.22), transparent);
-  pointer-events: none;
-}
-.membercard--academy {
-  background: linear-gradient(160deg, #16233D 0%, var(--ink-700) 50%, #0A1220 100%);
-  box-shadow: var(--shadow-gold);
-}
-.membercard__top {
-  width: 100%;
-  display: flex; align-items: flex-start; justify-content: space-between;
-  gap: var(--sp-3);
-  font-family: var(--font-display);
-  font-size: var(--fs-sm);
-  font-weight: 800;
-  letter-spacing: .05em;
-}
-.membercard__tier { color: var(--ion-gold); text-align: left; }
-.membercard__state {
-  display: inline-flex; align-items: center; gap: 6px;
-  color: var(--ok-300);
-}
-.membercard__name {
-  font-family: var(--font-display);
-  font-size: var(--fs-xl);
-  font-weight: 800;
-  line-height: 1.1;
-}
-.membercard__foot {
-  font-size: var(--fs-sm);
-  color: rgba(255,255,255,.82);
-  display: grid; gap: 4px;
-}
-.membercard__consent { color: var(--ion-gold-300); font-weight: 700; }
+/* Η κάρτα μέλους ζει στο components.css ως .pass (κοινή με το εισιτήριο). */
 
 /* ---- Info callout ------------------------------------------------------- */
 .info {
@@ -77,15 +27,16 @@
 /* ---- Featured offer (navy) ---------------------------------------------- */
 .offer-hero {
   display: flex; align-items: center; gap: var(--sp-4);
-  padding: var(--sp-4);
-  border-radius: var(--r-md);
-  background: var(--ion-navy);
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--r-lg);
+  background: var(--terrace), linear-gradient(120deg, var(--ion-navy), var(--ion-navy-700));
+  box-shadow: inset 4px 0 0 var(--ion-gold), var(--shadow-md);
   color: #fff;
   cursor: pointer;
   transition: transform var(--dur) var(--ease);
 }
 .offer-hero:hover { transform: translateY(-1px); }
-.offer-hero__name { font-family: var(--font-display); font-weight: 800; color: var(--ion-gold); }
+.offer-hero__name { font-family: var(--font-display); font-weight: 800; font-stretch: var(--stretch-headline); font-size: var(--fs-lg); line-height: 1.1; color: var(--ion-gold-300); }
 .offer-hero__sub  { font-size: var(--fs-sm); color: rgba(255,255,255,.88); }
 .offer-hero__qr {
   width: 42px; height: 42px;
@@ -97,19 +48,23 @@
 
 /* ---- Level card --------------------------------------------------------- */
 .levelcard {
+  position: relative;
+  overflow: hidden;
   border-radius: var(--r-lg);
   padding: var(--sp-5);
-  background: var(--ion-navy);
+  background: var(--terrace), linear-gradient(165deg, var(--ion-navy), var(--ion-navy-700));
+  box-shadow: var(--shadow-md);
   color: #fff;
   display: grid; gap: var(--sp-3);
 }
 .levelcard__row { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-4); }
 .levelcard__name {
   font-family: var(--font-display);
-  font-size: var(--fs-lg);
+  font-size: var(--fs-2xl);
   font-weight: 800;
-  color: var(--ion-gold);
-  line-height: 1.1;
+  font-stretch: var(--stretch-headline);
+  color: var(--ion-gold-300);
+  line-height: 1;
 }
 .levelcard__next { font-size: var(--fs-sm); color: rgba(255,255,255,.8); text-align: right; }
 .levelcard__hint { font-size: var(--fs-sm); color: rgba(255,255,255,.85); }
@@ -132,26 +87,35 @@
 /* ---- Ladder (5 επίπεδα) -------------------------------------------------- */
 .ladder { display: grid; gap: var(--sp-3); }
 .ladder__item {
+  --tier: var(--paper-300);
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--sp-4);
   padding: var(--sp-4);
   border-radius: var(--r-md);
   border: 1px solid var(--border-soft);
-  background: var(--surface-2);
+  background: var(--surface);
+  box-shadow: inset 4px 0 0 var(--tier);
 }
+/* Ένα σκαλί χρώματος ανά επίπεδο κερκίδας: από το γκρι στο χρυσό. */
+.ladder__item[data-level="touristas"] { --tier: #B9BCD6; }
+.ladder__item[data-level="casual"]    { --tier: #8E91CF; }
+.ladder__item[data-level="hooligan"]  { --tier: #6E71C0; }
+.ladder__item[data-level="firm"]      { --tier: var(--ion-navy); }
+.ladder__item[data-level="ranger"]    { --tier: var(--ion-gold-300); }
+.ladder__item[data-level="ultra"]     { --tier: var(--ion-gold); }
 .ladder__range {
   font-family: var(--font-display);
   font-size: var(--fs-xs); font-weight: 800;
   letter-spacing: .07em;
   color: var(--text-muted);
 }
-.ladder__name { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-md); }
+.ladder__name { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-lg); font-stretch: var(--stretch-headline); line-height: 1.1; }
 .ladder__perk { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm); text-align: right; color: var(--ion-navy); }
-.ladder__item.is-current { border-color: var(--ion-navy); background: var(--surface); box-shadow: var(--shadow-sm); }
-.ladder__item.is-high  { background: var(--ion-navy); border-color: transparent; color: #fff; }
+.ladder__item.is-current { border-color: var(--ion-navy); box-shadow: inset 4px 0 0 var(--tier), 0 0 0 1px var(--ion-navy), var(--shadow-md); }
+.ladder__item.is-high  { background: var(--terrace), var(--ion-navy); border-color: transparent; color: #fff; }
 .ladder__item.is-high .ladder__range { color: var(--ion-gold); }
 .ladder__item.is-high .ladder__perk  { color: var(--ion-gold); }
-.ladder__item.is-top { background: var(--ink-900); border-color: var(--ion-gold); color: #fff; }
+.ladder__item.is-top { background: var(--terrace), var(--ink-900); border-color: var(--ion-gold); color: #fff; }
 .ladder__item.is-top .ladder__range { color: var(--ion-gold); }
 .ladder__item.is-top .ladder__name  { color: var(--ion-gold); }
 .ladder__item.is-top .ladder__perk  { color: #fff; }
@@ -165,8 +129,9 @@
 .player {
   position: relative;
   border-radius: var(--r-md);
-  background: #05080F;
-  border: 1px solid #1A2639;
+  background: #05061A;
+  border: 1px solid var(--line-dark-soft);
+  box-shadow: var(--shadow-lg);
   display: grid; place-items: center;
   aspect-ratio: 16 / 10;
   overflow: hidden;
@@ -175,9 +140,10 @@
 .player__bg {
   position: absolute; inset: 0;
   background:
-    radial-gradient(70% 90% at 50% 120%, rgba(26,54,104,.75), transparent 70%),
+    radial-gradient(60% 70% at 50% 115%, rgba(18, 168, 116, .28), transparent 70%),
+    radial-gradient(70% 90% at 50% 120%, rgba(52, 55, 149, .8), transparent 72%),
     repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 2px, transparent 2px 46px),
-    linear-gradient(180deg, #0A1526, #05080F);
+    linear-gradient(180deg, #11134A, #05061A);
 }
 .player__play {
   position: relative;
@@ -188,7 +154,7 @@
   background: var(--ion-gold);
   color: var(--ink-900);
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(211,175,55,.3);
+  box-shadow: 0 0 0 8px rgba(207, 156, 29, .16), 0 10px 30px rgba(207, 156, 29,.35);
   transition: transform var(--dur) var(--ease);
 }
 .player__play:hover { transform: scale(1.06); }
@@ -246,7 +212,7 @@
   min-height: 44px;
   padding: 0 var(--sp-3);
   border-radius: var(--r-md);
-  border: 1px solid #22304A;
+  border: 1px solid var(--line-dark);
   background: rgba(255,255,255,.04);
   color: #fff;
   font: inherit;
@@ -261,16 +227,16 @@
   border-radius: var(--r-md);
   padding: var(--sp-4);
   display: grid; gap: var(--sp-3);
-  background: rgba(211,175,55,.06);
+  background: rgba(207, 156, 29,.06);
 }
-.poll__q { font-family: var(--font-display); font-weight: 800; color: var(--ion-gold); font-size: var(--fs-sm); letter-spacing: .04em; }
+.poll__q { font-family: var(--font-display); font-weight: 800; color: var(--ion-gold-300); font-size: var(--fs-md); letter-spacing: .01em; }
 .poll__opt {
   position: relative;
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--sp-3);
   padding: 10px var(--sp-3);
   border-radius: var(--r-sm);
-  border: 1px solid #22304A;
+  border: 1px solid var(--line-dark);
   background: rgba(255,255,255,.04);
   cursor: pointer;
   overflow: hidden;
@@ -283,7 +249,7 @@
 .poll__opt:disabled { cursor: default; }
 .poll__fill {
   position: absolute; inset: 0 auto 0 0;
-  background: rgba(26,54,104,.65);
+  background: rgba(52, 55, 149,.65);
   transition: width 500ms var(--ease);
 }
 .poll__label, .poll__pct { position: relative; font-weight: 700; }
@@ -327,10 +293,10 @@
   min-height: 100%;
   grid-template-rows: auto auto 1fr auto;
 }
-.scan-state--ok     { background: linear-gradient(170deg, #11543E, #0C3B2C); }
-.scan-state--warn   { background: linear-gradient(170deg, #8A4512, #6B330B); }
-.scan-state--danger { background: linear-gradient(170deg, #8E1A22, #6B1016); }
-.scan-state--idle   { background: linear-gradient(170deg, #16233D, #0A1220); }
+.scan-state--ok     { background: var(--terrace), linear-gradient(170deg, #0F6B4C, #083D2C); }
+.scan-state--warn   { background: var(--terrace), linear-gradient(170deg, #9A5410, #5E2F07); }
+.scan-state--danger { background: var(--terrace), linear-gradient(170deg, #A11E27, #5C0D13); }
+.scan-state--idle   { background: var(--terrace), var(--floodlight), linear-gradient(170deg, var(--ink-700), var(--ink-900)); }
 
 .scan-state__top {
   width: 100%;
@@ -341,11 +307,15 @@
   letter-spacing: .08em;
 }
 .scan-state__glyph {
-  width: 96px; height: 96px;
+  width: 120px; height: 120px;
   border-radius: 50%;
   display: grid; place-items: center;
   align-self: center;
+  box-shadow: 0 0 0 10px rgba(255,255,255,.08), 0 0 0 22px rgba(255,255,255,.04);
 }
+.scan-state:not(.scan-state--idle) .scan-state__glyph { animation: glyph-in 360ms var(--ease); }
+@keyframes glyph-in { from { transform: scale(.6); opacity: 0; } 70% { transform: scale(1.06); } }
+.scan-state__glyph svg { width: 56px; height: 56px; }
 .scan-state__glyph--ok     { background: var(--ok-300); color: #06361F; }
 .scan-state__glyph--warn   { background: #F5C33A; color: #4A2B05; }
 .scan-state__glyph--danger { background: var(--danger-300); color: #51080C; }
@@ -353,17 +323,20 @@
 
 .scan-state__title {
   font-family: var(--font-display);
-  font-size: var(--fs-xl);
+  font-size: var(--fs-2xl);
   font-weight: 800;
+  font-stretch: var(--stretch-headline);
+  line-height: 1;
   letter-spacing: .01em;
 }
-.scan-state__name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); }
+.scan-state__name { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-lg); }
 .scan-state__sub  { font-size: var(--fs-sm); opacity: .85; }
 .scan-state__action {
   width: 100%;
   padding: var(--sp-4);
   border-radius: var(--r-md);
-  background: rgba(255,255,255,.14);
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.14);
   font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--fs-sm);
@@ -389,4 +362,35 @@
   .player__play { width: 58px; height: 58px; }
   .player__meta { font-size: var(--fs-xs); gap: var(--sp-2); }
   .player__watermark { font-size: 10px; }
+}
+
+/* ---- Σκορ πάνω από τον player (ιστοσελίδα) ------------------------------- */
+.scoreline {
+  display: flex; align-items: baseline; flex-wrap: wrap;
+  gap: 4px var(--sp-4);
+  margin-bottom: var(--sp-4);
+  font-family: var(--font-display);
+}
+.scoreline__comp {
+  flex: 1 0 100%;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--ion-gold-300);
+}
+.scoreline__teams {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  font-stretch: var(--stretch-headline);
+  line-height: 1.05;
+}
+.scoreline__score {
+  padding: 2px 12px;
+  border-radius: var(--r-sm);
+  background: var(--ion-gold);
+  color: var(--ink-900);
+  font-size: var(--fs-xl);
+  font-weight: 900;
+  font-stretch: var(--stretch-headline);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
 }

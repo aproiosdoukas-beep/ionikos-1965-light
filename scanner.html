@@ -8,27 +8,27 @@
 <link rel="icon" href="assets/img/crest.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/tokens.css?v=20261107n">
-<link rel="stylesheet" href="assets/css/components.css?v=20261107n">
-<link rel="stylesheet" href="assets/css/shell.css?v=20261107n">
-<link rel="stylesheet" href="assets/css/app.css?v=20261107n">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wdth,wght@62.5..100,500..900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css?v=20261107h">
+<link rel="stylesheet" href="assets/css/components.css?v=20261107h">
+<link rel="stylesheet" href="assets/css/shell.css?v=20261107h">
+<link rel="stylesheet" href="assets/css/app.css?v=20261107h">
 </head>
 <body>
 
 <div class="stage">
-  <header class="stage__head">
-    <div class="stage__brand">
-      <img class="crest" src="assets/img/crest.svg" alt="">
-      <div>
-        <h1>Εφαρμογή Ελέγχου Θύρας</h1>
-        <p class="t-sm" style="color:var(--ok-300);margin:2px 0 0">Λειτουργεί &amp; Offline</p>
+  <header class="stage__head theme-dark">
+    <a class="brandmark" href="index.html">
+      <img class="crest" src="assets/img/crest.svg" alt="Έμβλημα Ιωνικού">
+      <div class="brandmark__text">
+        <h1 class="brandmark__name">Έλεγχος θύρας</h1>
+        <span class="cluster" style="gap:8px"><span class="seal">ΑΠΟ ΤΟ 1965</span><span class="brandmark__sub" style="color:var(--ok-300)">Λειτουργεί και χωρίς σύνδεση</span></span>
       </div>
-    </div>
+    </a>
     <nav class="cluster">
-      <a class="btn btn--ghost btn--sm" href="index.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Αρχική</a>
-      <a class="btn btn--ghost btn--sm" href="app.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Εφαρμογή Μέλους</a>
-      <a class="btn btn--ghost btn--sm" href="merchant.html" style="--btn-fg:#fff;--btn-bd:#2A3A57">Ταμείο Καταστήματος</a>
+      <a class="btn btn--ghost btn--sm" href="index.html">Αρχική</a>
+      <a class="btn btn--ghost btn--sm" href="app.html">Εφαρμογή Μέλους</a>
+      <a class="btn btn--ghost btn--sm" href="merchant.html">Ταμείο Καταστήματος</a>
     </nav>
   </header>
 
@@ -52,15 +52,15 @@
         </div>
       </div>
 
-      <aside class="card theme-dark" style="background:var(--ink-700);border-color:#22304A;color:#F4F7FC">
+      <aside class="card card--ink theme-dark">
         <h2 class="card__title" style="font-size:var(--fs-lg)">Προσομοίωση Σάρωσης</h2>
-        <p class="t-sm" style="color:var(--ink-300)">
+        <p class="t-sm muted">
           Ο έλεγχος είναι πραγματικός: το QR κάθε κάρτας είναι υπογεγραμμένο και ισχύει
           για 60 δευτερόλεπτα. Ανοίξτε την <a href="app.html" class="gold">εφαρμογή μέλους</a>
           σε άλλη καρτέλα, αντιγράψτε τον κωδικό και επικολλήστε τον εδώ.
         </p>
 
-        <hr class="divider" style="background:#22304A">
+        <hr class="divider">
 
         <div class="stack-3">
           <button class="btn btn--success btn--block" type="button" data-scan="live:ION-8472">
@@ -73,40 +73,40 @@
             Σάρωση: Ληγμένη συνδρομή
           </button>
           <button class="btn btn--ghost btn--block" type="button" data-scan="stale:ION-8472"
-                  style="--btn-fg:#F4F7FC;--btn-bd:#2A3A57">
+                 >
             Σάρωση παλιού QR (έχει λήξει)
           </button>
           <button class="btn btn--ghost btn--block" type="button" data-scan="forged:ION-8472"
-                  style="--btn-fg:#F4F7FC;--btn-bd:#2A3A57">
+                 >
             Σάρωση πλαστού QR (λάθος υπογραφή)
           </button>
         </div>
 
-        <hr class="divider" style="background:#22304A">
+        <hr class="divider">
 
         <form class="stack-2" id="manualForm">
-          <label class="field__label" for="tokenInput" style="color:#F4F7FC">Χειροκίνητη εισαγωγή κωδικού</label>
+          <label class="field__label" for="tokenInput">Χειροκίνητη εισαγωγή κωδικού</label>
           <input class="input" id="tokenInput" type="text" placeholder="ION1|ION-8472|…"
-                 style="background:rgba(255,255,255,.04);border-color:#22304A;color:#fff">
+                 >
           <button class="btn btn--gold btn--block" type="submit">ΕΛΕΓΧΟΣ ΚΩΔΙΚΟΥ</button>
         </form>
 
-        <hr class="divider" style="background:#22304A">
+        <hr class="divider">
 
         <div class="between">
-          <span class="t-sm" style="color:var(--ink-300)">Σαρώσεις σήμερα στη Θύρα 1</span>
+          <span class="t-sm">Σαρώσεις σήμερα στη Θύρα 1</span>
           <span class="display bold t-lg gold" id="scanCount">0</span>
         </div>
         <button class="btn btn--ghost btn--sm btn--block" type="button" id="resetBtn"
-                style="--btn-fg:#F4F7FC;--btn-bd:#2A3A57;margin-top:12px">
+                style="margin-top:12px">
           Μηδενισμός ημέρας
         </button>
       </aside>
     </div>
 
     <p class="phone__caption" style="max-width:860px">
-      Οι τρεις καταστάσεις της Οθόνης 02: <b>ΕΓΚΥΡΗ ΚΑΡΤΑ</b> (+1 πόντος στο badge «Παρών»),
-      <b>ΗΔΗ ΣΑΡΩΜΕΝΗ</b> (απαγόρευση 2ης εισόδου) και <b>ΛΗΓΜΕΝΗ ΣΥΝΔΡΟΜΗ</b>.
+      Τρεις απαντήσεις στη θύρα: <b>έγκυρη κάρτα</b> (+1 στο παράσημο «Παρών»),
+      <b>ήδη σαρωμένη</b> (δεν επιτρέπεται δεύτερη είσοδος) και <b>ληγμένη συνδρομή</b>.
     </p>
   </div>
 </div>
@@ -118,10 +118,10 @@
   }
 </style>
 
-<script src="assets/vendor/qrcode.js?v=20261107n"></script>
-<script src="assets/js/data.js?v=20261107n"></script>
-<script src="assets/js/core.js?v=20261107n"></script>
-<script src="assets/js/icons.js?v=20261107n"></script>
-<script src="assets/js/scanner.js?v=20261107n"></script>
+<script src="assets/vendor/qrcode.js?v=20261107h"></script>
+<script src="assets/js/data.js?v=20261107h"></script>
+<script src="assets/js/core.js?v=20261107h"></script>
+<script src="assets/js/icons.js?v=20261107h"></script>
+<script src="assets/js/scanner.js?v=20261107h"></script>
 </body>
 </html>

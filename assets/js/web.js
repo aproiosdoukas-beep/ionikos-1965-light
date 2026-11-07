@@ -111,10 +111,11 @@
       ])
     ]);
 
-    const title = el("h3", {
-      style: "font-size:var(--fs-lg);font-weight:800;margin-bottom:16px",
-      text: L.competition + ": " + L.title + " (" + L.score + ")"
-    });
+    const title = el("div", { class: "scoreline" }, [
+      el("span", { class: "scoreline__comp", text: L.competition }),
+      el("span", { class: "scoreline__teams", text: L.title }),
+      el("span", { class: "scoreline__score", text: L.score })
+    ]);
 
     /* --- Κερκίδα --- */
     const sidebar = el("aside", { class: "card card--ink", style: "display:grid;gap:16px;align-content:start" });
@@ -181,14 +182,23 @@
     onCleanup(() => clearInterval(timer));
 
     /* --- VOD teaser --- */
-    const teaser = el("div", { class: "grid-2", style: "margin-top:20px" });
+    const teaser = el("div", { class: "grid-2" });
     D.VOD.slice(0, 2).forEach(v => teaser.appendChild(vodRow(v)));
 
     page.append(
-      head("Ιωνικός TV", "Ζωντανή μετάδοση και κερκίδα"),
-      el("div", { class: "grid-live" }, [
-        el("div", {}, [title, player, teaser]),
-        sidebar
+      el("section", { class: "matchday theme-dark crest-watermark" }, [
+        head("Ιωνικός TV", "Ζωντανή μετάδοση και κερκίδα"),
+        el("div", { class: "grid-live" }, [
+          el("div", { style: "min-width:0" }, [title, player]),
+          sidebar
+        ])
+      ]),
+      el("section", { class: "stack" }, [
+        el("div", { class: "between" }, [
+          el("h3", { class: "section-title", text: "Πρόσφατοι αγώνες" }),
+          el("a", { class: "btn btn--ghost btn--sm", href: "#vod", text: "Όλο το αρχείο" })
+        ]),
+        teaser
       ])
     );
   }
@@ -250,7 +260,7 @@
     return el("button", {
       class: "row row--clickable",
       type: "button",
-      style: "width:100%;text-align:left;background:var(--ink-700);border-color:#22304A;color:inherit;font:inherit",
+      style: "width:100%;text-align:left;color:inherit;font:inherit;margin:0",
       onclick() { toast("Αναπαραγωγή: " + v.title, "ok"); }
     }, [
       el("div", { class: "row__icon", html: icon("play", 20) }),
@@ -258,7 +268,7 @@
         el("div", { class: "row__title", text: "VOD: " + v.title + " (" + v.score + ")" }),
         el("div", { class: "row__meta", text: v.date + " • Διάρκεια " + v.dur })
       ]),
-      el("div", { class: "row__end gold", html: icon("play", 18) })
+      el("div", { class: "row__end", style: "color:var(--ion-gold-600)", html: icon("play", 18) })
     ]);
   }
 
@@ -268,7 +278,7 @@
 
     page.append(
       head("Αρχείο VOD", "Οι αγώνες των ακαδημιών σε επανάληψη"),
-      el("p", { class: "muted", style: "margin-top:-12px;margin-bottom:24px",
+      el("p", { class: "page-lead",
                 text: "Διαθέσιμο σε όλα τα ενεργά μέλη. Κάθε βίντεο φέρει υδατογράφημα με τον κωδικό του μέλους." }),
       list
     );
@@ -281,11 +291,11 @@
     const profile = Auth.activeProfile();
     const level = profile ? levelById(profile.levelId) : null;
 
-    const list = el("div", { class: "card theme-light", style: "background:var(--paper);display:grid;gap:16px" });
+    const list = el("div", { class: "card card--rule", style: "display:grid;gap:16px" });
     list.appendChild(
-      el("div", { class: "between" }, [
-        el("h3", { class: "card__title", style: "font-size:var(--fs-lg)", text: "Προσεχείς εκδηλώσεις" }),
-        el("span", { class: "t-sm display bold", style: "color:var(--ion-navy)", text: "ΠΡΟΤΕΡΑΙΟΤΗΤΑ ΑΠΟ HOOLIGAN ΚΑΙ ΠΑΝΩ" })
+      el("div", { class: "between", style: "flex-wrap:wrap" }, [
+        el("h3", { class: "section-title", text: "Προσεχείς εκδηλώσεις" }),
+        el("span", { class: "badge badge--gold", text: "Προτεραιότητα από Hooligan" })
       ])
     );
 
@@ -297,9 +307,9 @@
       list.appendChild(
         el("div", {
           class: "row",
-          style: "align-items:flex-start;background:var(--paper-50);border-color:var(--paper-200)"
+          style: "align-items:center;flex-wrap:wrap;background:var(--surface-2);margin:0"
         }, [
-          el("div", { class: "row__body" }, [
+          el("div", { class: "row__body", style: "flex:1 1 220px" }, [
             el("div", {
               class: "t-xs display bold",
               style: "letter-spacing:.07em;color:" + (ev.tone === "gold" ? "var(--ion-gold-600)" : "var(--ok-600)"),
@@ -324,22 +334,19 @@
     page.append(
       head("Εκδηλώσεις", "Εκδηλώσεις του συλλόγου"),
       level
-        ? el("p", { class: "muted", style: "margin-top:-12px;margin-bottom:24px",
+        ? el("p", { class: "page-lead",
                     text: "Το επίπεδό σας: " + level.name + ". " + level.perk })
-        : el("p", { class: "muted", style: "margin-top:-12px;margin-bottom:24px",
+        : el("p", { class: "page-lead",
                     text: "Συνδεθείτε για να δείτε τις τιμές μέλους και να κλείσετε θέση νωρίτερα." }),
-      el("div", { class: "grid-2" }, [list, ticketPane])
+      el("div", { class: "grid-2", style: "align-items:start" }, [list, ticketPane])
     );
   }
 
   function renderTicketPlaceholder(pane) {
     pane.innerHTML = "";
     pane.appendChild(
-      el("div", {
-        class: "card card--ink",
-        style: "display:grid;gap:12px;justify-items:center;text-align:center;min-height:360px;align-content:center"
-      }, [
-        el("div", { html: icon("ticket", 44, 1.4), style: "color:var(--ink-400)" }),
+      el("div", { class: "empty" }, [
+        el("div", { class: "empty__icon", html: icon("ticket", 44, 1.4) }),
         el("div", { class: "card__title", text: "Δεν έχετε εισιτήριο ακόμη" }),
         el("p", { class: "t-sm muted", style: "margin:0;max-width:280px",
                   text: "Επιλέξτε εκδήλωση και το ηλεκτρονικό εισιτήριο με QR θα εμφανιστεί εδώ." })
@@ -356,43 +363,48 @@
     pane.innerHTML = "";
 
     const qrBox = el("div", { class: "qr" });
-    const countdown = el("span", { class: "qr-countdown gold", text: "60s" });
+    const countdown = el("span", { class: "qr-countdown", style: "color:#fff", text: "60s" });
+
+    const timerFill = el("span", { style: "width:100%" });
 
     pane.appendChild(
-      el("div", {
-        class: "card card--ink",
-        style: "display:grid;gap:14px;justify-items:center;text-align:center"
-      }, [
-        el("div", { class: "between", style: "width:100%" }, [
-          el("span", { class: "t-xs display bold gold", style: "letter-spacing:.07em", text: "ΕΙΣΙΤΗΡΙΟ ΕΚΔΗΛΩΣΗΣ" }),
-          el("span", { class: "t-xs display bold ok" }, [
-            el("span", { class: "dot", style: "margin-right:6px" }),
-            document.createTextNode("ΕΓΚΥΡΟ")
+      el("div", { class: "pass theme-dark", style: "--pass-hole:var(--paper-100)" }, [
+        el("div", { class: "pass__band" }, [
+          el("span", { text: "Εισιτήριο εκδήλωσης" }),
+          el("span", { class: "pass__state" }, [el("span", { class: "dot" }), document.createTextNode("Έγκυρο")])
+        ]),
+        el("div", { class: "pass__head" }, [
+          el("div", { class: "pass__club", text: "ΙΩΝΙΚΟΣ ΝΙΚΑΙΑΣ 1965" }),
+          el("div", { class: "pass__name", style: "font-size:30px", text: ev.title }),
+          el("div", { class: "pass__meta", text: ev.dateText + ", " + ev.time + ", " + ev.gate }),
+          el("div", { class: "pass__meta" }, [
+            document.createTextNode("Κάτοχος: "),
+            el("b", { style: "color:#fff", text: profile ? profile.fullName : acc.displayName })
           ])
         ]),
-        el("div", { class: "card__title", style: "font-size:var(--fs-lg)", text: ev.title }),
-        el("div", { class: "t-sm muted", text: ev.dateText + ", " + ev.time + " • " + ev.gate }),
-        qrBox,
-        el("div", { class: "t-sm" }, [
-          document.createTextNode("Ανανέωση κωδικού σε "), countdown
-        ]),
-        el("div", { class: "t-sm muted", text: "Σαρώνεται με τον ίδιο Gate Scanner της εισόδου" }),
-        el("div", { class: "t-sm" }, [
-          document.createTextNode("Κάτοχος: "),
-          el("b", { text: profile ? profile.fullName : acc.displayName })
-        ]),
-        el("button", {
-          class: "btn btn--ghost btn--block", type: "button", text: "Άλλη εκδήλωση",
-          style: "--btn-fg:#F4F7FC;--btn-bd:#2A3A57",
-          onclick() { handle.stop(); renderTicketPlaceholder(pane); }
-        })
+        el("div", { class: "pass__perf", "aria-hidden": "true" }),
+        el("div", { class: "pass__stub" }, [
+          el("div", { class: "pass__qr" }, [qrBox]),
+          el("div", { class: "pass__timer", "aria-hidden": "true" }, [timerFill]),
+          el("div", { class: "pass__code" }, [
+            el("span", {}, [document.createTextNode("Νέο QR σε "), countdown]),
+            el("span", { text: "Σαρώνεται στην είσοδο" })
+          ]),
+          el("button", {
+            class: "btn btn--ghost btn--block", type: "button", text: "Άλλη εκδήλωση",
+            onclick() { handle.stop(); renderTicketPlaceholder(pane); }
+          })
+        ])
       ])
     );
 
     const code = (profile ? profile.cardCode : "ION-GUEST") + ":" + ev.id;
     const handle = QR.live(qrBox, code, {
       size: 176,
-      onTick(left) { countdown.textContent = left + "s"; }
+      onTick(left, ttl) {
+        countdown.textContent = left + "s";
+        timerFill.style.width = Math.round((left / (ttl || 60)) * 100) + "%";
+      }
     });
     onCleanup(() => handle.stop());
 
@@ -409,10 +421,10 @@
     if (!Auth.account()) {
       page.append(
         head("Συνδρομή", "Η συνδρομή της οικογένειας"),
-        el("div", { class: "card card--ink", style: "display:grid;gap:16px;justify-items:start;max-width:640px" }, [
-          el("p", { class: "modal__text", style: "color:var(--ink-300)",
+        el("div", { class: "card card--rule", style: "display:grid;gap:16px;justify-items:start;max-width:640px" }, [
+          el("p", { class: "modal__text",
                     text: "Συνδεθείτε για να δείτε και να αλλάξετε τη συνδρομή της οικογένειάς σας." }),
-          el("a", { class: "btn btn--gold", href: "login.html?next=web.html", text: "ΣΥΝΔΕΣΗ" })
+          el("a", { class: "btn btn--primary", href: "login.html?next=web.html", text: "ΣΥΝΔΕΣΗ" })
         ])
       );
       return;
@@ -444,8 +456,8 @@
   }
 
   function plansCard() {
-    return el("div", { class: "card card--ink", style: "display:grid;grid-template-columns:minmax(0,1fr);gap:20px" }, [
-      el("h3", { class: "card__title", style: "font-size:var(--fs-lg)", text: "Τι περιλαμβάνει κάθε πακέτο" }),
+    return el("div", { class: "card card--navy theme-dark crest-watermark", style: "display:grid;grid-template-columns:minmax(0,1fr);gap:20px" }, [
+      el("h3", { class: "section-title", text: "Τι περιλαμβάνει κάθε πακέτο" }),
       ...["adult", "academy"].map(id => {
         const plan = D.PLANS[id];
         return el("section", { class: "plan" }, [
@@ -481,7 +493,7 @@
     const rows = el("div", { class: "stack-3" });
     Auth.profiles().forEach(p => {
       rows.appendChild(
-        el("div", { class: "row", style: "background:var(--paper);border-color:var(--paper-200)" }, [
+        el("div", { class: "row", style: "margin:0" }, [
           el("div", { class: "row__body" }, [
             el("div", { class: "row__title", text: p.fullName }),
             p.kind === "academy"
@@ -510,10 +522,10 @@
       );
     });
 
-    return el("div", { class: "card theme-light", style: "background:var(--paper-50);border-color:var(--paper-200);display:grid;grid-template-columns:minmax(0,1fr);gap:18px" }, [
+    return el("div", { class: "card card--rule", style: "display:grid;grid-template-columns:minmax(0,1fr);gap:18px" }, [
       el("div", { class: "between" }, [
-        el("h3", { class: "card__title", style: "font-size:var(--fs-lg)", text: "Οικογενειακό καλάθι συνδρομής" }),
-        el("span", { class: "t-sm display bold", style: "color:var(--ok-600)", text: "ΕΝΕΡΓΗ" })
+        el("h3", { class: "section-title", text: "Οικογενειακό καλάθι συνδρομής" }),
+        el("span", { class: "badge badge--ok", text: "Ενεργή" })
       ]),
       cycleSwitch,
       rows,
@@ -526,7 +538,7 @@
       el("div", { class: "between" }, [
         el("span", { class: "display bold", style: "font-size:var(--fs-md)",
                      text: yearly ? "Σύνολο έτους (αυτόματη χρέωση)" : "Σύνολο μήνα (αυτόματη χρέωση)" }),
-        el("span", { class: "display bold", style: "font-size:var(--fs-xl);color:var(--ion-navy)", text: fmtEuro(t.base) })
+        el("span", { class: "display bold mono", style: "font-size:var(--fs-2xl);font-stretch:var(--stretch-headline);line-height:1;color:var(--ion-navy)", text: fmtEuro(t.base) })
       ]),
       yearly
         ? el("p", { class: "t-sm bold", style: "margin:-8px 0 0;color:var(--ok-600)",
@@ -553,32 +565,32 @@
     const months = t.gapMonths === 1 ? "1 μήνας" : t.gapMonths + " μήνες";
     const gapTag = t.gapMonths === 1 ? "ΚΕΝΟ 1 ΜΗΝΑ" : "ΚΕΝΟ " + t.gapMonths + " ΜΗΝΩΝ";
 
-    return el("div", { class: "card", style: "background:var(--ink-900);border-color:#1A2639;display:grid;grid-template-columns:minmax(0,1fr);gap:16px" }, [
+    return el("div", { class: "card card--ink card--rule theme-dark", style: "display:grid;grid-template-columns:minmax(0,1fr);gap:16px" }, [
       el("div", { class: "between", style: "align-items:flex-start" }, [
-        el("h3", { class: "card__title", style: "font-size:var(--fs-lg)", text: "Επιστροφή μετά από διακοπή" }),
+        el("h3", { class: "section-title", text: "Επιστροφή μετά από διακοπή" }),
         el("span", { class: "t-sm display bold gold", style: "text-align:right", text: gapTag })
       ]),
-      el("div", { style: "border-left:4px solid var(--ion-gold);padding:12px 16px;border-radius:0 12px 12px 0;background:var(--ink-700)" }, [
+      el("div", { style: "border-left:4px solid var(--ion-gold);padding:12px 16px;border-radius:0 10px 10px 0;background:var(--ink-800)" }, [
         el("div", { class: "display bold gold", text: "Ενημέρωση επιπέδου" }),
         el("div", { class: "t-sm", text: downgrade
           ? "Λόγω απουσίας άνω των " + D.BILLING.downgradeAfterDays + " ημερών, επιστρέφετε στο επίπεδο «Casual»."
           : "Επιστρέφοντας μέσα σε " + D.BILLING.downgradeAfterDays + " ημέρες, διατηρείτε το επίπεδό σας." })
       ]),
-      el("div", { class: "row", style: "background:var(--ink-700);border-color:#22304A" }, [
+      el("div", { class: "row", style: "background:var(--ink-800);margin:0" }, [
         el("div", { class: "row__body" }, [el("div", { class: "row__title", text: t.cycle.id === "yearly" ? "Βασική ετήσια συνδρομή" : "Βασική μηνιαία συνδρομή" })]),
         el("div", { class: "row__end", style: "font-size:var(--fs-md)", text: fmtEuro(t.base) })
       ]),
-      el("div", { class: "row", style: "background:var(--ink-700);border-color:#22304A" }, [
+      el("div", { class: "row", style: "background:var(--ink-800);margin:0" }, [
         el("div", { class: "row__body" }, [
           el("div", { class: "row__title", style: "color:var(--danger-300)", text: "Τέλος επανεγγραφής (" + months + " απουσίας)" }),
           el("div", { class: "row__meta", text: fmtEuro(D.BILLING.reactivationPerMonth) + " ανά μήνα κενού, χρεώνεται μία φορά" })
         ]),
         el("div", { class: "row__end", style: "font-size:var(--fs-md);color:var(--danger-300)", text: "+" + fmtEuro(t.reactivationFee) })
       ]),
-      el("hr", { class: "divider", style: "margin:0;background:#22304A" }),
+      el("hr", { class: "divider", style: "margin:0" }),
       el("div", { class: "between" }, [
         el("span", { class: "display bold", style: "font-size:var(--fs-md)", text: "Πρώτη πληρωμή επιστροφής" }),
-        el("span", { class: "display bold gold", style: "font-size:var(--fs-xl)", text: fmtEuro(t.total) })
+        el("span", { class: "display bold mono", style: "font-size:var(--fs-2xl);font-stretch:var(--stretch-headline);line-height:1;color:var(--ion-gold-300)", text: fmtEuro(t.total) })
       ]),
       el("button", {
         class: "btn btn--gold btn--lg btn--block", type: "button",
