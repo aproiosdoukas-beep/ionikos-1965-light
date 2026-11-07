@@ -18,7 +18,14 @@
   function updateCount(){ $("#scanCount").textContent = Object.keys(log()).length; }
 
   /* ---- Αρχική κατάσταση -------------------------------------------------- */
+  /* Ένα μόνο χρονόμετρο επιστροφής: κάθε νέα σάρωση το ξεκινά από την αρχή,
+     ώστε ένα παλιό αποτέλεσμα να μην σβήνει το καινούργιο. */
+  const RESULT_MS = 12000;
+  let idleTimer = null;
+
   function renderIdle() {
+    clearTimeout(idleTimer);
+    idleTimer = null;
     view.innerHTML = "";
     view.appendChild(
       el("div", { class: "scan-state scan-state--idle" }, [
@@ -57,11 +64,19 @@
           el("div", { class: "scan-state__name", style: "margin-top:12px", text: res.name }),
           el("div", { class: "scan-state__sub", style: "margin-top:4px", text: res.sub })
         ]),
-        el("div", { class: "scan-state__action", text: S.action })
+        el("div", { class: "scan-state__action", text: S.action }),
+        el("div", { class: "scan-state__timer", "aria-hidden": "true" }, [
+          el("span", { style: "animation-duration:" + RESULT_MS + "ms" })
+        ]),
+        el("button", {
+          class: "btn btn--ghost btn--block", type: "button", text: "Επόμενη σάρωση",
+          onclick: renderIdle
+        })
       ])
     );
 
-    setTimeout(renderIdle, 6000);
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(renderIdle, RESULT_MS);
   }
 
   /* ---- Η λογική επαλήθευσης ---------------------------------------------- */
