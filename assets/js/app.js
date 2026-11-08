@@ -395,6 +395,7 @@
       el("div", { class: "live-pin" }, [player]),
       el("div", { class: "display bold", text: L.title + " " + L.score }),
       pollBlock(),
+      standingsCard(),
       el("div", { class: "display bold gold t-sm", text: "Κερκίδα Live (" + L.stand + " online)" }),
       chatScroll,
       form
@@ -408,6 +409,21 @@
   }
 
   const chatMsg = m => window.ION.chatLine(m);
+
+  /** Βαθμολογία του τμήματος που παίζει τώρα, με σύνδεσμο για όλες. */
+  function standingsCard() {
+    const S = D.STANDINGS;
+    const sport = S.sports.find(s => s.id === "football");
+    const t = S.tables["football:k16"];
+    return el("div", { class: "card card--ink", style: "display:grid;gap:10px;padding:14px" }, [
+      el("div", { class: "between" }, [
+        el("span", { class: "display bold", text: "Βαθμολογία Κ16" }),
+        el("span", { class: "t-xs muted", text: t.competition })
+      ]),
+      window.ION.standingsTable(sport, t, true),
+      el("a", { class: "btn btn--ghost btn--sm btn--block", href: "web.html#standings", text: "Όλες οι βαθμολογίες" })
+    ]);
+  }
 
   function pushMsg(scroll, m) {
     scroll.appendChild(chatMsg(m));

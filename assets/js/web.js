@@ -11,6 +11,7 @@
   const ROUTES = [
     { id: "live",         label: "Live Αγώνες" },
     { id: "vod",          label: "Αρχείο VOD" },
+    { id: "standings",    label: "Βαθμολογίες" },
     { id: "events",       label: "Εκδηλώσεις" },
     { id: "subscription", label: "Συνδρομή" }
   ];
@@ -76,7 +77,7 @@
     page.innerHTML = "";
     renderNav();
     renderAuth();
-    ({ live: viewLive, vod: viewVod, events: viewEvents, subscription: viewSubscription })[currentRoute()]();
+    ({ live: viewLive, vod: viewVod, standings: viewStandings, events: viewEvents, subscription: viewSubscription })[currentRoute()]();
     syncNavHeight();
     window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
   }
@@ -291,6 +292,67 @@
                 text: "Διαθέσιμο σε όλα τα ενεργά μέλη. Κάθε βίντεο φέρει υδατογράφημα με τον κωδικό του μέλους." }),
       list
     );
+  }
+
+  /* ======================================================================
+     Βαθμολογίες: άθλημα, κατηγορία, πίνακας και αγώνες του Ιωνικού
+     ====================================================================== */
+  const standingsSel = { sport: "football", group: "men" };
+
+  function viewStandings() {
+    const S = D.STANDINGS;
+    const sport = S.sports.find(s => s.id === standingsSel.sport);
+
+    const sportSwitch = el("div", { class: "segmented", role: "tablist", "aria-label": "Άθλημα" },
+      S.sports.map(s => el("button", {
+        class: "segmented__btn" + (s.id === standingsSel.sport ? " is-active" : ""),
+        type: "button", role: "tab", "aria-selected": String(s.id === standingsSel.sport),
+        text: s.label,
+        onclick() { standingsSel.sport = s.id; render(); }
+      })));
+
+    const groupChips = el("div", { class: "cluster", style: "gap:8px" },
+      S.groups.map(g => el("button", {
+        class: "chip" + (g.id === standingsSel.group ? " is-active" : ""),
+        type: "button", "aria-pressed": String(g.id === standingsSel.group),
+        text: g.label,
+        onclick() { standingsSel.group = g.id; render(); }
+      })));
+
+    page.append(
+      head("Βαθμολογίες", "Οι ομάδες του Ιωνικού"),
+      el("div", { class: "stack", style: "margin-bottom:24px;max-width:640px" }, [sportSwitch, groupChips]),
+      standingsBody(sport, S.tables[standingsSel.sport + ":" + standingsSel.group], false)
+    );
+  }
+
+  /** Πίνακας + τελευταίο αποτέλεσμα + επόμενος αγώνας. compact: μόνο οι πρώτοι 4 και ο Ιωνικός. */
+  function standingsBody(sport, t, compact) {
+    const table = window.ION.standingsTable(sport, t, compact);
+
+    const tableCard = el("div", { class: "card card--rule", style: "display:grid;gap:12px" }, [
+      el("div", { class: "between", style: "flex-wrap:wrap" }, [
+        el("h3", { class: "section-title", text: t.competition }),
+        el("span", { class: "badge", text: "Δεδομένα επίδειξης" })
+      ]),
+      el("div", { style: "overflow-x:auto" }, [table])
+    ]);
+    if (compact) return tableCard;
+
+    const matchCard = (label, m, isNext) => el("div", { class: "card match-card" + (isNext ? " card--navy theme-dark" : "") }, [
+      el("div", { class: "eyebrow", text: label }),
+      el("div", { class: "match-card__teams" }, [
+        el("span", { text: m.home }),
+        el("b", { class: "match-card__score", text: isNext ? m.time : m.score }),
+        el("span", { text: m.away })
+      ]),
+      el("div", { class: "t-sm muted", text: isNext ? m.date + ", " + m.venue : m.date })
+    ]);
+
+    return el("div", { class: "grid-live", style: "align-items:start" }, [
+      tableCard,
+      el("div", { class: "stack" }, [matchCard("Τελευταίο αποτέλεσμα", t.last, false), matchCard("Επόμενος αγώνας", t.next, true)])
+    ]);
   }
 
   /* ======================================================================

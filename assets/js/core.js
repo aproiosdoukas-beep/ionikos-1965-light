@@ -724,6 +724,25 @@
     ]);
   }
 
+  /** Πίνακας βαθμολογίας, ίδιος σε web και app. compact: οι 4 πρώτοι και ο Ιωνικός. */
+  function standingsTable(sport, t, compact) {
+    const us = r => r.team.indexOf("Ιωνικός") === 0;
+    const rows = compact ? t.rows.filter((r, i) => i < 4 || us(r)) : t.rows;
+    const th = (txt, cls, title) => el("th", { class: cls || null, text: txt, title: title || null });
+    const td = (txt, cls) => el("td", { class: cls || null, text: String(txt) });
+    return el("table", { class: "table standings" }, [
+      el("thead", {}, [el("tr", {}, [
+        th("#"), th("Ομάδα"), th("Α", "num", "Αγώνες"), th("Ν", "num col-wdl", "Νίκες"),
+        sport.draws ? th("Ι", "num col-wdl", "Ισοπαλίες") : null,
+        th("Η", "num col-wdl", "Ήττες"), th("Β", "num", "Βαθμοί")
+      ])]),
+      el("tbody", {}, rows.map(r => el("tr", { class: us(r) ? "is-us" : null }, [
+        td(t.rows.indexOf(r) + 1, "pos"), td(r.team, "team"), td(r.p, "num"), td(r.w, "num col-wdl"),
+        sport.draws ? td(r.d, "num col-wdl") : null, td(r.l, "num col-wdl"), td(r.pts, "num pts")
+      ])))
+    ]);
+  }
+
   /** Ένα toast για κάθε τρόπαιο που μόλις ξεκλείδωσε. */
   function celebrate(list) {
     (list || []).forEach(t => {
@@ -742,6 +761,6 @@
   global.ION = {
     Store, Auth, Membership, Trophies, Token, QR, resolveCard,
     el, $, $$,
-    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, todayKey, hash32, upper
+    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, standingsTable, todayKey, hash32, upper
   };
 })(window);

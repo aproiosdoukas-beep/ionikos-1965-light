@@ -474,3 +474,34 @@
   }
 }
 .live-pin .player__caption { margin-top: 44px; padding: 0 var(--sp-4); font-size: var(--fs-xs); line-height: 1.3; }
+
+/* ---- Βαθμολογίες ----------------------------------------------------------- */
+.standings { font-size: var(--fs-base); }
+.standings th.num, .standings td.num { text-align: center; width: 44px; font-variant-numeric: tabular-nums; }
+.standings td.pos { width: 32px; font-family: var(--font-display); font-weight: 800; color: var(--text-muted); }
+.standings td.team { font-weight: 600; }
+.standings td.pts { font-family: var(--font-display); font-weight: 900; font-size: var(--fs-md); }
+.standings tr.is-us td { background: var(--ion-gold-100); font-weight: 800; }
+.standings tr.is-us td:first-child { box-shadow: inset 4px 0 0 var(--ion-gold); color: var(--ion-gold-600); }
+.standings tr.is-us td.team { color: var(--ion-navy); }
+.table.standings td:last-child, .table.standings th:last-child { text-align: center; }
+@media (max-width: 480px) {
+  .standings .col-wdl { display: none; }
+  .standings { font-size: var(--fs-sm); }
+}
+.theme-dark .standings tr.is-us td { background: rgba(207, 156, 29, .14); }
+.theme-dark .standings tr.is-us td.team { color: var(--ion-gold-300); }
+
+.match-card { display: grid; gap: 10px; }
+.match-card__teams {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center; gap: 12px;
+  font-family: var(--font-display); font-weight: 800; font-size: var(--fs-md); line-height: 1.15;
+}
+.match-card__teams span:last-child { text-align: right; }
+.match-card__score {
+  padding: 4px 12px; border-radius: var(--r-sm);
+  background: var(--ion-navy); color: #fff;
+  font-size: var(--fs-xl); font-stretch: var(--stretch-headline); font-variant-numeric: tabular-nums;
+}
+.card--navy .match-card__score { background: var(--ion-gold); color: var(--ink-900); }
