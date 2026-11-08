@@ -53,6 +53,12 @@
 
   --live:            #FF3B30;
 
+  /* ---- Βαθμίδες τροπαίων ---------------------------------------------- */
+  --tier-bronze:     #B4703A;
+  --tier-silver:     #9AA3B5;
+  --tier-gold:       var(--ion-gold);
+  --tier-platinum:   #A7C7E7;
+
   /* ---- Ρόλοι (light theme = προεπιλογή) ------------------------------- */
   --bg:              var(--paper-100);
   --surface:         var(--paper);

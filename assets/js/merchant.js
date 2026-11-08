@@ -5,7 +5,7 @@
   "use strict";
 
   const D = window.ION_DATA;
-  const { Store, Token, el, $, toast, todayKey, resolveCard, upper } = window.ION;
+  const { Store, Token, Trophies, el, $, toast, celebrate, todayKey, resolveCard, upper } = window.ION;
 
   $("#sbIcons").innerHTML = icon("signal", 15, 1.6) + icon("wifi", 15, 1.6) + icon("battery", 20, 1.5);
   $("#storeIcon").innerHTML = icon("store", 24);
@@ -128,6 +128,7 @@
     Store.set(STATS_KEY, s);
 
     toast("Καταγράφηκε: " + MERCHANT.discount + " για " + info.name, "ok");
+    if (info.profileId) celebrate(Trophies.record(info.profileId, "redeem", MERCHANT.id));
     renderIdle();
   }
 
@@ -168,6 +169,7 @@
 
     renderResult(true, {
       name: card.name,
+      profileId: card.profileId || null,
       cardCode: cardCode,
       usesLine: "Χρήση " + (used + 1) + " από " + MERCHANT.usesTotal + " για τον " + MONTH
     });

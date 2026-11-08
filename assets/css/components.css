@@ -858,3 +858,36 @@ img, svg { max-width: 100%; }
 }
 .pass__code b { font-family: var(--font-display); color: #fff; letter-spacing: .04em; }
 .pass__consent { font-size: var(--fs-sm); color: var(--ion-gold-300); font-weight: 700; }
+
+/* ==========================================================================
+   ΤΡΟΠΑΙΑ: χρώμα βαθμίδας και toast ξεκλειδώματος
+   ========================================================================== */
+.trophy-tier--bronze   { --tier: var(--tier-bronze); }
+.trophy-tier--silver   { --tier: var(--tier-silver); }
+.trophy-tier--gold     { --tier: var(--tier-gold); }
+.trophy-tier--platinum { --tier: var(--tier-platinum); }
+
+.tier-dot {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--tier, var(--tier-bronze));
+  box-shadow: 0 0 0 2px rgba(255,255,255,.18);
+  flex: 0 0 auto;
+}
+
+.toast--trophy {
+  background: var(--terrace), var(--ink-800);
+  box-shadow: inset 4px 0 0 var(--tier, var(--ion-gold)), var(--shadow-lg);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-md);
+  color: #fff;
+}
+.toast--trophy::before {
+  content: "";
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--tier, var(--ion-gold));
+  box-shadow: 0 0 0 4px rgba(255,255,255,.12);
+  flex: 0 0 auto;
+}

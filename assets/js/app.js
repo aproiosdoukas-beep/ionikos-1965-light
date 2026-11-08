@@ -6,7 +6,7 @@
   "use strict";
 
   const D = window.ION_DATA;
-  const { Auth, Membership, Store, Token, QR, el, $, fmtEuro, mmss, levelById, levelColor, toast, upper } = window.ION;
+  const { Auth, Membership, Trophies, Store, Token, QR, el, $, fmtEuro, mmss, levelById, levelColor, toast, celebrate, upper } = window.ION;
 
   const account = Auth.require(["member"]);
   if (!account) return;
@@ -351,6 +351,7 @@
         state.playing = !state.playing;
         playBtn.innerHTML = icon(state.playing ? "pause" : "play", 32, 2);
         toast(state.playing ? "Η μετάδοση ξεκίνησε" : "Παύση", state.playing ? "ok" : null);
+        if (state.playing) celebrate(Trophies.record(Auth.activeProfile().id, "watch"));
       }
     });
 
@@ -383,6 +384,7 @@
         const p = Auth.activeProfile();
         pushMsg(chatScroll, { user: p.shortName, levelId: p.levelId, text: text, own: true });
         input.value = "";
+        celebrate(Trophies.record(p.id, "chat"));
       }
     }, [
       input,
@@ -443,6 +445,7 @@
             Store.set("poll:voted", o.id);
             state.voted = o.id;
             toast("Η ψήφος σας καταγράφηκε", "ok");
+            celebrate(Trophies.record(Auth.activeProfile().id, "vote"));
             render();
           }
         }, [

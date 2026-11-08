@@ -700,6 +700,15 @@
     setTimeout(() => t.remove(), ms || 2800);
   }
 
+  /** Ένα toast για κάθε τρόπαιο που μόλις ξεκλείδωσε. */
+  function celebrate(list) {
+    (list || []).forEach(t => {
+      if (!t) return;
+      toast("Νέο τρόπαιο: " + t.name, "trophy trophy-tier--" + t.tier, 4000);
+    });
+    return (list || []).length;
+  }
+
   /** Κλειδί ημέρας, για τον έλεγχο διπλοσάρωσης στη θύρα. */
   function todayKey() {
     const d = new Date();
@@ -709,6 +718,6 @@
   global.ION = {
     Store, Auth, Membership, Trophies, Token, QR, resolveCard,
     el, $, $$,
-    fmtEuro, mmss, levelById, levelColor, toast, todayKey, hash32, upper
+    fmtEuro, mmss, levelById, levelColor, toast, celebrate, todayKey, hash32, upper
   };
 })(window);

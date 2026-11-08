@@ -6,7 +6,7 @@
   "use strict";
 
   const D = window.ION_DATA;
-  const { Auth, Membership, Store, Token, QR, el, $, $$, fmtEuro, levelById, levelColor, toast, upper } = window.ION;
+  const { Auth, Membership, Trophies, Store, Token, QR, el, $, $$, fmtEuro, levelById, levelColor, toast, celebrate, upper } = window.ION;
 
   const ROUTES = [
     { id: "live",         label: "Live Αγώνες" },
@@ -96,6 +96,8 @@
         playing = !playing;
         playBtn.innerHTML = icon(playing ? "pause" : "play", 34, 2);
         toast(playing ? "Η μετάδοση ξεκίνησε" : "Παύση", playing ? "ok" : null);
+        const viewer = Auth.activeProfile();
+        if (playing && viewer) celebrate(Trophies.record(viewer.id, "watch"));
       }
     });
 
@@ -163,6 +165,7 @@
         const p = Auth.activeProfile();
         push({ user: p ? p.shortName : acc.displayName, levelId: p ? p.levelId : "newcomer", text: text });
         input.value = "";
+        if (p) celebrate(Trophies.record(p.id, "chat"));
       }
     }, [
       input,
@@ -244,6 +247,8 @@
             Store.set("poll:counts", counts);
             Store.set("poll:voted", o.id);
             toast("Η ψήφος σας καταγράφηκε", "ok");
+            const voter = Auth.activeProfile();
+            if (voter) celebrate(Trophies.record(voter.id, "vote"));
             rerender();
           }
         }, [
@@ -412,6 +417,7 @@
     onCleanup(() => handle.stop());
 
     toast(ev.memberPrice === 0 ? "Εκδόθηκε δωρεάν εισιτήριο" : "Η κράτηση ολοκληρώθηκε (" + fmtEuro(ev.memberPrice) + ")", "ok");
+    if (profile) celebrate(Trophies.record(profile.id, "ticket"));
   }
 
 

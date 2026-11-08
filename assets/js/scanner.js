@@ -6,7 +6,7 @@
   "use strict";
 
   const D = window.ION_DATA;
-  const { Store, Token, el, $, $$, toast, todayKey, hash32, resolveCard } = window.ION;
+  const { Store, Token, Trophies, el, $, $$, toast, celebrate, todayKey, hash32, resolveCard } = window.ION;
 
   $("#sbIcons").innerHTML = icon("signal", 15, 1.6) + icon("wifi", 15, 1.6) + icon("battery", 20, 1.5);
 
@@ -129,7 +129,8 @@
     saveLog(entries);
 
     renderResult({ state: "valid", name: card.name, sub: card.sub });
-    toast("+1 πόντος «Παρών»: " + card.name, "ok");
+    toast("+1 προς «Παιδί της Θύρας»: " + card.name, "ok");
+    if (card.profileId) celebrate(Trophies.record(card.profileId, "gate"));
   }
 
   /* ---- Παραγωγή tokens για την προσομοίωση -------------------------------- */

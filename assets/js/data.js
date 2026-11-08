@@ -350,7 +350,7 @@
       badge: "OFFLINE READY",
       title: "ΕΓΚΥΡΗ ΚΑΡΤΑ",
       icon: "check",
-      action: "+1 πόντος στο παράσημο «Παρών»",
+      action: "+1 προς το τρόπαιο «Παιδί της Θύρας»",
       tone: "ok"
     },
     duplicate: {
