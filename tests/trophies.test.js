@@ -8,7 +8,7 @@ const find = (ION, pid, id) => ION.Trophies.forProfile(pid).find(t => t.id === i
 run({
   twelve_trophies_four_tiers() {
     const { D } = loadCore();
-    assert.strictEqual(D.TROPHIES.length, 12);
+    assert.strictEqual(D.TROPHIES.length, 13);
     for (const t of D.TROPHIES) assert.ok(D.TIERS[t.tier], "unknown tier " + t.tier);
     assert.strictEqual(D.TROPHIES.find(t => t.id === "stand_voice").name, "Ο Κάπο");
   },
@@ -55,7 +55,7 @@ run({
   platinum_counts_others() {
     const { ION } = loadCore();
     const p = find(ION, "p_giorgos", "since_1965");
-    assert.strictEqual(p.goal, 11);
+    assert.strictEqual(p.goal, 12);
     const unlockedOthers = ION.Trophies.forProfile("p_giorgos").filter(t => t.id !== "since_1965" && t.unlocked).length;
     assert.strictEqual(p.progress, unlockedOthers);
   },
@@ -70,7 +70,7 @@ run({
     const { ION } = loadCore();
     ION.Trophies.record("p_giorgos", "chat");
     const s = ION.Trophies.summary("p_giorgos");
-    assert.strictEqual(s.total, 12);
+    assert.strictEqual(s.total, 13);
     assert.strictEqual(s.silver >= 1, true);
     assert.strictEqual(s.unlocked, s.bronze + s.silver + s.gold + s.platinum);
   },

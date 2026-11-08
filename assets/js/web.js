@@ -190,7 +190,8 @@
       chatScroll.scrollTop = chatScroll.scrollHeight;
     }
 
-    sidebar.append(roomTabs, pollBlock(render), chatScroll, form);
+    const viewer = Auth.activeProfile();
+    sidebar.append(roomTabs, pollBlock(render), window.ION.predictionCard(viewer ? viewer.id : null), chatScroll, form);
     loadRoom("match");
 
     const hype = window.ION.liveHype(player, score => {

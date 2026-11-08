@@ -389,6 +389,47 @@
   };
 
   /* ======================================================================
+     ΠΡΟΒΛΕΨΗ ΣΚΟΡ: κλείδωμα μία φορά, κλείσιμο μία φορά
+     ====================================================================== */
+  const Predictions = {
+    _key(pid, matchId) { return "prediction:" + pid + ":" + matchId; },
+
+    get(pid, matchId) { return Store.get(Predictions._key(pid, matchId), null); },
+
+    reset() {
+      try {
+        Object.keys(localStorage)
+          .filter(k => k.indexOf(NS + "prediction:") === 0)
+          .forEach(k => localStorage.removeItem(k));
+      } catch (_) {}
+    },
+
+    lock(pid, matchId, home, away) {
+      const ok = n => Number.isInteger(n) && n >= 0 && n <= 9;
+      if (!ok(home) || !ok(away) || Predictions.get(pid, matchId)) return false;
+      Store.set(Predictions._key(pid, matchId), { home: home, away: away, lockedAt: Date.now(), result: null });
+      return true;
+    },
+
+    /** Κλείνει την πρόβλεψη με το τελικό σκορ "Χ-Υ". Δεύτερη κλήση δεν ξαναμετράει. */
+    settle(pid, matchId, finalScore) {
+      const p = Predictions.get(pid, matchId);
+      if (!p) return null;
+      if (p.result) return { result: p.result, unlocked: [] };
+      const [h, a] = String(finalScore).split("-").map(Number);
+      const sign = n => (n > 0) - (n < 0);
+      const result = p.home === h && p.away === a ? "exact"
+        : sign(p.home - p.away) === sign(h - a) ? "outcome" : "miss";
+      p.result = result;
+      Store.set(Predictions._key(pid, matchId), p);
+      let unlocked = [];
+      if (result === "exact") unlocked = Trophies.record(pid, "predict_hit");
+      if (result === "outcome") unlocked = Trophies.record(pid, "predict_outcome");
+      return { result: result, unlocked: unlocked };
+    }
+  };
+
+  /* ======================================================================
      LIVE: μετρητής θορύβου κερκίδας και σκορ επίδειξης
      ====================================================================== */
   const clamp100 = n => Math.max(0, Math.min(100, n));
@@ -821,6 +862,73 @@
     };
   }
 
+  /** Κάρτα πρόβλεψης σκορ για τον αγώνα του live. rerender() ξαναχτίζει την κάρτα. */
+  function predictionCard(pid, onSettle) {
+    const L = D.LIVE;
+    const teams = L.title.split(" vs ");
+    const wrap = el("div", { class: "predict" });
+    const icon = global.icon;
+
+    function draw() {
+      wrap.innerHTML = "";
+      const p = pid ? Predictions.get(pid, L.id) : null;
+      wrap.appendChild(el("div", { class: "between" }, [
+        el("span", { class: "predict__title", text: "Πρόβλεψη σκορ" }),
+        el("span", { class: "t-xs", style: "color:var(--ink-300)", text: L.competition })
+      ]));
+
+      if (!pid) {
+        wrap.appendChild(el("p", { class: "t-sm", style: "margin:0;color:var(--ink-300)", text: "Συνδεθείτε για να κάνετε πρόβλεψη." }));
+        return;
+      }
+
+      if (!p) {
+        const pick = [0, 0];
+        const val = [el("b", { class: "stepper__value", text: "0" }), el("b", { class: "stepper__value", text: "0" })];
+        const stepper = i => el("div", { class: "stepper" }, [
+          el("span", { class: "stepper__team", text: teams[i] }),
+          el("div", { class: "stepper__ctrl" }, [
+            el("button", { class: "btn btn--ghost btn--icon btn--sm", type: "button", "aria-label": "Ένα γκολ λιγότερο για " + teams[i],
+              html: icon("minus", 16, 2.2), onclick() { pick[i] = Math.max(0, pick[i] - 1); val[i].textContent = pick[i]; } }),
+            val[i],
+            el("button", { class: "btn btn--ghost btn--icon btn--sm", type: "button", "aria-label": "Ένα γκολ περισσότερο για " + teams[i],
+              html: icon("plus", 16, 2.2), onclick() { pick[i] = Math.min(9, pick[i] + 1); val[i].textContent = pick[i]; } })
+          ])
+        ]);
+        wrap.append(
+          el("div", { class: "predict__pick" }, [stepper(0), stepper(1)]),
+          el("button", { class: "btn btn--gold btn--block", type: "button", text: "Κλείδωμα πρόβλεψης",
+            onclick() { if (Predictions.lock(pid, L.id, pick[0], pick[1])) { toast("Η πρόβλεψή σας κλείδωσε: " + pick[0] + "-" + pick[1], "ok"); draw(); } } })
+        );
+        return;
+      }
+
+      wrap.appendChild(el("div", { class: "predict__locked" }, [
+        el("span", { text: "Η πρόβλεψή σας" }),
+        el("b", { class: "predict__score", text: p.home + "-" + p.away })
+      ]));
+
+      if (!p.result) {
+        wrap.appendChild(el("button", { class: "btn btn--ghost btn--block btn--sm", type: "button", text: "Λήξη αγώνα (επίδειξη)",
+          onclick() {
+            const r = Predictions.settle(pid, L.id, LiveScore.get());
+            celebrate(r.unlocked);
+            draw();
+            if (onSettle) onSettle(r);
+          } }));
+        return;
+      }
+
+      const msg = { exact: "Ακριβές σκορ! +10 πόντοι", outcome: "Βρήκατε το σημείο, +3 πόντοι", miss: "Άλλη φορά" }[p.result];
+      wrap.appendChild(el("div", { class: "predict__result is-" + p.result }, [
+        el("span", { text: "Τελικό " + LiveScore.get() }),
+        el("b", { text: msg })
+      ]));
+    }
+    draw();
+    return wrap;
+  }
+
   /** Ένα toast για κάθε τρόπαιο που μόλις ξεκλείδωσε. */
   function celebrate(list) {
     (list || []).forEach(t => {
@@ -837,8 +945,8 @@
   }
 
   global.ION = {
-    Store, Auth, Membership, Trophies, Noise, LiveScore, Token, QR, resolveCard,
+    Store, Auth, Membership, Trophies, Predictions, Noise, LiveScore, Token, QR, resolveCard,
     el, $, $$,
-    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, standingsTable, liveHype, todayKey, hash32, upper
+    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, standingsTable, liveHype, predictionCard, todayKey, hash32, upper
   };
 })(window);

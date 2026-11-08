@@ -133,7 +133,8 @@
     { id: "ticket",         name: "Πρώτη σειρά",            tier: "bronze",   icon: "ticket", action: "ticket", goal: 1,  text: "Κλείσατε το πρώτο σας εισιτήριο σε εκδήλωση του συλλόγου." },
     { id: "viewer",         name: "Ο Αναλυτής",             tier: "bronze",   icon: "play",   action: "watch",  goal: 1,  text: "Είδατε αγώνα ζωντανά στο Ιωνικός TV." },
     { id: "loyal",          name: "Μπλε αίμα",              tier: "gold",     icon: "shield", action: "months", goal: 12, text: "Συμπληρώσατε έναν χρόνο ως μέλος του Ιωνικού." },
-    { id: "since_1965",     name: "Ψυχή του Ιωνικού",       tier: "platinum", icon: "medal",  action: "all",    goal: 11, text: "Κατακτήσατε όλα τα υπόλοιπα τρόπαια." }
+    { id: "oracle",         name: "Ο Μάντης",               tier: "bronze",   icon: "check",  action: "predict_hit", goal: 1, text: "Βρήκατε το ακριβές σκορ ενός αγώνα." },
+    { id: "since_1965",     name: "Ψυχή του Ιωνικού",       tier: "platinum", icon: "medal",  action: "all",    goal: 12, text: "Κατακτήσατε όλα τα υπόλοιπα τρόπαια." }
   ];
 
   /* Αρχικοί μετρητές επίδειξης: κάτι ξεκλειδώνει με ένα πάτημα. */

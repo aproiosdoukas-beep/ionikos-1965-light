@@ -37,6 +37,7 @@
     bag:     '<path d="M5 8h14l1 12H4L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
     lock:    '<rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
     plus:    '<path d="M12 5v14M5 12h14"/>',
+    minus:   '<path d="M5 12h14"/>',
     expand:  '<path d="M4 9V4h5M20 15v5h-5M20 9V4h-5M4 15v5h5"/>',
     pause:   '<path d="M9 5v14M15 5v14" stroke-width="2.4"/>',
     volume:  '<path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4v-5Z"/><path d="M16 9.2a4 4 0 0 1 0 5.6"/><path d="M18.5 6.8a7.5 7.5 0 0 1 0 10.4"/>'

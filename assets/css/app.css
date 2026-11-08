@@ -566,3 +566,34 @@
 @keyframes goal-in { from { transform: translateY(-50%) scaleX(.2); opacity: 0; } }
 .live-pin .hype { margin-top: var(--sp-2); }
 .live-pin .reaction { min-height: 38px; font-size: 18px; }
+
+/* ---- Πρόβλεψη σκορ ---------------------------------------------------------- */
+.predict {
+  display: grid; gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid var(--line-dark);
+  background: var(--terrace), rgba(52, 55, 149, .28);
+  color: #F3F4FC;
+}
+.predict__title { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-md); color: var(--ion-gold-300); }
+.predict__pick { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
+.stepper { display: grid; gap: 6px; justify-items: center; text-align: center; min-width: 0; }
+.stepper__team { font-size: var(--fs-sm); font-weight: 700; color: var(--ink-300); overflow-wrap: anywhere; }
+.stepper__ctrl { display: flex; align-items: center; gap: var(--sp-2); }
+.stepper__value {
+  min-width: 34px; text-align: center;
+  font-family: var(--font-display); font-weight: 900; font-stretch: var(--stretch-headline);
+  font-size: var(--fs-2xl); line-height: 1; font-variant-numeric: tabular-nums;
+}
+.predict__locked { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); font-size: var(--fs-sm); color: var(--ink-300); }
+.predict__score, .predict__result b {
+  font-family: var(--font-display); font-weight: 900; font-stretch: var(--stretch-headline);
+  font-size: var(--fs-xl); color: #fff; font-variant-numeric: tabular-nums;
+}
+.predict__result { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); flex-wrap: wrap; padding: var(--sp-3); border-radius: var(--r-sm); background: rgba(0,0,0,.22); font-size: var(--fs-sm); }
+.predict__result b { font-size: var(--fs-md); }
+.predict__result.is-exact { box-shadow: inset 4px 0 0 var(--ion-gold); }
+.predict__result.is-exact b { color: var(--ion-gold-300); }
+.predict__result.is-outcome b { color: var(--ok-300); }
+.predict__result.is-miss b { color: var(--ink-300); }

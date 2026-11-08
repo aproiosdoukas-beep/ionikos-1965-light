@@ -401,6 +401,7 @@
       el("div", { class: "live-pin" }, [player, hype.el]),
       scoreLine,
       pollBlock(),
+      window.ION.predictionCard(Auth.activeProfile().id),
       standingsCard(),
       el("div", { class: "display bold gold t-sm", text: "Κερκίδα Live (" + L.stand + " online)" }),
       chatScroll,
@@ -672,6 +673,7 @@
           Membership.reset();
           Trophies.reset();
           window.ION.LiveScore.reset();
+          window.ION.Predictions.reset();
           ["activeProfile", "poll:voted", "poll:counts", "app:tab"].forEach(k => Store.remove(k));
           toast("Τα δεδομένα επανήλθαν στην αρχική τους μορφή", "ok");
           render();
