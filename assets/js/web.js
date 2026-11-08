@@ -149,6 +149,7 @@
       chatScroll.innerHTML = "";
       (D.CHAT_SEED[id] || []).forEach(m => chatScroll.appendChild(chatMsg(m)));
       $$(".chip", roomTabs).forEach(c => c.classList.toggle("is-active", c.dataset.room === id));
+      requestAnimationFrame(() => { chatScroll.scrollTop = chatScroll.scrollHeight; });
     }
 
     D.CHAT_ROOMS.forEach(r => {
@@ -193,14 +194,14 @@
     }
 
     const viewer = Auth.activeProfile();
-    sidebar.append(roomTabs, chatScroll, form);
+    sidebar.append(el("div", { class: "live-chat__inner" }, [roomTabs, chatScroll, form]));
 
     /* Ψηφοφορία και πρόβλεψη κάτω από το βίντεο: φεύγουν μόλις ψηφίσετε. */
     const actions = el("div", { class: "live-actions" });
     const poll = pollBlock(function (label, pct) {
       poll.remove();
       if (room !== "match") loadRoom("match");
-      push({ user: "Ιωνικός TV", levelId: "ultra", text: "Ψηφίσατε " + label + " για MVP. Μαζί σας το " + pct + "% της κερκίδας." });
+      push({ user: "Ιωνικός TV", levelId: "ultra", text: "Η ψήφος σας για MVP: " + label + ". Μέχρι στιγμής έχει " + pct + "%." });
     });
     if (poll) actions.appendChild(poll);
     actions.appendChild(window.ION.predictionCard(viewer ? viewer.id : null));

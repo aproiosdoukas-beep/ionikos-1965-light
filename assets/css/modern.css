@@ -478,3 +478,11 @@ h1, h2 { font-weight: 650; }
 .hero .crest-watermark::before, .auth.crest-watermark::before { opacity: .04; }
 .btn--icon { padding: 0; }
 .matchday.crest-watermark::before { opacity: .035; }
+
+/* Χρονολόγιο: φαρδύτερη στήλη έτους, για να μη χτυπά το «1999-2000» στον κύκλο. */
+@media (min-width: 561px) {
+  .timeline__item { grid-template-columns: 136px minmax(0, 1fr); gap: 44px; }
+  .timeline__year { font-size: var(--fs-lg); }
+  .timeline::before { left: 157px; }
+  .timeline__item::before { left: 152px; }
+}

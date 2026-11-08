@@ -97,6 +97,7 @@
     phone.querySelector(".phone__screen").classList.toggle("theme-dark", dark);
 
     view.innerHTML = "";
+    view.className = "phone__body" + (state.tab === "live" ? " phone__body--live" : "");
     appbar.className = "appbar" + (dark ? " appbar--ink" : "");
     appbar.innerHTML = "";
 
@@ -399,18 +400,26 @@
       el("button", { class: "btn btn--gold btn--icon", type: "submit", "aria-label": "Αποστολή", html: icon("send", 18) })
     ]);
 
-    view.append(el("div", { class: "stack" }, [
-      el("div", { class: "live-pin" }, [player, hype.el]),
-      scoreLine,
+    /* Βίντεο σταθερό πάνω, πεδίο γραφής σταθερό κάτω, το chat γεμίζει τη μέση.
+       Ψηφοφορία και πρόβλεψη κάθονται κάτω από το βίντεο μέχρι να τις χρησιμοποιήσετε. */
+    const actions = el("div", { class: "live-app__actions" }, [
       pollBlock(function (label, pct) {
-        pushMsg(chatScroll, { user: "Ιωνικός TV", levelId: "ultra", text: "Ψηφίσατε " + label + " για MVP. Μαζί σας το " + pct + "% της κερκίδας." });
+        pushMsg(chatScroll, { user: "Ιωνικός TV", levelId: "ultra", text: "Η ψήφος σας για MVP: " + label + ". Μέχρι στιγμής έχει " + pct + "%." });
       }),
-      window.ION.predictionCard(Auth.activeProfile().id),
-      el("div", { class: "display bold gold t-sm", text: "Κερκίδα Live (" + L.stand + " online)" }),
+      window.ION.predictionCard(Auth.activeProfile().id)
+    ].filter(Boolean));
+
+    view.append(el("div", { class: "live-app" }, [
+      el("div", { class: "live-app__top" }, [player, hype.el]),
+      el("div", { class: "between live-app__score" }, [
+        scoreLine,
+        el("a", { class: "t-sm display bold gold", href: "web.html#standings", text: "Βαθμολογία" })
+      ]),
+      actions,
       chatScroll,
-      form,
-      standingsCard()
-    ].filter(Boolean)));
+      form
+    ]));
+    requestAnimationFrame(() => { chatScroll.scrollTop = chatScroll.scrollHeight; });
 
     /* Προσομοίωση κίνησης στην κερκίδα */
     ambientTimer = setInterval(function () {
@@ -420,20 +429,6 @@
   }
 
   const chatMsg = m => window.ION.chatLine(m);
-
-  /** Βαθμολογία της ανδρικής ομάδας ποδοσφαίρου (οι ακαδημίες δεν έχουν δημοσιευμένους πίνακες). */
-  function standingsCard() {
-    const t = D.STANDINGS.leagues.find(l => l.id === "football");
-    return el("div", { class: "card card--ink", style: "display:grid;gap:10px;padding:14px" }, [
-      el("div", { class: "between" }, [
-        el("span", { class: "display bold", text: "Ποδόσφαιρο ανδρών" }),
-        el("span", { class: "t-xs muted", text: t.competition })
-      ]),
-      window.ION.standingsTable(t, t, true),
-      el("p", { class: "t-xs muted", style: "margin:0", text: "Πηγή: " + t.source.name + ", " + t.source.date }),
-      el("a", { class: "btn btn--ghost btn--sm btn--block", href: "web.html#standings", text: "Όλες οι βαθμολογίες" })
-    ]);
-  }
 
   function pushMsg(scroll, m) {
     scroll.appendChild(chatMsg(m));

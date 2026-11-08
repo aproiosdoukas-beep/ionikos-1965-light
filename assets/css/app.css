@@ -692,10 +692,10 @@
 }
 
 /* ---- Ζωντανά: chat δίπλα στο βίντεο ---------------------------------------- */
-/* Αριστερά βίντεο και από κάτω ψηφοφορία/πρόβλεψη, δεξιά όλο το ύψος για το chat. */
+/* Το chat έχει ακριβώς το ύψος του βίντεο (μαζί με τις αντιδράσεις) και ξεκινά
+   στο ίδιο ύψος. Ψηφοφορία και πρόβλεψη μπαίνουν από κάτω, μόνο αριστερά. */
 .grid-live {
-  grid-template-areas: "main chat" "actions chat";
-  grid-template-rows: auto 1fr;
+  grid-template-areas: "main chat" "actions .";
   align-items: start;
 }
 .grid-live > .live-main { grid-area: main; }
@@ -704,14 +704,22 @@
 .live-chat {
   grid-area: chat;
   align-self: stretch;
-  display: flex; flex-direction: column; gap: var(--sp-3);
+  position: relative;
   min-height: 0;
 }
-.live-chat .chat__scroll { flex: 1 1 0; min-height: 260px; max-height: none; display: flex; flex-direction: column; }
-.live-chat .chat__scroll > :first-child { margin-top: auto; }
+/* Το περιεχόμενο δεν μεγαλώνει τη σειρά: γεμίζει όσο ύψος έχει το βίντεο. */
+.live-chat__inner {
+  position: absolute; inset: var(--sp-5);
+  display: flex; flex-direction: column; gap: var(--sp-3);
+}
+.live-chat .chat__scroll { flex: 1 1 0; min-height: 0; max-height: none; align-content: start; }
 @media (max-width: 960px) {
-  .grid-live { grid-template-areas: "main" "actions" "chat"; grid-template-rows: auto; }
-  .live-chat .chat__scroll { flex: none; max-height: 380px; }
+  /* Κινητό: το chat αμέσως κάτω από το καρφιτσωμένο βίντεο, με το πεδίο
+     γραφής ορατό την ίδια ώρα. Ψηφοφορία και πρόβλεψη πάνε από κάτω. */
+  .grid-live { grid-template-areas: "main" "chat" "actions"; }
+  .live-chat { padding: var(--sp-3); }
+  .live-chat__inner { position: static; inset: auto; gap: var(--sp-2); }
+  .live-chat .chat__scroll { flex: none; height: max(150px, calc(100dvh - var(--nav-h, 120px) - 430px)); }
 }
 
 /* Κλειδωμένη πρόβλεψη: μία λεπτή γραμμή. */
@@ -727,3 +735,16 @@
 .predict__verdict.is-exact { color: var(--ion-gold-300); }
 .predict__verdict.is-outcome { color: var(--ok-300); }
 .predict__verdict.is-miss { color: var(--ink-300); }
+
+/* Εφαρμογή, ζωντανά: βίντεο πάνω, πεδίο γραφής κάτω, chat στη μέση. */
+.phone__body--live { overflow: hidden; display: flex; flex-direction: column; padding: var(--sp-3); }
+.live-app { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+.live-app__top { flex: 0 0 auto; }
+.live-app__top .hype { margin-top: var(--sp-2); gap: var(--sp-2); }
+.live-app__top .reaction { min-height: 36px; font-size: 18px; }
+.live-app__score { flex: 0 0 auto; }
+.live-app__score a { text-decoration: none; }
+.live-app__actions { flex: 0 1 auto; max-height: 42%; overflow-y: auto; display: grid; gap: var(--sp-2); }
+.live-app__actions .poll, .live-app__actions .predict { padding: var(--sp-3); gap: var(--sp-2); }
+.live-app .chat__scroll { flex: 1 1 0; min-height: 64px; max-height: none; align-content: safe end; }
+.live-app .chat__form { flex: 0 0 auto; }
