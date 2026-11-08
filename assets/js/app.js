@@ -536,6 +536,7 @@
           el("span", { class: "section-title", text: "Κατάταξη εβδομάδας" }),
           el("span", { class: "display bold", style: "color:var(--ion-navy)", text: window.ION.Leaderboard.points(profile.id) + " πόντοι" })
         ]),
+        el("span", { class: "badge", style: "justify-self:start", text: "Δεδομένα επίδειξης" }),
         window.ION.leaderboardTable(profile.id, 5),
         el("a", { class: "btn btn--ghost btn--sm btn--block", href: "web.html#stand", text: "Όλη η κατάταξη" })
       ]),

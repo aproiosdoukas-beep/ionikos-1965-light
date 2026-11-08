@@ -526,6 +526,7 @@
       const result = p.home === h && p.away === a ? "exact"
         : sign(p.home - p.away) === sign(h - a) ? "outcome" : "miss";
       p.result = result;
+      p.final = String(finalScore);
       Store.set(Predictions._key(pid, matchId), p);
       let unlocked = [];
       if (result === "exact") unlocked = Trophies.record(pid, "predict_hit");
@@ -549,12 +550,15 @@
   const LiveScore = {
     get() { return Store.get("live:score", D.LIVE.score); },
     scored() { return Store.get("live:score", null) !== null; },
+    ended() { return Store.get("live:ended", false) === true; },
+    /** Η λήξη του αγώνα (επίδειξη): μετά από αυτήν δεν μπαίνει άλλο γκολ. */
+    end() { Store.set("live:ended", true); },
     goal() {
-      if (LiveScore.scored()) return LiveScore.get();
+      if (LiveScore.scored() || LiveScore.ended()) return LiveScore.get();
       const parts = D.LIVE.score.split("-").map(Number);
       return Store.set("live:score", (parts[0] + 1) + "-" + parts[1]);
     },
-    reset() { Store.remove("live:score"); }
+    reset() { Store.remove("live:score"); Store.remove("live:ended"); }
   };
 
   /* ======================================================================
@@ -914,20 +918,22 @@
 
   /**
    * Αντιδράσεις, μετρητής θορύβου και γκολ επίδειξης για έναν player.
-   * onScore(score) καλείται όταν αλλάξει το σκορ. Επιστρέφει { el, stop, goal }.
+   * onScore(score, fresh) καλείται όταν αλλάξει το σκορ (fresh: το γκολ έγινε τώρα εδώ).
+   * Επιστρέφει { el, stop, goal }.
    */
   function liveHype(player, onScore) {
     let level = 20;
     const timers = [];
     const bar = el("span", { style: "width:20%" });
+    const track = el("div", { class: "noise__bar", role: "meter", "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": "Θόρυβος κερκίδας" }, [bar]);
     const label = el("span", { class: "noise__label", text: Noise.label(level) });
     const meter = el("div", { class: "noise" }, [
       el("div", { class: "noise__head" }, [el("span", { class: "noise__title", text: "Θόρυβος κερκίδας" }), label]),
-      el("div", { class: "noise__bar", role: "meter", "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": "Θόρυβος κερκίδας" }, [bar])
+      track
     ]);
     function paint() {
       bar.style.width = level + "%";
-      bar.parentNode.setAttribute("aria-valuenow", String(level));
+      track.setAttribute("aria-valuenow", String(level));
       label.textContent = Noise.label(level);
       meter.classList.toggle("is-loud", level >= 75);
     }
@@ -943,13 +949,18 @@
       onclick() { level = Noise.tap(level); float(r.emoji); paint(); }
     })));
     function goal() {
+      /* Το γκολ έγινε ήδη (σε άλλη καρτέλα ή σελίδα) ή ο αγώνας έληξε: μόνο συγχρονισμός σκορ. */
+      if (LiveScore.scored() || LiveScore.ended()) {
+        if (onScore) onScore(LiveScore.get());
+        return LiveScore.get();
+      }
       const score = LiveScore.goal();
       level = 100; paint();
       const banner = el("div", { class: "goal-banner", role: "status", text: upper("Γκολ του Ιωνικού") });
       player.appendChild(banner);
       setTimeout(() => banner.remove(), 3000);
       for (let i = 0; i < 6; i++) setTimeout(() => float(i % 2 ? "💙" : "⚽"), i * 120);
-      if (onScore) onScore(score);
+      if (onScore) onScore(score, true);
       return score;
     }
     timers.push(setInterval(() => {
@@ -958,12 +969,18 @@
       paint();
     }, 800));
     timers.push(setInterval(() => { level = Noise.decay(level); paint(); }, 400));
-    if (!LiveScore.scored()) timers.push(setTimeout(goal, 45000));
+    if (!LiveScore.scored() && !LiveScore.ended()) timers.push(setTimeout(goal, 45000));
+    /* Άλλη καρτέλα έβαλε το γκολ: ενημέρωση σκορ χωρίς επανάληψη της στιγμής. */
+    function onStorage(e) { if (e.key === NS + "live:score" && onScore) onScore(LiveScore.get()); }
+    if (global.addEventListener) global.addEventListener("storage", onStorage);
     paint();
     return {
       el: el("div", { class: "hype" }, [row, meter]),
       goal: goal,
-      stop() { timers.forEach(t => { clearInterval(t); clearTimeout(t); }); }
+      stop() {
+        timers.forEach(t => { clearInterval(t); clearTimeout(t); });
+        if (global.removeEventListener) global.removeEventListener("storage", onStorage);
+      }
     };
   }
 
@@ -1017,6 +1034,8 @@
         wrap.appendChild(el("button", { class: "btn btn--ghost btn--block btn--sm", type: "button", text: "Λήξη αγώνα (επίδειξη)",
           onclick() {
             const r = Predictions.settle(pid, L.id, LiveScore.get());
+            if (!r) { draw(); return; }
+            LiveScore.end();
             celebrate(r.unlocked);
             draw();
             if (onSettle) onSettle(r);
@@ -1026,7 +1045,7 @@
 
       const msg = { exact: "Ακριβές σκορ! +10 πόντοι", outcome: "Βρήκατε το σημείο, +3 πόντοι", miss: "Άλλη φορά" }[p.result];
       wrap.appendChild(el("div", { class: "predict__result is-" + p.result }, [
-        el("span", { text: "Τελικό " + LiveScore.get() }),
+        el("span", { text: "Τελικό " + (p.final || LiveScore.get()) }),
         el("b", { text: msg })
       ]));
     }
@@ -1138,7 +1157,7 @@
     function drawRsvp() {
       btnBox.innerHTML = "";
       const n = Rsvp.count(g.key);
-      count.textContent = "Έρχονται " + n.toLocaleString("el-GR") + " φίλαθλοι";
+      count.textContent = "Έρχονται " + n.toLocaleString("el-GR") + " φίλαθλοι (αριθμός επίδειξης)";
       if (!pid) {
         btnBox.appendChild(el("a", { class: "btn btn--gold btn--block", href: loginHref || "login.html", text: "Θα είμαι εκεί" }));
         return;

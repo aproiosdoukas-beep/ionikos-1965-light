@@ -36,6 +36,19 @@ run({
     assert.strictEqual(ION.LiveScore.get(), "3-1");
     assert.strictEqual(ION.LiveScore.scored(), true);
   },
+  goal_replay_suppressed() {
+    const { ION } = loadCore();
+    ION.Store.set("live:score", "3-1");
+    let appended = 0;
+    const player = { appendChild() { appended++; } };
+    const calls = [];
+    const h = ION.liveHype(player, s => calls.push(s));
+    appended = 0;
+    h.goal();
+    h.stop();
+    assert.deepStrictEqual(calls, ["3-1"]);
+    assert.strictEqual(appended, 0, "banner or emoji replayed");
+  },
   score_reset() {
     const { ION } = loadCore();
     ION.LiveScore.goal();

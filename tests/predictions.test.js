@@ -61,6 +61,21 @@ run({
     ION.Predictions.reset();
     assert.strictEqual(ION.Predictions.get("p_giorgos", M), null);
   },
+  settle_stores_final_score() {
+    const { ION } = loadCore();
+    ION.Predictions.lock("p_giorgos", M, 2, 1);
+    ION.Predictions.settle("p_giorgos", M, "2-1");
+    assert.strictEqual(ION.Predictions.get("p_giorgos", M).final, "2-1");
+  },
+  no_goal_after_match_ended() {
+    const { ION } = loadCore();
+    ION.LiveScore.end();
+    assert.strictEqual(ION.LiveScore.goal(), "2-1");
+    assert.strictEqual(ION.LiveScore.scored(), false);
+    assert.strictEqual(ION.LiveScore.ended(), true);
+    ION.LiveScore.reset();
+    assert.strictEqual(ION.LiveScore.ended(), false);
+  },
   settle_without_lock_null() {
     const { ION } = loadCore();
     assert.strictEqual(ION.Predictions.settle("p_giorgos", M, "3-1"), null);

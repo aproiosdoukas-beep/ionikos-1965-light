@@ -23,6 +23,14 @@ run({
     assert.ok(D.HISTORY.facts.some(f => f.value.includes("29 Ιουνίου 1965")));
     assert.ok(D.HISTORY.facts.some(f => f.value.includes("μπλε και λευκό")));
   },
+  claims_match_sources() {
+    const { D } = loadCore();
+    const by = y => D.HISTORY.timeline.find(t => t.year === y);
+    assert.ok(by("2024-25").text.includes("όμιλ"), "2024-25 must say first in its group");
+    assert.ok(!by("2024-25").text.includes("Πρωτάθλημα"), "2024-25 is not a championship");
+    assert.ok(!by("1983-84").text.includes("του συλλόγου"), "73 points: source says ρεκόρ only");
+    assert.strictEqual(by("2000").source, "el_club", "5.000 fans figure is on the club page");
+  },
   no_disputed_items() {
     const { D } = loadCore();
     const all = JSON.stringify(D.HISTORY);

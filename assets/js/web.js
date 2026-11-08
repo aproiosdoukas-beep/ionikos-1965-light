@@ -196,9 +196,11 @@
     sidebar.append(roomTabs, pollBlock(render), window.ION.predictionCard(viewer ? viewer.id : null), chatScroll, form);
     loadRoom("match");
 
-    const hype = window.ION.liveHype(player, score => {
+    const hype = window.ION.liveHype(player, (score, fresh) => {
       title.querySelector(".scoreline__score").textContent = score;
-      if (room === "match") push({ user: "Ιωνικός TV", levelId: "ultra", text: "ΓΚΟΛ! Ο Ιωνικός κάνει το " + score + "." });
+      if (fresh && room === "match") {
+        push({ user: "Ιωνικός TV", levelId: "ultra", text: upper("Γκολ") + "! Ο Ιωνικός κάνει το " + score + "." });
+      }
     });
     onCleanup(() => hype.stop());
 
