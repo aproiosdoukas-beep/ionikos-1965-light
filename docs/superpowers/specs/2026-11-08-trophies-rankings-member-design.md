@@ -38,7 +38,7 @@
 | stand_voice | Φωνή της Κερκίδας | silver | chat | 25 |
 | voter | Ψηφοφόρος | bronze | vote | 1 |
 | customer | Πελάτης | bronze | redeem | 1 |
-| loyal_customer | Πιστός Πελάτης | silver | shops | 5 (διαφορετικά καταστήματα) |
+| loyal_customer | Πιστός Πελάτης | silver | shops | 4 (και οι 4 χορηγοί) |
 | present | Παρών | silver | gate | 10 |
 | ever_present | Πάντα Εκεί | gold | gate | 30 |
 | traveler | Ταξιδιώτης | silver | away | 3 |
@@ -48,8 +48,8 @@
 | since_1965 | Από το 1965 | platinum | όλα τα υπόλοιπα | 11 |
 
 Αρχικοί μετρητές ανά προφίλ (στο seed), ώστε στην επίδειξη να ξεκλειδώνει κάτι
-με ένα πάτημα: Γιώργος chat 24, gate 9, redeem 4, shops 4, away 2, vote 0,
-ticket 0, watch 0. Μαρία chat 0, gate 2, redeem 1, shops 1. Κωστής chat 0.
+με ένα πάτημα: Γιώργος chat 24, gate 9, redeem 4, shops 3 (όλοι εκτός από Nikaia Burgers), away 2, vote 0,
+ticket 0, watch 0. Μαρία chat 0, gate 2, redeem 1, shops 1 (Square Cafe). Κωστής chat 0.
 Το `months` διαβάζεται από `monthsMember` του προφίλ.
 
 ### Μηχανή (`core.js`, νέο `Trophies`)
@@ -79,6 +79,10 @@ ticket 0, watch 0. Μαρία chat 0, gate 2, redeem 1, shops 1. Κωστής ch
 | ticket | έκδοση εισιτηρίου εκδήλωσης | ενεργό προφίλ |
 | gate | έγκυρη σάρωση στο scanner | κάτοχος κάρτας |
 | redeem | επιβεβαίωση στο ταμείο | κάτοχος κάρτας |
+
+Το «Ταξιδιώτης» δεν έχει ενέργεια στην επίδειξη (δεν υπάρχουν μετακινήσεις),
+οπότε μένει ορατό με πρόοδο 2/3. Το ταμείο της επίδειξης είναι το Nikaia Burgers,
+άρα μια επιβεβαίωση εκεί ολοκληρώνει το «Πιστός Πελάτης» του Γιώργου.
 
 Στο scanner η ενέργεια `valid` ήδη λέει «+1 πόντος στο παράσημο Παρών»: γίνεται
 πραγματικό +1 στο «Παρών».
