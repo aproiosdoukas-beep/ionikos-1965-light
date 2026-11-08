@@ -149,6 +149,7 @@
       chatScroll.innerHTML = "";
       (D.CHAT_SEED[id] || []).forEach(m => chatScroll.appendChild(chatMsg(m)));
       $$(".chip", roomTabs).forEach(c => c.classList.toggle("is-active", c.dataset.room === id));
+      requestAnimationFrame(() => { chatScroll.scrollTop = chatScroll.scrollHeight; });
     }
 
     D.CHAT_ROOMS.forEach(r => {
@@ -193,7 +194,7 @@
     }
 
     const viewer = Auth.activeProfile();
-    sidebar.append(roomTabs, chatScroll, form);
+    sidebar.append(el("div", { class: "live-chat__inner" }, [roomTabs, chatScroll, form]));
 
     /* Ψηφοφορία και πρόβλεψη κάτω από το βίντεο: φεύγουν μόλις ψηφίσετε. */
     const actions = el("div", { class: "live-actions" });
