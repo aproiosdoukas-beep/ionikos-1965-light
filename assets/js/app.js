@@ -412,15 +412,14 @@
 
   /** Βαθμολογία του τμήματος που παίζει τώρα, με σύνδεσμο για όλες. */
   function standingsCard() {
-    const S = D.STANDINGS;
-    const sport = S.sports.find(s => s.id === "football");
-    const t = S.tables["football:k16"];
+    const t = D.STANDINGS.leagues.find(l => l.id === "football");
     return el("div", { class: "card card--ink", style: "display:grid;gap:10px;padding:14px" }, [
       el("div", { class: "between" }, [
-        el("span", { class: "display bold", text: "Βαθμολογία Κ16" }),
+        el("span", { class: "display bold", text: "Βαθμολογία ανδρών" }),
         el("span", { class: "t-xs muted", text: t.competition })
       ]),
-      window.ION.standingsTable(sport, t, true),
+      window.ION.standingsTable(t, t, true),
+      el("p", { class: "t-xs muted", style: "margin:0", text: "Πηγή: " + t.source.name + ", " + t.source.date }),
       el("a", { class: "btn btn--ghost btn--sm btn--block", href: "web.html#standings", text: "Όλες οι βαθμολογίες" })
     ]);
   }

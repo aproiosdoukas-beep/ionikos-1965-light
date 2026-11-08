@@ -297,61 +297,82 @@
   /* ======================================================================
      Βαθμολογίες: άθλημα, κατηγορία, πίνακας και αγώνες του Ιωνικού
      ====================================================================== */
-  const standingsSel = { sport: "football", group: "men" };
+  let standingsSel = "football";
 
   function viewStandings() {
     const S = D.STANDINGS;
-    const sport = S.sports.find(s => s.id === standingsSel.sport);
+    const league = S.leagues.find(l => l.id === standingsSel) || S.leagues[0];
 
     const sportSwitch = el("div", { class: "segmented", role: "tablist", "aria-label": "Άθλημα" },
-      S.sports.map(s => el("button", {
-        class: "segmented__btn" + (s.id === standingsSel.sport ? " is-active" : ""),
-        type: "button", role: "tab", "aria-selected": String(s.id === standingsSel.sport),
-        text: s.label,
-        onclick() { standingsSel.sport = s.id; render(); }
-      })));
-
-    const groupChips = el("div", { class: "cluster", style: "gap:8px" },
-      S.groups.map(g => el("button", {
-        class: "chip" + (g.id === standingsSel.group ? " is-active" : ""),
-        type: "button", "aria-pressed": String(g.id === standingsSel.group),
-        text: g.label,
-        onclick() { standingsSel.group = g.id; render(); }
+      S.leagues.map(l => el("button", {
+        class: "segmented__btn" + (l.id === league.id ? " is-active" : ""),
+        type: "button", role: "tab", "aria-selected": String(l.id === league.id),
+        text: l.label + " " + l.team.toLowerCase(),
+        onclick() { standingsSel = l.id; render(); }
       })));
 
     page.append(
       head("Βαθμολογίες", "Οι ομάδες του Ιωνικού"),
-      el("div", { class: "stack", style: "margin-bottom:24px;max-width:640px" }, [sportSwitch, groupChips]),
-      standingsBody(sport, S.tables[standingsSel.sport + ":" + standingsSel.group], false)
+      el("p", { class: "page-lead", text: "Οι πραγματικές βαθμολογίες των ομάδων μας. Για την τρέχουσα εικόνα πατήστε «Ζωντανή βαθμολογία»." }),
+      el("div", { style: "margin-bottom:24px;max-width:640px" }, [sportSwitch]),
+      standingsBody(league),
+      el("div", { class: "card", style: "margin-top:20px;display:flex;gap:12px;align-items:flex-start" }, [
+        el("div", { class: "row__icon", html: icon("users", 20) }),
+        el("div", {}, [
+          el("div", { class: "card__title", text: "Ακαδημίες" }),
+          el("p", { class: "t-sm muted", style: "margin:4px 0 0", text: S.academies })
+        ])
+      ])
     );
   }
 
-  /** Πίνακας + τελευταίο αποτέλεσμα + επόμενος αγώνας. compact: μόνο οι πρώτοι 4 και ο Ιωνικός. */
-  function standingsBody(sport, t, compact) {
-    const table = window.ION.standingsTable(sport, t, compact);
+  /** Πίνακας ή σημείωμα, με πηγή, τελευταίο αποτέλεσμα, επόμενο αγώνα και ζωντανή βαθμολογία. */
+  function standingsBody(league) {
+    const liveBtn = el("a", {
+      class: "btn btn--primary btn--sm", href: league.liveUrl, target: "_blank", rel: "noopener",
+      text: "Ζωντανή βαθμολογία (" + league.liveName + ")"
+    });
+    const sourceLine = el("p", { class: "t-xs muted", style: "margin:0" }, [
+      document.createTextNode("Πηγή: "),
+      el("a", { href: league.source.url, target: "_blank", rel: "noopener", text: league.source.name }),
+      document.createTextNode(", " + league.source.date)
+    ]);
 
     const tableCard = el("div", { class: "card card--rule", style: "display:grid;gap:12px" }, [
       el("div", { class: "between", style: "flex-wrap:wrap" }, [
-        el("h3", { class: "section-title", text: t.competition }),
-        el("span", { class: "badge", text: "Δεδομένα επίδειξης" })
+        el("div", {}, [
+          el("h3", { class: "section-title", text: league.competition }),
+          el("div", { class: "t-sm muted", text: league.label + " " + league.team.toLowerCase() })
+        ]),
+        liveBtn
       ]),
-      el("div", { style: "overflow-x:auto" }, [table])
+      league.rows
+        ? el("div", { style: "overflow-x:auto" }, [window.ION.standingsTable(league, league, false)])
+        : el("div", { class: "empty", style: "min-height:180px" }, [
+            el("div", { class: "empty__icon", html: icon("chart", 36, 1.5) }),
+            el("p", { class: "t-sm", style: "margin:0;max-width:360px", text: league.note })
+          ]),
+      sourceLine
     ]);
-    if (compact) return tableCard;
 
     const matchCard = (label, m, isNext) => el("div", { class: "card match-card" + (isNext ? " card--navy theme-dark" : "") }, [
       el("div", { class: "eyebrow", text: label }),
-      el("div", { class: "match-card__teams" }, [
-        el("span", { text: m.home }),
-        el("b", { class: "match-card__score", text: isNext ? m.time : m.score }),
-        el("span", { text: m.away })
-      ]),
-      el("div", { class: "t-sm muted", text: isNext ? m.date + ", " + m.venue : m.date })
+      m.text
+        ? el("div", { class: "card__title", text: m.text })
+        : el("div", { class: "match-card__teams" }, [
+            el("span", { text: m.home }),
+            el("b", { class: "match-card__score", text: isNext ? m.time : m.score }),
+            el("span", { text: m.away })
+          ]),
+      m.date ? el("div", { class: "t-sm muted", text: isNext ? m.date + ", " + m.venue : m.date }) : null
     ]);
 
     return el("div", { class: "grid-live", style: "align-items:start" }, [
       tableCard,
-      el("div", { class: "stack" }, [matchCard("Τελευταίο αποτέλεσμα", t.last, false), matchCard("Επόμενος αγώνας", t.next, true)])
+      el("div", { class: "stack" }, [
+        league.last ? matchCard("Τελευταίο αποτέλεσμα", league.last, false) : null,
+        league.next ? matchCard("Επόμενος αγώνας", league.next, true) : null
+      ])
     ]);
   }
 

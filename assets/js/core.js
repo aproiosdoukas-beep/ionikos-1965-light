@@ -726,7 +726,7 @@
 
   /** Πίνακας βαθμολογίας, ίδιος σε web και app. compact: οι 4 πρώτοι και ο Ιωνικός. */
   function standingsTable(sport, t, compact) {
-    const us = r => r.team.indexOf("Ιωνικός") === 0;
+    const us = r => !!r.us;
     const rows = compact ? t.rows.filter((r, i) => i < 4 || us(r)) : t.rows;
     const th = (txt, cls, title) => el("th", { class: cls || null, text: txt, title: title || null });
     const td = (txt, cls) => el("td", { class: cls || null, text: String(txt) });

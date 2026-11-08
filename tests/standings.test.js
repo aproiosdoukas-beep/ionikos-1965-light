@@ -2,40 +2,54 @@
 const assert = require("assert");
 const { loadCore, run } = require("./harness");
 
+const leagues = D => D.STANDINGS.leagues;
+
 run({
-  all_twelve_tables() {
+  three_real_leagues() {
     const { D } = loadCore();
-    const S = D.STANDINGS;
-    assert.strictEqual(S.sports.length, 3);
-    assert.strictEqual(S.groups.length, 4);
-    for (const sp of S.sports) for (const g of S.groups) {
-      assert.ok(S.tables[sp.id + ":" + g.id], "missing " + sp.id + ":" + g.id);
+    assert.deepStrictEqual(Array.from(leagues(D), l => l.id), ["football", "basketball", "volleyball"]);
+    for (const l of leagues(D)) {
+      assert.ok(l.label && l.team && l.competition, l.id + " labels");
+      assert.ok(/^https:\/\//.test(l.liveUrl), l.id + " liveUrl");
+      assert.ok(l.source && /^https:\/\//.test(l.source.url) && l.source.name && l.source.date, l.id + " source");
     }
   },
 
-  rows_consistent() {
+  football_table_is_real_and_consistent() {
     const { D } = loadCore();
-    const S = D.STANDINGS;
-    for (const sp of S.sports) for (const g of S.groups) {
-      const key = sp.id + ":" + g.id;
-      const t = S.tables[key];
-      assert.ok(t.competition, key + " no competition");
-      assert.ok(t.rows.length >= 6 && t.rows.length <= 8, key + " rows " + t.rows.length);
-      t.rows.forEach((r, i) => {
-        assert.strictEqual(r.p, r.w + r.d + r.l, key + " p mismatch " + r.team);
-        if (!sp.draws) assert.strictEqual(r.d, 0, key + " draw in " + sp.id);
-        if (sp.id === "football") assert.strictEqual(r.pts, 3 * r.w + r.d, key + " pts " + r.team);
-        if (i) assert.ok(t.rows[i - 1].pts >= r.pts, key + " not sorted");
-      });
-      for (const f of ["home", "away", "score", "date"]) assert.ok(t.last[f], key + " last." + f);
-      for (const f of ["home", "away", "date", "time", "venue"]) assert.ok(t.next[f], key + " next." + f);
-    }
+    const f = leagues(D).find(l => l.id === "football");
+    assert.strictEqual(f.competition, "Γ΄ Εθνική, 8ος όμιλος");
+    assert.strictEqual(f.rows.length, 12);
+    f.rows.forEach((r, i) => {
+      assert.strictEqual(r.p, r.w + r.d + r.l, r.team);
+      assert.strictEqual(r.pts, 3 * r.w + r.d, r.team);
+      if (i) assert.ok(f.rows[i - 1].pts >= r.pts, "sorted");
+    });
+    const us = f.rows.find(r => r.us);
+    assert.deepStrictEqual([us.team, us.pts], ["Ιωνικός", 4]);
+    assert.strictEqual(f.last.score, "2-0");
+    assert.strictEqual(f.next.away, "Αμφιάλη");
   },
 
-  one_ionikos_row() {
+  volleyball_table_is_real() {
     const { D } = loadCore();
-    for (const [key, t] of Object.entries(D.STANDINGS.tables)) {
-      assert.strictEqual(t.rows.filter(r => r.team.indexOf("Ιωνικός") === 0).length, 1, key);
-    }
+    const v = leagues(D).find(l => l.id === "volleyball");
+    assert.strictEqual(v.rows.length, 12);
+    v.rows.forEach(r => { assert.strictEqual(r.p, r.w + r.l, r.team); assert.strictEqual(r.d, 0); });
+    assert.strictEqual(v.rows[11].team, "Α.Ο. Ιωνικός Νίκαιας");
+    assert.strictEqual(v.rows[11].us, true);
+    assert.strictEqual(v.next.date, "14/11/2026");
+  },
+
+  basketball_has_no_invented_table() {
+    const { D } = loadCore();
+    const b = leagues(D).find(l => l.id === "basketball");
+    assert.strictEqual(b.rows, null);
+    assert.ok(b.note, "needs a note explaining why");
+  },
+
+  exactly_one_us_row() {
+    const { D } = loadCore();
+    for (const l of leagues(D)) if (l.rows) assert.strictEqual(l.rows.filter(r => r.us).length, 1, l.id);
   }
 });
