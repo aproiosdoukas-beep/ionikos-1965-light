@@ -119,6 +119,38 @@
     { id: "traveler", icon: "🚌", name: "Ταξιδιώτης",   value: "2 Εκτός Έδρας", tone: "muted" }
   ];
 
+  /* ---- Τρόπαια: επιβράβευση για ό,τι κάνει ο φίλαθλος ------------------
+     action: ο μετρητής που ανεβαίνει. shops = διαφορετικοί χορηγοί,
+     months = μήνες συνδρομής, all = όλα τα υπόλοιπα τρόπαια. */
+  const TIERS = {
+    bronze:   { label: "Χάλκινο" },
+    silver:   { label: "Ασημένιο" },
+    gold:     { label: "Χρυσό" },
+    platinum: { label: "Πλατινένιο" }
+  };
+
+  const TROPHIES = [
+    { id: "first_voice",    name: "Πρώτη Ιαχή",             tier: "bronze",   icon: "chat",   action: "chat",   goal: 1,  text: "Το πρώτο σας μήνυμα στην κερκίδα." },
+    { id: "stand_voice",    name: "Ο Κάπο",                 tier: "silver",   icon: "chat",   action: "chat",   goal: 25, text: "25 μηνύματα στην κερκίδα. Εσείς ξεκινάτε το σύνθημα." },
+    { id: "voter",          name: "Ο Σκάουτερ",             tier: "bronze",   icon: "check",  action: "vote",   goal: 1,  text: "Ψηφίσατε MVP αγώνα." },
+    { id: "customer",       name: "Πεινασμένος για Νίκες",  tier: "bronze",   icon: "tag",    action: "redeem", goal: 1,  text: "Η πρώτη σας προσφορά σε χορηγό." },
+    { id: "loyal_customer", name: "Ο Δήμαρχος της Νίκαιας", tier: "silver",   icon: "store",  action: "shops",  goal: 4,  text: "Προσφορά και στους 4 χορηγούς του συλλόγου." },
+    { id: "present",        name: "Παιδί της Θύρας",        tier: "silver",   icon: "ticket", action: "gate",   goal: 10, text: "10 είσοδοι σε εντός έδρας αγώνες." },
+    { id: "ever_present",   name: "Θρύλος της Θύρας",       tier: "gold",     icon: "ticket", action: "gate",   goal: 30, text: "30 είσοδοι. Η θέση σας στην κερκίδα είναι δεδομένη." },
+    { id: "traveler",       name: "Ο Νομάδας",              tier: "silver",   icon: "bus",    action: "away",   goal: 3,  text: "3 μετακινήσεις εκτός έδρας με τον σύλλογο." },
+    { id: "ticket",         name: "Πρώτη Σειρά",            tier: "bronze",   icon: "ticket", action: "ticket", goal: 1,  text: "Το πρώτο σας εισιτήριο σε εκδήλωση." },
+    { id: "viewer",         name: "Ο Αναλυτής",             tier: "bronze",   icon: "play",   action: "watch",  goal: 1,  text: "Παρακολουθήσατε αγώνα στο Ιωνικός TV." },
+    { id: "loyal",          name: "Μπλε Αίμα",              tier: "gold",     icon: "shield", action: "months", goal: 12, text: "12 μήνες μέλος του Ιωνικού." },
+    { id: "since_1965",     name: "Ψυχή του Ιωνικού",       tier: "platinum", icon: "medal",  action: "all",    goal: 11, text: "Όλα τα υπόλοιπα τρόπαια. Το απόλυτο." }
+  ];
+
+  /* Αρχικοί μετρητές επίδειξης: κάτι ξεκλειδώνει με ένα πάτημα. */
+  const TROPHY_SEED = {
+    p_giorgos: { counts: { chat: 24, gate: 9, redeem: 4, away: 2 }, shops: ["m_square", "m_boutique", "m_gym"] },
+    p_maria:   { counts: { gate: 2, redeem: 1 }, shops: ["m_square"] },
+    p_kostis:  { counts: {}, shops: [] }
+  };
+
   /* ---- Χορηγοί & προσφορές  ------------------------------------ */
   const OFFERS = [
     { id: "m_burgers",  name: "Nikaia Burgers",   category: "food",  icon: "🍔",
@@ -355,7 +387,7 @@
   };
 
   global.ION_DATA = {
-    ACCOUNTS, PROFILES, LEVELS, BADGES,
+    ACCOUNTS, PROFILES, LEVELS, BADGES, TIERS, TROPHIES, TROPHY_SEED,
     OFFERS, OFFER_FILTERS,
     LIVE, VOD, CHAT_ROOMS, CHAT_SEED, CHAT_AMBIENT, POLL,
     EVENTS, PLANS, BILLING, ADMIN, SCAN_STATES, KNOWN_CARDS

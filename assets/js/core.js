@@ -145,6 +145,15 @@
       return Membership.members().find(m => m.cardCode === code) || null;
     },
 
+    /** Βρίσκει ένα προφίλ μέλους σε όποιον λογαριασμό κι αν ανήκει. */
+    findProfile(profileId) {
+      for (const acc of memberAccounts()) {
+        const member = Membership.members(acc.id).find(x => x.id === profileId);
+        if (member) return member;
+      }
+      return null;
+    },
+
     /** Αναζήτηση κάρτας σε όλους τους λογαριασμούς (θύρα, ταμείο). */
     findCardAnywhere(code) {
       for (const acc of memberAccounts()) {
@@ -277,6 +286,105 @@
       });
       Membership.save(m);
       return { ok: true, charged: totals.total, reactivated: wasCancelled };
+    }
+  };
+
+  /* ======================================================================
+     ΤΡΟΠΑΙΑ: μετρητές ενεργειών ανά προφίλ, ξεκλείδωμα στο όριο
+     ====================================================================== */
+  const Trophies = {
+    _key(pid) { return "trophies:" + pid; },
+
+    _state(pid) {
+      let st = Store.get(Trophies._key(pid), null);
+      if (!st) {
+        const seed = D.TROPHY_SEED[pid] || { counts: {}, shops: [] };
+        st = { counts: Object.assign({}, seed.counts), shops: seed.shops.slice(), unlocked: {}, title: null };
+        /* Ό,τι καλύπτουν ήδη οι αρχικοί μετρητές ξεκινά ξεκλείδωτο, χωρίς toast. */
+        Trophies._evaluate(pid, st).forEach(id => { st.unlocked[id] = Date.now(); });
+        Store.set(Trophies._key(pid), st);
+      }
+      return st;
+    },
+
+    _months(pid) {
+      const m = Membership.findProfile(pid) || D.PROFILES[pid];
+      return m ? m.monthsMember || 0 : 0;
+    },
+
+    _progress(pid, st, t, othersUnlocked) {
+      if (t.action === "shops") return st.shops.length;
+      if (t.action === "months") return Trophies._months(pid);
+      if (t.action === "all") return othersUnlocked;
+      return st.counts[t.action] || 0;
+    },
+
+    /** Ποια τρόπαια είναι ξεκλείδωτα με την τρέχουσα κατάσταση. */
+    _evaluate(pid, st) {
+      const open = D.TROPHIES
+        .filter(t => t.action !== "all")
+        .filter(t => st.unlocked[t.id] || Trophies._progress(pid, st, t, 0) >= t.goal)
+        .map(t => t.id);
+      D.TROPHIES.filter(t => t.action === "all").forEach(t => {
+        if (st.unlocked[t.id] || open.length >= t.goal) open.push(t.id);
+      });
+      return open;
+    },
+
+    /** Καταγράφει μια ενέργεια. Επιστρέφει όσα τρόπαια ξεκλείδωσαν τώρα. */
+    record(pid, action, extra) {
+      if (!pid) return [];
+      const st = Trophies._state(pid);
+      const before = Trophies._evaluate(pid, st);
+      st.counts[action] = (st.counts[action] || 0) + 1;
+      if (action === "redeem" && extra && st.shops.indexOf(extra) === -1) st.shops.push(extra);
+      const fresh = Trophies._evaluate(pid, st).filter(id => before.indexOf(id) === -1);
+      fresh.forEach(id => { st.unlocked[id] = Date.now(); });
+      Store.set(Trophies._key(pid), st);
+      return fresh.map(id => D.TROPHIES.find(t => t.id === id));
+    },
+
+    forProfile(pid) {
+      const st = Trophies._state(pid);
+      const open = Trophies._evaluate(pid, st);
+      const others = open.filter(id => D.TROPHIES.find(t => t.id === id).action !== "all").length;
+      return D.TROPHIES.map(t => {
+        const unlocked = open.indexOf(t.id) !== -1;
+        return Object.assign({}, t, {
+          progress: Math.min(t.goal, Trophies._progress(pid, st, t, others)),
+          unlocked: unlocked,
+          unlockedAt: unlocked ? st.unlocked[t.id] || null : null
+        });
+      });
+    },
+
+    summary(pid) {
+      const s = { bronze: 0, silver: 0, gold: 0, platinum: 0, unlocked: 0, total: D.TROPHIES.length };
+      Trophies.forProfile(pid).forEach(t => { if (t.unlocked) { s[t.tier]++; s.unlocked++; } });
+      return s;
+    },
+
+    setTitle(pid, id) {
+      const st = Trophies._state(pid);
+      if (id === null) { st.title = null; Store.set(Trophies._key(pid), st); return true; }
+      const t = Trophies.forProfile(pid).find(x => x.id === id);
+      if (!t || !t.unlocked) return false;
+      st.title = id;
+      Store.set(Trophies._key(pid), st);
+      return true;
+    },
+
+    title(pid) {
+      const st = Trophies._state(pid);
+      return st.title ? D.TROPHIES.find(t => t.id === st.title) || null : null;
+    },
+
+    reset() {
+      try {
+        Object.keys(localStorage)
+          .filter(k => k.indexOf(NS + "trophies:") === 0)
+          .forEach(k => localStorage.removeItem(k));
+      } catch (_) {}
     }
   };
 
@@ -599,7 +707,7 @@
   }
 
   global.ION = {
-    Store, Auth, Membership, Token, QR, resolveCard,
+    Store, Auth, Membership, Trophies, Token, QR, resolveCard,
     el, $, $$,
     fmtEuro, mmss, levelById, levelColor, toast, todayKey, hash32, upper
   };
