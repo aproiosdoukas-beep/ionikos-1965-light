@@ -26,7 +26,7 @@
 | Ρόλος | Email | Κωδικός |
 |---|---|---|
 | Μέλος | `maria@ionikos.gr` | `ionikos1965` |
-| Μέλος με παιδί ακαδημίας | `giorgos@ionikos.gr` | `ionikos1965` |
+| Γονέας με παιδί στην ακαδημία | `giorgos@ionikos.gr` | `ionikos1965` |
 | Γραφείο συλλόγου | `admin@ionikos.gr` | `admin1965` |
 | Προσωπικό θύρας | `gate@ionikos.gr` | `gate1965` |
 | Κατάστημα χορηγός | `shop@ionikos.gr` | `shop1965` |
