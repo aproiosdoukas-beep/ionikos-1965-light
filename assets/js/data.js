@@ -144,6 +144,22 @@
     p_kostis:  { counts: {}, shops: [] }
   };
 
+  /* ---- Κατάταξη φιλάθλων εβδομάδας (δεδομένα επίδειξης) -------------------- */
+  const FANS = [
+    { name: "Μάκης Ρούσσος",     levelId: "ultra",     title: "ever_present",   points: 246 },
+    { name: "Σπύρος Αλεξίου",    levelId: "ultra",     title: "loyal",          points: 212 },
+    { name: "Βαγγέλης Μαυρίδης", levelId: "ranger",    title: "stand_voice",    points: 188 },
+    { name: "Νίκος Δρόσος",      levelId: "hooligan",  title: "stand_voice",    points: 154 },
+    { name: "Άννα Κυριακού",     levelId: "firm",      title: "voter",          points: 131 },
+    { name: "Κώστας Λιάπης",     levelId: "ultra",     title: "present",        points: 117 },
+    { name: "Σταύρος Πετρίδης",  levelId: "firm",      title: "traveler",       points: 96 },
+    { name: "Ελένη Μαργαρίτη",   levelId: "hooligan",  title: "ticket",         points: 83 },
+    { name: "Θανάσης Ζαφείρης",  levelId: "hooligan",  title: "viewer",         points: 71 },
+    { name: "Δημήτρης Βλάχος",   levelId: "casual",    title: "customer",       points: 58 },
+    { name: "Μαρία Λαμπράκη",    levelId: "casual",    title: "first_voice",    points: 39 },
+    { name: "Λάκης Χατζής",      levelId: "touristas", title: "first_voice",    points: 22 }
+  ];
+
   /* ---- Χορηγοί & προσφορές  ------------------------------------ */
   const OFFERS = [
     { id: "m_burgers",  name: "Nikaia Burgers",   category: "food",  icon: "🍔",
@@ -672,7 +688,7 @@
   global.ION_DATA = {
     ACCOUNTS, PROFILES, LEVELS, TIERS, TROPHIES, TROPHY_SEED,
     OFFERS, OFFER_FILTERS,
-    LIVE, REACTIONS, VOD, CHAT_ROOMS, CHAT_SEED, CHAT_AMBIENT, POLL,
+    LIVE, REACTIONS, FANS, VOD, CHAT_ROOMS, CHAT_SEED, CHAT_AMBIENT, POLL,
     EVENTS, STANDINGS, PLANS, BILLING, ADMIN, SCAN_STATES, KNOWN_CARDS
   };
 })(window);

@@ -597,3 +597,19 @@
 .predict__result.is-exact b { color: var(--ion-gold-300); }
 .predict__result.is-outcome b { color: var(--ok-300); }
 .predict__result.is-miss b { color: var(--ink-300); }
+
+/* ---- Κατάταξη φιλάθλων ------------------------------------------------------- */
+.leaderboard td { vertical-align: middle; }
+.leaderboard td.pos { width: 32px; font-family: var(--font-display); font-weight: 800; color: var(--text-muted); }
+.leaderboard td.num, .leaderboard th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.leaderboard td.pts { font-family: var(--font-display); font-weight: 900; font-size: var(--fs-md); }
+.leaderboard__name { font-weight: 800; font-family: var(--font-display); line-height: 1.2; }
+.leaderboard .chat__title { margin-top: 3px; }
+.leaderboard tr:nth-child(-n+3) td.pos { color: var(--ion-gold-600); }
+.leaderboard tr.is-you td { background: var(--ion-gold-100); }
+.leaderboard tr.is-you td:first-child { box-shadow: inset 4px 0 0 var(--ion-gold); }
+/* Τα ονόματα σε φωτεινό φόντο: πιο σκούρα εκδοχή του χρώματος επιπέδου. */
+.leaderboard .leaderboard__name { filter: brightness(.62) saturate(1.3); }
+.leaderboard .trophy-tier--silver.chat__title { color: #5D6579; }
+.leaderboard .trophy-tier--bronze.chat__title { color: #8A5226; }
+.card .leaderboard .trophy-tier--gold.chat__title { color: var(--ion-gold-600); }

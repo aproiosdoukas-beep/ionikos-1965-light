@@ -389,6 +389,31 @@
   };
 
   /* ======================================================================
+     ΚΑΤΑΤΑΞΗ ΦΙΛΑΘΛΩΝ: πόντοι από ό,τι έκανε ο φίλαθλος
+     ====================================================================== */
+  const POINTS = { chat: 1, gate: 5, away: 5, predict_hit: 10, predict_outcome: 3, ticket: 2 };
+
+  const Leaderboard = {
+    points(pid) {
+      const counts = Trophies._state(pid).counts;
+      return Object.keys(POINTS).reduce((sum, k) => sum + (counts[k] || 0) * POINTS[k], 0);
+    },
+
+    /** Οι 10 πρώτοι, και η δική σας γραμμή στο τέλος αν είστε εκτός δεκάδας. */
+    rows(pid) {
+      const p = Membership.findProfile(pid) || D.PROFILES[pid] || {};
+      const title = Trophies.title(pid);
+      const me = { name: p.fullName || "", levelId: p.levelId || "touristas", title: title ? title.id : null,
+                   points: Leaderboard.points(pid), you: true };
+      const all = D.FANS.map(f => Object.assign({ you: false }, f)).concat([me])
+        .sort((a, b) => b.points - a.points || (a.you ? 1 : 0) - (b.you ? 1 : 0))
+        .map((r, i) => Object.assign(r, { rank: i + 1 }));
+      const top = all.slice(0, 10);
+      return top.some(r => r.you) ? top : top.concat([all.find(r => r.you)]);
+    }
+  };
+
+  /* ======================================================================
      ΠΡΟΒΛΕΨΗ ΣΚΟΡ: κλείδωμα μία φορά, κλείσιμο μία φορά
      ====================================================================== */
   const Predictions = {
@@ -929,6 +954,32 @@
     return wrap;
   }
 
+  /** Πίνακας κατάταξης φιλάθλων. limit: πόσες γραμμές πριν από τη δική σας. */
+  function leaderboardTable(pid, limit) {
+    let rows = Leaderboard.rows(pid);
+    if (limit) {
+      const mine = rows.find(r => r.you);
+      rows = rows.slice(0, limit);
+      if (!rows.some(r => r.you)) rows.push(mine);
+    }
+    return el("table", { class: "table leaderboard" }, [
+      el("thead", {}, [el("tr", {}, [
+        el("th", { text: "#" }), el("th", { text: "Φίλαθλος" }), el("th", { class: "num", text: "Πόντοι" })
+      ])]),
+      el("tbody", {}, rows.map(r => {
+        const t = r.title ? D.TROPHIES.find(x => x.id === r.title) : null;
+        return el("tr", { class: r.you ? "is-you" : null }, [
+          el("td", { class: "pos", text: String(r.rank) }),
+          el("td", {}, [
+            el("div", { class: "leaderboard__name", style: "color:" + levelColor(r.levelId), text: r.you ? r.name + " (εσείς)" : r.name }),
+            t ? el("span", { class: "chat__title trophy-tier--" + t.tier }, [el("span", { class: "tier-dot" }), document.createTextNode(t.name)]) : null
+          ]),
+          el("td", { class: "num pts", text: String(r.points) })
+        ]);
+      }))
+    ]);
+  }
+
   /** Ένα toast για κάθε τρόπαιο που μόλις ξεκλείδωσε. */
   function celebrate(list) {
     (list || []).forEach(t => {
@@ -945,8 +996,8 @@
   }
 
   global.ION = {
-    Store, Auth, Membership, Trophies, Predictions, Noise, LiveScore, Token, QR, resolveCard,
+    Store, Auth, Membership, Trophies, Predictions, Leaderboard, Noise, LiveScore, Token, QR, resolveCard,
     el, $, $$,
-    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, standingsTable, liveHype, predictionCard, todayKey, hash32, upper
+    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, standingsTable, liveHype, predictionCard, leaderboardTable, todayKey, hash32, upper
   };
 })(window);

@@ -12,6 +12,7 @@
     { id: "live",         label: "Live Αγώνες" },
     { id: "vod",          label: "Αρχείο VOD" },
     { id: "standings",    label: "Βαθμολογίες" },
+    { id: "stand",        label: "Κερκίδα" },
     { id: "events",       label: "Εκδηλώσεις" },
     { id: "subscription", label: "Συνδρομή" }
   ];
@@ -77,7 +78,7 @@
     page.innerHTML = "";
     renderNav();
     renderAuth();
-    ({ live: viewLive, vod: viewVod, standings: viewStandings, events: viewEvents, subscription: viewSubscription })[currentRoute()]();
+    ({ live: viewLive, vod: viewVod, standings: viewStandings, stand: viewStand, events: viewEvents, subscription: viewSubscription })[currentRoute()]();
     syncNavHeight();
     window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
   }
@@ -383,6 +384,32 @@
       ])
     ]);
   }
+
+  /* ======================================================================
+     Κερκίδα: κατάταξη φιλάθλων, εκδρομή, επόμενος εντός έδρας
+     ====================================================================== */
+  function viewStand() {
+    const profile = Auth.activeProfile();
+    const board = el("div", { class: "card card--rule", style: "display:grid;gap:12px" }, [
+      el("div", { class: "between", style: "flex-wrap:wrap" }, [
+        el("h3", { class: "section-title", text: "Κατάταξη εβδομάδας" }),
+        el("span", { class: "badge", text: "Δεδομένα επίδειξης" })
+      ]),
+      el("p", { class: "t-sm muted", style: "margin:0",
+                text: "Πόντοι: 1 ανά μήνυμα, 5 ανά είσοδο στο γήπεδο ή εκδρομή, 10 για ακριβή πρόβλεψη, 3 για σωστό σημείο, 2 ανά εισιτήριο." }),
+      profile
+        ? el("div", { style: "overflow-x:auto" }, [window.ION.leaderboardTable(profile.id)])
+        : el("p", { class: "t-sm", style: "margin:0", text: "Συνδεθείτε για να δείτε τη θέση σας στην κατάταξη." })
+    ]);
+    const side = el("div", { class: "stack", id: "standSide" });
+    page.append(
+      head("Κερκίδα", "Η κατάταξη της εβδομάδας"),
+      el("div", { class: "grid-live", style: "align-items:start" }, [board, side])
+    );
+    standSideCards.forEach(fn => { const c = fn(profile); if (c) side.appendChild(c); });
+  }
+  /* Κάρτες της στήλης «Κερκίδα» (εκδρομή, αντίστροφη μέτρηση). */
+  const standSideCards = [];
 
   /* ======================================================================
      Εκδηλώσεις & ηλεκτρονικά εισιτήρια
