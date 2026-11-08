@@ -37,7 +37,22 @@
      Είναι η πηγή αλήθειας για: προφίλ στην εφαρμογή, κάρτες στον scanner,
      και το checkout στο web.
      ====================================================================== */
-  const SEED_PROFILE_IDS = ["p_giorgos", "p_kostis"];
+  /* Κάθε λογαριασμός μέλους έχει τη δική του συνδρομή. Χωρίς συνδεδεμένο
+     μέλος (scanner, ταμείο, admin) ο προεπιλεγμένος είναι ο Γιώργος. */
+  const DEFAULT_ACCOUNT = "u_giorgos";
+  const LEGACY_KEY = "membership";
+
+  function memberAccounts() { return D.ACCOUNTS.filter(a => a.role === "member"); }
+
+  function currentAccountId() {
+    const s = Store.get("session", null);
+    const acc = s && D.ACCOUNTS.find(a => a.id === s.userId);
+    return acc && acc.role === "member" ? acc.id : DEFAULT_ACCOUNT;
+  }
+
+  function seedCardCodes() {
+    return memberAccounts().reduce((all, a) => all.concat(a.profiles.map(id => D.PROFILES[id].cardCode)), []);
+  }
 
   const CYCLES = {
     monthly: { id: "monthly", label: "Μηνιαία", months: 1,  billed: 1,  note: "Χρέωση κάθε μήνα" },
@@ -67,14 +82,15 @@
   const Membership = {
     CYCLES, PAYMENT_METHODS, SQUADS,
 
-    seed() {
+    seed(accountId) {
+      const acc = D.ACCOUNTS.find(a => a.id === accountId) || D.ACCOUNTS.find(a => a.id === DEFAULT_ACCOUNT);
       return {
         status: "active",
         cycle: "monthly",
         paymentMethod: "card",
         lastPaidAt: Date.now(),
         cancelledAt: null,
-        members: SEED_PROFILE_IDS.map(id => {
+        members: acc.profiles.map(id => {
           const p = D.PROFILES[id];
           return {
             id: p.id,
@@ -97,24 +113,46 @@
       };
     },
 
-    get() {
-      let m = Store.get("membership", null);
+    get(accountId) {
+      const id = accountId || currentAccountId();
+      const key = "membership:" + id;
+      let m = Store.get(key, null);
+      if (!m && id === DEFAULT_ACCOUNT) {
+        /* Παλιά αποθήκευση χωρίς λογαριασμό: ανήκε στον Γιώργο. */
+        const legacy = Store.get(LEGACY_KEY, null);
+        if (legacy) { m = Membership.save(legacy, id); Store.remove(LEGACY_KEY); }
+      }
       if (!m || !Array.isArray(m.members) || !m.members.length) {
-        m = Membership.save(Membership.seed());
+        m = Membership.save(Membership.seed(id), id);
       }
       return m;
     },
 
-    save(m) { Store.set("membership", m); return m; },
+    save(m, accountId) { Store.set("membership:" + (accountId || currentAccountId()), m); return m; },
 
-    reset() { Store.remove("membership"); return Membership.get(); },
+    reset(accountId) {
+      const id = accountId || currentAccountId();
+      Store.remove("membership:" + id);
+      if (id === DEFAULT_ACCOUNT) Store.remove(LEGACY_KEY);
+      return Membership.get(id);
+    },
 
-    members() { return Membership.get().members; },
+    members(accountId) { return Membership.get(accountId).members; },
 
     memberFee: feeOf,
 
     findByCard(code) {
       return Membership.members().find(m => m.cardCode === code) || null;
+    },
+
+    /** Αναζήτηση κάρτας σε όλους τους λογαριασμούς (θύρα, ταμείο). */
+    findCardAnywhere(code) {
+      for (const acc of memberAccounts()) {
+        const m = Membership.get(acc.id);
+        const member = m.members.find(x => x.cardCode === code);
+        if (member) return { member: member, accountId: acc.id, paused: m.status === "cancelled" };
+      }
+      return null;
     },
 
     addMember(input) {
@@ -136,7 +174,7 @@
         kind: academy ? "academy" : "adult",
         kindLabel: academy ? (input.squad || "Κ14") : "Ενήλικας",
         squad: academy ? "ΑΚΑΔΗΜΙΑ " + (input.squad || "Κ14") : null,
-        cardCode: newCardCode(m.members.map(x => x.cardCode)),
+        cardCode: newCardCode(memberAccounts().reduce((all, a) => all.concat(Membership.members(a.id).map(x => x.cardCode)), seedCardCodes())),
         levelId: "touristas",
         monthsMember: 0,
         statusLabel: academy ? "ΕΓΚΕΚΡΙΜΕΝΟ" : "ΕΝΕΡΓΗ",
@@ -462,11 +500,13 @@
    * @returns {{name, sub, state}|null}
    */
   function resolveCard(code) {
-    const m = Membership.findByCard(code);
-    if (m) {
+    const found = Membership.findCardAnywhere(code);
+    if (found) {
+      const m = found.member;
       const lv = D.LEVELS.find(l => l.id === m.levelId) || D.LEVELS[0];
-      const paused = Membership.get().status === "cancelled";
+      const paused = found.paused;
       return {
+        profileId: m.id,
         name: m.fullName,
         sub: paused
           ? "Συνδρομή σε παύση. Απαιτείται επανενεργοποίηση."
@@ -475,8 +515,7 @@
       };
     }
     /* Κάρτα που αφαιρέθηκε από την οικογένεια δεν πρέπει να ανοίγει. */
-    const seedIds = ["ION-8472", "ION-5513"];
-    if (seedIds.indexOf(code) !== -1) return null;
+    if (seedCardCodes().indexOf(code) !== -1) return null;
     return D.KNOWN_CARDS[code] || null;
   }
 

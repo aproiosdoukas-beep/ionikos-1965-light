@@ -9,6 +9,15 @@
      Είναι δημόσια στοιχεία επίδειξης για το mockup, όχι πραγματικοί κωδικοί. */
   const ACCOUNTS = [
     {
+      id: "u_maria",
+      email: "maria@ionikos.gr",
+      password: "ionikos1965",
+      role: "member",
+      displayName: "Μαρία Κωνσταντίνου",
+      memberSince: "2026-07-01",
+      profiles: ["p_maria"]
+    },
+    {
       id: "u_giorgos",
       email: "giorgos@ionikos.gr",
       password: "ionikos1965",
@@ -46,6 +55,20 @@
 
   /* ---- Προφίλ οικογένειας ----------------------------------------------- */
   const PROFILES = {
+    p_maria: {
+      id: "p_maria",
+      shortName: "Μαρία",
+      fullName: "Μαρία Κωνσταντίνου",
+      kind: "adult",
+      kindLabel: "Μέλος",
+      cardCode: "ION-2190",
+      levelId: "casual",
+      monthsMember: 4,
+      status: "active",
+      statusLabel: "ΕΝΕΡΓΗ",
+      monthlyFee: 20.0,
+      discountLabel: null
+    },
     p_giorgos: {
       id: "p_giorgos",
       shortName: "Γιώργος",
