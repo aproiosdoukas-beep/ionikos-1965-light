@@ -751,12 +751,16 @@
 
 /* ---- Κινητά (Android): η σελίδα κάνει την κύλιση, όχι το εσωτερικό του κινητού.
    Με overscroll-behavior: contain ή overflow: hidden το Chrome του Android
-   δεν περνά το σύρσιμο στη σελίδα και κυλά μόνο από την μπάρα. */
-@media (max-width: 520px) {
+   δεν περνά το σύρσιμο στη σελίδα και κυλά μόνο από την μπάρα.
+   Ισχύει για στενές οθόνες και για κάθε οθόνη αφής, όποιο κι αν είναι το πλάτος. */
+.phone__body { overscroll-behavior: auto; }
+@media (max-width: 520px), (pointer: coarse) {
+  .phone__screen { height: auto; max-height: none; min-height: 0; overflow: visible; }
   .phone__body, .phone__body--live {
     overflow: visible;
     overscroll-behavior: auto;
   }
+  .phone__body::-webkit-scrollbar { display: none; }
   .phone__body--live { display: block; }
   .live-app { display: flex; }
   .live-app__top {

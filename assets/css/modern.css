@@ -486,3 +486,11 @@ h1, h2 { font-weight: 650; }
   .timeline::before { left: 157px; }
   .timeline__item::before { left: 152px; }
 }
+
+/* Οθόνες αφής: χωρίς κινούμενες δέσμες και θόλωμα πίσω από κουμπιά,
+   για ομαλή κύλιση σε πιο αδύναμα κινητά Android. */
+@media (pointer: coarse) {
+  .hero::after, .matchday::after { animation: none; }
+  .btn--ghost, .btn--outline, .toast, .appbar, .appbar--ink, .tabbar, .auth__card { backdrop-filter: none; }
+  .stage { background-attachment: scroll; }
+}
