@@ -217,7 +217,7 @@
 
     const timer = setInterval(function () {
       if (room !== "match") return;
-      push(D.CHAT_AMBIENT[Math.floor(Math.random() * D.CHAT_AMBIENT.length)]);
+      push(nextAmbient());
     }, 5000);
     onCleanup(() => clearInterval(timer));
 
@@ -251,6 +251,7 @@
   }
 
   const chatMsg = m => window.ION.chatLine(m);
+  const nextAmbient = window.ION.ambientPicker(D.CHAT_AMBIENT);   /* χωρίς επαναλήψεις */
 
   function pollBlock(onVoted) {
     const poll = D.POLL;

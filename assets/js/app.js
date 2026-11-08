@@ -423,12 +423,13 @@
 
     /* Προσομοίωση κίνησης στην κερκίδα */
     ambientTimer = setInterval(function () {
-      const m = D.CHAT_AMBIENT[Math.floor(Math.random() * D.CHAT_AMBIENT.length)];
+      const m = nextAmbient();
       pushMsg(chatScroll, m);
     }, 5200);
   }
 
   const chatMsg = m => window.ION.chatLine(m);
+  const nextAmbient = window.ION.ambientPicker(D.CHAT_AMBIENT);   /* χωρίς επαναλήψεις */
 
   function pushMsg(scroll, m) {
     scroll.appendChild(chatMsg(m));

@@ -748,3 +748,30 @@
 .live-app__actions .poll, .live-app__actions .predict { padding: var(--sp-3); gap: var(--sp-2); }
 .live-app .chat__scroll { flex: 1 1 0; min-height: 64px; max-height: none; align-content: safe end; }
 .live-app .chat__form { flex: 0 0 auto; }
+
+/* ---- Κινητά (Android): η σελίδα κάνει την κύλιση, όχι το εσωτερικό του κινητού.
+   Με overscroll-behavior: contain ή overflow: hidden το Chrome του Android
+   δεν περνά το σύρσιμο στη σελίδα και κυλά μόνο από την μπάρα. */
+@media (max-width: 520px) {
+  .phone__body, .phone__body--live {
+    overflow: visible;
+    overscroll-behavior: auto;
+  }
+  .phone__body--live { display: block; }
+  .live-app { display: flex; }
+  .live-app__top {
+    position: sticky; top: 0; z-index: 3;
+    margin: 0 calc(-1 * var(--sp-3));
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--paper-50);
+  }
+  .phone--dark .live-app__top { background: var(--paper-50); }
+  .live-app__actions { max-height: none; overflow: visible; }
+  .live-app .chat__scroll { flex: none; height: 46vh; min-height: 200px; }
+  .live-app .chat__form {
+    position: sticky; bottom: 0; z-index: 3;
+    margin: 0 calc(-1 * var(--sp-3));
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--paper-50);
+  }
+}
