@@ -1,0 +1,267 @@
+/* ==========================================================================
+   ΙΩΝΙΚΟΣ 1965 :: Φωτεινό μοντέρνο θέμα
+   Φορτώνεται μετά το modern.css: ίδια σχεδίαση (Inter, χάπια, γυάλινη
+   πλοήγηση), αλλά σε λευκό και πολύ ανοιχτό γκρι. Σκοτεινά μένουν μόνο
+   το βίντεο, η κάρτα διαρκείας και οι μπλε κάρτες προβολής.
+   ========================================================================== */
+
+:root,
+.theme-dark,
+.theme-light,
+:root[data-theme="dark"] {
+  --ink-800: #F1F2F8;
+  --ink-300: #6A6D96;
+
+  --paper:     #FFFFFF;
+  --paper-50:  #F8F8FC;
+  --paper-100: #F5F6FA;
+  --paper-200: #ECEEF6;
+  --paper-300: #D9DCEB;
+
+  --ion-navy-100: #E9EAF7;
+  --ion-gold-100: #FBF3DE;
+  --ion-gold-600: #946E0E;
+  --ok-600:       #0B7F57;
+  --danger-600:   #C8363B;
+
+  --line-dark:      rgba(17, 19, 57, .10);
+  --line-dark-soft: rgba(17, 19, 57, .06);
+
+  --bg:          #F5F6FA;
+  --surface:     #FFFFFF;
+  --surface-2:   #F8F8FC;
+  --surface-3:   #ECEEF6;
+  --border:      rgba(17, 19, 57, .11);
+  --border-soft: rgba(17, 19, 57, .07);
+  --text:        #0E1030;
+  --text-muted:  #5E6187;
+  --text-soft:   #34376A;
+  --text-invert: #FFFFFF;
+  --accent-text: var(--ion-navy);
+
+  --hairline-top: inset 0 1px 0 rgba(255, 255, 255, .9);
+  --shadow-sm: 0 1px 2px rgba(17, 19, 57, .06), 0 0 0 1px rgba(17, 19, 57, .02);
+  --shadow-md: 0 1px 2px rgba(17, 19, 57, .05), 0 12px 28px -14px rgba(17, 19, 57, .22);
+  --shadow-lg: 0 30px 60px -24px rgba(17, 19, 57, .32), 0 0 0 1px rgba(17, 19, 57, .06);
+  --ring: 0 0 0 3px rgba(52, 55, 149, .3);
+
+  --floodlight:
+    radial-gradient(70% 50% at 50% -10%, rgba(110, 113, 192, .22), transparent 70%),
+    radial-gradient(40% 30% at 90% 0%, rgba(231, 195, 97, .22), transparent 70%);
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .07  0 0 0 0 .08  0 0 0 0 .22  0 0 0 .05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+
+  color-scheme: light;
+}
+
+body { background: var(--bg); color: var(--text); }
+.gold { color: var(--ion-gold-600); }
+
+/* ---- Κουμπιά: μπλε χάπι για το κύριο --------------------------------- */
+.btn--primary, .btn:not([class*="btn--"]) {
+  --btn-bg: var(--ion-navy);
+  --btn-fg: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 8px 20px -10px rgba(52, 55, 149, .7);
+}
+.btn--primary:hover:not(:disabled) { --btn-bg: #2A2D7E; }
+.btn--gold { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .4), 0 8px 22px -10px rgba(207, 156, 29, .8); }
+.btn--ghost, .btn--outline,
+.theme-dark .btn--ghost, .theme-dark .btn--outline, .theme-light .btn--ghost {
+  --btn-bg: #fff;
+  --btn-fg: var(--text);
+  --btn-bd: rgba(17, 19, 57, .12);
+  box-shadow: 0 1px 2px rgba(17, 19, 57, .05);
+}
+.btn--ghost:hover:not(:disabled), .btn--outline:hover:not(:disabled),
+.theme-dark .btn--ghost:hover:not(:disabled) { background: #F1F2F8; }
+
+/* ---- Κάρτες και στοιχεία ---------------------------------------------- */
+.card { background: var(--surface); box-shadow: var(--shadow-sm); }
+.card--raised { box-shadow: var(--shadow-md); }
+.card--ink { background: var(--surface); color: var(--text); }
+.card--navy {
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(110, 113, 192, .45), transparent 60%),
+    linear-gradient(170deg, #2A2D7E, #181B4A);
+  border-color: transparent;
+  color: #fff;
+  --text: #F5F6FB; --text-muted: #B9BBDA; --ink-300: #B9BBDA;
+  box-shadow: 0 18px 40px -20px rgba(52, 55, 149, .7);
+}
+.card--navy .countdown__unit { background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .12); }
+.card--navy .countdown__unit b, .card--navy .countdown__count { color: #fff; }
+.card--navy .countdown__unit span { color: #B9BBDA; }
+.card--navy .btn--ghost { --btn-bg: rgba(255, 255, 255, .1); --btn-fg: #fff; --btn-bd: rgba(255, 255, 255, .2); box-shadow: none; }
+
+.chip { background: #fff; border-color: var(--border); }
+.chip:hover { border-color: rgba(17, 19, 57, .25); }
+.chip.is-active { background: var(--ion-navy); border-color: var(--ion-navy); color: #fff; }
+
+.segmented, .theme-dark .segmented, .theme-light .segmented { background: #ECEEF6; border-color: transparent; }
+.segmented__btn.is-active { background: #fff; color: var(--text); box-shadow: 0 1px 3px rgba(17, 19, 57, .14); }
+
+.badge--ok, .theme-dark .badge--ok { color: var(--ok-600); }
+.badge--danger, .theme-dark .badge--danger { color: var(--danger-600); }
+.badge--gold, .theme-dark .badge--gold { color: var(--ion-gold-600); }
+.badge--navy { background: var(--ion-navy-100); color: var(--ion-navy); }
+
+.row--clickable:hover { border-color: rgba(17, 19, 57, .18); box-shadow: var(--shadow-md); }
+.row__icon, .theme-dark .row__icon { background: var(--ion-navy-100); color: var(--ion-navy); }
+.row--clickable:hover .row__icon { background: var(--ion-gold-100); color: var(--ion-gold-600); }
+.stat--navy .stat__value, .theme-dark .stat--navy .stat__value { color: var(--ion-navy); }
+.stat--gold .stat__value, .theme-dark .stat--gold .stat__value { color: var(--ion-gold-600); }
+.stat--ok .stat__value { color: var(--ok-600); }
+
+.input, .select { background: #fff; }
+.input:focus, .select:focus { border-color: var(--ion-navy); }
+.option { background: #fff; }
+.option:hover { border-color: rgba(17, 19, 57, .25); }
+.option.is-selected { background: var(--ion-gold-100); }
+.option__tag, .theme-dark .option__tag { color: var(--ok-600); }
+.summary__line.is-credit, .theme-dark .summary__line.is-credit { color: var(--ok-600); }
+.perks__icon, .theme-light .perks__icon { background: var(--ion-gold-100); color: var(--ion-gold-600); }
+.plan__price, .theme-dark .plan__price { color: var(--ion-gold-600); }
+.card--navy .plan__price { color: var(--ion-gold-300); }
+.progress { background: #ECEEF6; }
+
+.modal, .modal.theme-light { background: #fff; color: var(--text); border-color: var(--border-soft); }
+.modal-backdrop { background: rgba(14, 16, 48, .35); }
+.sheet { background: #fff; }
+
+.seal, .theme-dark .seal { color: var(--text-muted); border-color: rgba(17, 19, 57, .16); }
+.crest-watermark::before, .hero .crest-watermark::before,
+.auth.crest-watermark::before, .matchday.crest-watermark::before { filter: none; opacity: .045; }
+
+/* ---- Ήρωες: απαλές δέσμες σε μπλε και χρυσό πάνω σε λευκό ----------- */
+.hero, .matchday { background: var(--grain), #F5F6FA; color: var(--text); }
+.hero { border-bottom: 1px solid var(--border-soft); }
+.hero::after, .matchday::after {
+  background: repeating-linear-gradient(118deg,
+    transparent 0 7%,
+    rgba(110, 113, 192, .55) 9% 14%,
+    transparent 17% 23%,
+    rgba(231, 195, 97, .7) 25% 27%,
+    transparent 30% 36%,
+    rgba(164, 166, 230, .5) 38% 41%,
+    transparent 44% 52%);
+  filter: blur(40px) saturate(1.2);
+  opacity: .8;
+}
+.matchday::after { opacity: .5; }
+.hero__kicker { color: var(--text-muted); }
+
+/* ---- Shells ---------------------------------------------------------- */
+.auth { background: var(--grain), var(--floodlight), #F5F6FA; }
+.auth__card, .auth__card.theme-light {
+  background: rgba(255, 255, 255, .78);
+  border-color: rgba(17, 19, 57, .08);
+  box-shadow: var(--shadow-lg);
+}
+.auth__demos { background: #F5F6FA; }
+.auth__demo { background: #fff; }
+.auth__demo:hover { background: #fff; border-color: var(--ion-navy); }
+
+.stage { background: var(--grain), var(--floodlight), #F5F6FA; color: var(--text); }
+.stage__brand p { color: var(--text-muted); }
+.phone {
+  box-shadow: 0 0 0 1px rgba(17, 19, 57, .2), 0 0 0 7px #0E1030, 0 0 0 8px rgba(17, 19, 57, .25),
+              0 50px 90px -30px rgba(17, 19, 57, .55), 0 0 120px -40px rgba(110, 113, 192, .6);
+}
+.phone--dark .phone__screen { background: var(--paper-50); }
+.phone__caption { color: var(--text-muted); }
+.appbar, .appbar--ink { background: rgba(255, 255, 255, .85); color: var(--text); }
+.appbar__action:hover { background: rgba(17, 19, 57, .06); }
+.tabbar, .phone--dark .tabbar { background: rgba(255, 255, 255, .9); }
+.tabbar__btn.is-active, .phone--dark .tabbar__btn.is-active { color: var(--ion-navy); }
+.phone__body::-webkit-scrollbar-thumb { background: var(--paper-300); }
+
+.web__nav {
+  background: rgba(255, 255, 255, .72);
+  border-color: rgba(17, 19, 57, .08);
+  box-shadow: 0 1px 2px rgba(17, 19, 57, .04), 0 18px 40px -24px rgba(17, 19, 57, .35);
+  color: var(--text);
+}
+.web__link:hover { color: var(--text); background: rgba(17, 19, 57, .05); }
+.web__link.is-active { color: var(--text); background: rgba(17, 19, 57, .07); box-shadow: none; }
+.web__who:hover { color: var(--text); background: rgba(17, 19, 57, .05); }
+.web__foot { background: #fff; color: var(--text-muted); }
+.web__foot a { color: var(--text); text-decoration-color: rgba(17, 19, 57, .3); }
+
+.admin__side { background: #EDEEF5; color: var(--text); border-right-color: var(--border-soft); }
+.admin__brand strong { color: var(--text); }
+.admin__navbtn { color: var(--text-soft); }
+.admin__navbtn:hover { background: rgba(17, 19, 57, .05); color: var(--text); }
+.admin__navbtn.is-active { background: #fff; color: var(--text); box-shadow: 0 1px 3px rgba(17, 19, 57, .12); }
+.admin__foot { color: var(--ok-600); }
+.table tbody tr:hover { background: #F8F8FC; }
+
+/* ---- Ζωντανά ----------------------------------------------------------- */
+.live-pin { background: var(--paper-50); box-shadow: 0 12px 16px -14px rgba(17, 19, 57, .35); }
+@media (max-width: 960px) {
+  .live-main { background: var(--bg); box-shadow: 0 12px 18px -14px rgba(17, 19, 57, .35); }
+}
+.scoreline__comp { color: var(--ion-gold-600); }
+.chat__msg { background: #F5F6FA; }
+.live-chat .chat__msg { background: #F5F6FA; }
+.chat__msg--own { background: var(--ion-gold-100); }
+.chat__user, .leaderboard .leaderboard__name { filter: brightness(.6) saturate(1.3); }
+.chat__title { color: color-mix(in srgb, var(--tier) 62%, #1A1300); background: color-mix(in srgb, var(--tier) 16%, transparent); }
+.chat__input { color: var(--text); background: #fff; border-color: var(--border); }
+.chat__input::placeholder { color: var(--text-muted); }
+.chat__scroll::-webkit-scrollbar-thumb { background: var(--paper-300); }
+
+.poll { background: #FFFBF0; border-color: rgba(207, 156, 29, .45); }
+.poll__q { color: var(--ion-gold-600); }
+.poll__opt { background: #fff; }
+.poll__fill { background: rgba(52, 55, 149, .14); }
+
+.reaction { background: #fff; border-color: var(--border); box-shadow: 0 1px 2px rgba(17, 19, 57, .05); }
+.reaction:hover { background: #fff; border-color: var(--ion-gold); }
+.noise__bar { background: #ECEEF6; }
+.noise__label { color: var(--ion-gold-600); }
+
+.predict { background: linear-gradient(180deg, #EEEFFA, #fff); color: var(--text); border-color: var(--border); }
+.predict__title { color: var(--ion-navy); }
+.predict__score, .predict__result b { color: var(--text); }
+.predict__result { background: #F5F6FA; }
+.predict__verdict.is-exact, .predict__result.is-exact b { color: var(--ion-gold-600); }
+.predict__verdict.is-outcome, .predict__result.is-outcome b { color: var(--ok-600); }
+
+.trophy-summary { background: #fff; color: var(--text); }
+.trophy-summary__count b { color: var(--text); }
+.trophy { box-shadow: inset 0 2px 0 var(--tier), var(--shadow-sm); }
+.ladder__item.is-high { background: linear-gradient(120deg, var(--ion-navy), #2A2D7E); color: #fff; }
+.ladder__item.is-high .ladder__perk { color: var(--ion-gold-300); }
+.ladder__item.is-top { background: linear-gradient(120deg, #23266A, #0E1030); color: #fff; }
+.ladder__item.is-top .ladder__perk { color: #fff; }
+.ladder__item.is-current { border-color: var(--ion-navy); box-shadow: inset 3px 0 0 var(--tier), 0 0 0 1px var(--ion-navy); }
+
+.standings tr.is-us td { background: var(--ion-gold-100); }
+.standings tr.is-us td.team { color: var(--ion-navy); }
+.leaderboard tr.is-you td { background: var(--ion-gold-100); }
+.match-card__score { background: var(--ion-navy); color: #fff; }
+
+.countdown__unit { background: #fff; border-color: var(--border); }
+.countdown__unit b, .countdown__count { color: var(--text); }
+.countdown__unit span { color: var(--text-muted); }
+
+.bus { background: #fff; }
+.bus__front { background: var(--ion-navy); color: #fff; }
+.bus__seat { background: #F5F6FA; }
+.bus__seat.is-mine { background: var(--ion-navy); border-color: var(--ion-navy); box-shadow: 0 0 0 2px var(--ion-gold); }
+.trip__left { color: var(--ion-navy); }
+
+.timeline__year { color: var(--ion-navy); }
+.timeline__sport.is-club { background: var(--ion-navy-100); color: var(--ion-navy); }
+.history-sources a { color: var(--ion-navy); }
+.history-hero__intro { color: var(--text-muted); }
+
+.info__icon { color: var(--ok-600); }
+.info__icon--navy { background: var(--ion-navy-100); color: var(--ion-navy); }
+.empty { background: #fff; }
+
+/* Αρχική */
+.hero { color: var(--text); }
+.hero p.lead { color: var(--text-muted); }
+.screen-link { background: #fff; box-shadow: var(--shadow-sm); }
+.screen-link:hover { border-color: rgba(17, 19, 57, .18); box-shadow: var(--shadow-md); }
+.sw__chip { border-color: rgba(17, 19, 57, .12); }

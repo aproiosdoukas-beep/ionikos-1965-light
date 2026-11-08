@@ -4,7 +4,7 @@
 ιστοσελίδα του συλλόγου, με κοινή σχεδίαση. Απλή HTML, CSS και JavaScript,
 χωρίς build και χωρίς διακομιστή. Όλα εκτελούνται στον browser.
 
-Αυτή είναι η μοντέρνα εκδοχή: σκοτεινό θέμα, γραμματοσειρά Inter, γυάλινη πλοήγηση.
+Αυτή είναι η φωτεινή μοντέρνα εκδοχή (assets/css/light.css πάνω στο modern.css): λευκό θέμα, γραμματοσειρά Inter, γυάλινη πλοήγηση.
 Το θέμα βρίσκεται στο `assets/css/modern.css`. Η αρχική εκδοχή «heritage matchday»
 συνεχίζει στο https://aproiosdoukas-beep.github.io/ionikos-1965-mockup/.
 
