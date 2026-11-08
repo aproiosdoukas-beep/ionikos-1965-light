@@ -389,6 +389,29 @@
   };
 
   /* ======================================================================
+     LIVE: μετρητής θορύβου κερκίδας και σκορ επίδειξης
+     ====================================================================== */
+  const clamp100 = n => Math.max(0, Math.min(100, n));
+  const Noise = {
+    tap(n)   { return clamp100(n + 6); },
+    crowd(n) { return clamp100(n + 3); },
+    decay(n) { return clamp100(n - 2); },
+    label(n) { return n < 34 ? "Ζεσταίνεται" : n < 75 ? "Δυνατά" : "Η κερκίδα σείεται"; }
+  };
+
+  /** Το σκορ του live, κοινό σε app και web. Το γκολ επίδειξης γίνεται μία φορά. */
+  const LiveScore = {
+    get() { return Store.get("live:score", D.LIVE.score); },
+    scored() { return Store.get("live:score", null) !== null; },
+    goal() {
+      if (LiveScore.scored()) return LiveScore.get();
+      const parts = D.LIVE.score.split("-").map(Number);
+      return Store.set("live:score", (parts[0] + 1) + "-" + parts[1]);
+    },
+    reset() { Store.remove("live:score"); }
+  };
+
+  /* ======================================================================
      AUTH
      ====================================================================== */
   const Auth = {
@@ -743,6 +766,61 @@
     ]);
   }
 
+  /**
+   * Αντιδράσεις, μετρητής θορύβου και γκολ επίδειξης για έναν player.
+   * onScore(score) καλείται όταν αλλάξει το σκορ. Επιστρέφει { el, stop, goal }.
+   */
+  function liveHype(player, onScore) {
+    let level = 20;
+    const timers = [];
+    const bar = el("span", { style: "width:20%" });
+    const label = el("span", { class: "noise__label", text: Noise.label(level) });
+    const meter = el("div", { class: "noise" }, [
+      el("div", { class: "noise__head" }, [el("span", { class: "noise__title", text: "Θόρυβος κερκίδας" }), label]),
+      el("div", { class: "noise__bar", role: "meter", "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": "Θόρυβος κερκίδας" }, [bar])
+    ]);
+    function paint() {
+      bar.style.width = level + "%";
+      bar.parentNode.setAttribute("aria-valuenow", String(level));
+      label.textContent = Noise.label(level);
+      meter.classList.toggle("is-loud", level >= 75);
+    }
+    function float(emoji) {
+      const f = el("span", { class: "float-emoji", "aria-hidden": "true", text: emoji,
+        style: "left:" + (15 + Math.random() * 70).toFixed(0) + "%" });
+      f.addEventListener("animationend", () => f.remove());
+      player.appendChild(f);
+      setTimeout(() => f.remove(), 2500);
+    }
+    const row = el("div", { class: "reactions" }, D.REACTIONS.map(r => el("button", {
+      class: "reaction", type: "button", "aria-label": r.label, title: r.label, text: r.emoji,
+      onclick() { level = Noise.tap(level); float(r.emoji); paint(); }
+    })));
+    function goal() {
+      const score = LiveScore.goal();
+      level = 100; paint();
+      const banner = el("div", { class: "goal-banner", role: "status", text: upper("Γκολ του Ιωνικού") });
+      player.appendChild(banner);
+      setTimeout(() => banner.remove(), 3000);
+      for (let i = 0; i < 6; i++) setTimeout(() => float(i % 2 ? "💙" : "⚽"), i * 120);
+      if (onScore) onScore(score);
+      return score;
+    }
+    timers.push(setInterval(() => {
+      level = Noise.crowd(level);
+      if (Math.random() < .3) float(D.REACTIONS[Math.floor(Math.random() * D.REACTIONS.length)].emoji);
+      paint();
+    }, 800));
+    timers.push(setInterval(() => { level = Noise.decay(level); paint(); }, 400));
+    if (!LiveScore.scored()) timers.push(setTimeout(goal, 45000));
+    paint();
+    return {
+      el: el("div", { class: "hype" }, [row, meter]),
+      goal: goal,
+      stop() { timers.forEach(t => { clearInterval(t); clearTimeout(t); }); }
+    };
+  }
+
   /** Ένα toast για κάθε τρόπαιο που μόλις ξεκλείδωσε. */
   function celebrate(list) {
     (list || []).forEach(t => {
@@ -759,8 +837,8 @@
   }
 
   global.ION = {
-    Store, Auth, Membership, Trophies, Token, QR, resolveCard,
+    Store, Auth, Membership, Trophies, Noise, LiveScore, Token, QR, resolveCard,
     el, $, $$,
-    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, standingsTable, todayKey, hash32, upper
+    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, standingsTable, liveHype, todayKey, hash32, upper
   };
 })(window);

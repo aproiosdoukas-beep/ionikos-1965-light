@@ -6,7 +6,7 @@ run({
   seeded_message_title_from_id() {
     const { ION } = loadCore();
     const t = ION.chatTitle({ user: "Μάκης", levelId: "ultra", title: "ever_present", text: "x" });
-    assert.strictEqual(t.name, "Θρύλος της Θύρας");
+    assert.strictEqual(t.name, "Θρύλος της θύρας");
     assert.strictEqual(t.tier, "gold");
   },
   own_message_uses_chosen_title() {

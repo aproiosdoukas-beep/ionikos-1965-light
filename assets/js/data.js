@@ -179,6 +179,14 @@
     stand: 184
   };
 
+  /* ---- Αντιδράσεις στο live ------------------------------------------------ */
+  const REACTIONS = [
+    { id: "goal",  emoji: "⚽", label: "Γκολ" },
+    { id: "fire",  emoji: "🔥", label: "Φωτιά" },
+    { id: "heart", emoji: "💙", label: "Μπλε καρδιά" },
+    { id: "clap",  emoji: "👏", label: "Χειροκρότημα" }
+  ];
+
   const VOD = [
     { id: "vod1", title: "Κ14 Ιωνικός - Ατρόμητος", score: "3-0", date: "02/11/2026", dur: "92'" },
     { id: "vod2", title: "Κ12 Ιωνικός - Εθνικός",   score: "1-1", date: "26/10/2026", dur: "88'" },
@@ -663,7 +671,7 @@
   global.ION_DATA = {
     ACCOUNTS, PROFILES, LEVELS, TIERS, TROPHIES, TROPHY_SEED,
     OFFERS, OFFER_FILTERS,
-    LIVE, VOD, CHAT_ROOMS, CHAT_SEED, CHAT_AMBIENT, POLL,
+    LIVE, REACTIONS, VOD, CHAT_ROOMS, CHAT_SEED, CHAT_AMBIENT, POLL,
     EVENTS, STANDINGS, PLANS, BILLING, ADMIN, SCAN_STATES, KNOWN_CARDS
   };
 })(window);

@@ -22,6 +22,7 @@
 
   let liveQR = null;        // handle του ζωντανού QR
   let ambientTimer = null;  // προσομοίωση μηνυμάτων κερκίδας
+  let hypeStop = null;      // χρονόμετρα αντιδράσεων/θορύβου στο Live
 
   /** Άνοιγμα συγκεκριμένης καρτέλας από σύνδεσμο, π.χ. app.html#profile. */
   function tabFromHash() {
@@ -86,6 +87,7 @@
   function cleanup() {
     if (liveQR) { liveQR.stop(); liveQR = null; }
     if (ambientTimer) { clearInterval(ambientTimer); ambientTimer = null; }
+    if (hypeStop) { hypeStop(); hypeStop = null; }
   }
 
   function render() {
@@ -364,6 +366,10 @@
       ])
     ]);
 
+    const scoreLine = el("div", { class: "display bold", text: L.title + " " + window.ION.LiveScore.get() });
+    const hype = window.ION.liveHype(player, score => { scoreLine.textContent = L.title + " " + score; });
+    hypeStop = hype.stop;
+
     /* --- Κερκίδα --- */
     const chatScroll = el("div", { class: "chat__scroll" });
     const seeded = (D.CHAT_SEED[state.chatRoom] || []).slice();
@@ -392,8 +398,8 @@
     ]);
 
     view.append(el("div", { class: "stack" }, [
-      el("div", { class: "live-pin" }, [player]),
-      el("div", { class: "display bold", text: L.title + " " + L.score }),
+      el("div", { class: "live-pin" }, [player, hype.el]),
+      scoreLine,
       pollBlock(),
       standingsCard(),
       el("div", { class: "display bold gold t-sm", text: "Κερκίδα Live (" + L.stand + " online)" }),
@@ -665,6 +671,7 @@
         onclick() {
           Membership.reset();
           Trophies.reset();
+          window.ION.LiveScore.reset();
           ["activeProfile", "poll:voted", "poll:counts", "app:tab"].forEach(k => Store.remove(k));
           toast("Τα δεδομένα επανήλθαν στην αρχική τους μορφή", "ok");
           render();

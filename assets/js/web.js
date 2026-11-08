@@ -131,7 +131,7 @@
     const title = el("div", { class: "scoreline" }, [
       el("span", { class: "scoreline__comp", text: L.competition }),
       el("span", { class: "scoreline__teams", text: L.title }),
-      el("span", { class: "scoreline__score", text: L.score })
+      el("span", { class: "scoreline__score", text: window.ION.LiveScore.get() })
     ]);
 
     /* --- Κερκίδα --- */
@@ -193,6 +193,12 @@
     sidebar.append(roomTabs, pollBlock(render), chatScroll, form);
     loadRoom("match");
 
+    const hype = window.ION.liveHype(player, score => {
+      title.querySelector(".scoreline__score").textContent = score;
+      if (room === "match") push({ user: "Ιωνικός TV", levelId: "ultra", text: "ΓΚΟΛ! Ο Ιωνικός κάνει το " + score + "." });
+    });
+    onCleanup(() => hype.stop());
+
     const timer = setInterval(function () {
       if (room !== "match") return;
       push(D.CHAT_AMBIENT[Math.floor(Math.random() * D.CHAT_AMBIENT.length)]);
@@ -208,7 +214,7 @@
         head("Ιωνικός TV", "Ζωντανή μετάδοση και κερκίδα"),
         title,
         el("div", { class: "grid-live" }, [
-          el("div", { class: "live-main" }, [player]),
+          el("div", { class: "live-main" }, [player, hype.el]),
           sidebar
         ])
       ]),
