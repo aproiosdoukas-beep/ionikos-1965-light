@@ -652,3 +652,41 @@
 .bus__seat.is-mine { background: var(--ion-navy); border-color: var(--ion-navy); box-shadow: 0 0 0 2px var(--ion-gold-300); }
 .trip__left { font-family: var(--font-display); font-weight: 800; color: var(--ion-navy); }
 .trip__left.is-low { color: var(--danger-600); }
+
+/* ---- Ιστορία ------------------------------------------------------------------ */
+.history-hero { margin-bottom: var(--sp-8); }
+.web__wrap > .history-hero:first-child { margin-top: calc(-1 * var(--main-pt)); }
+.history-hero__title { font-size: clamp(40px, 7vw, 76px); font-weight: 900; line-height: .95; margin-top: 12px; max-width: 14ch; }
+.history-hero__intro { color: var(--ink-300); font-size: var(--fs-md); max-width: 62ch; margin: 18px 0 0; }
+.history-fact p { margin: 8px 0 0; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-md); line-height: 1.3; }
+
+.timeline { list-style: none; margin: 0; padding: 0; position: relative; }
+.timeline::before {
+  content: ""; position: absolute; left: 134px; top: 6px; bottom: 6px;
+  width: 2px; background: linear-gradient(var(--ion-gold), var(--ion-navy));
+}
+.timeline__item { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 40px; padding-bottom: var(--sp-6); position: relative; }
+.timeline__item::before {
+  content: ""; position: absolute; left: 128px; top: 6px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--ion-gold); box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--ion-gold-300);
+}
+.timeline__year {
+  font-family: var(--font-display); font-weight: 900; font-stretch: var(--stretch-headline);
+  font-size: var(--fs-xl); line-height: 1; color: var(--ion-navy); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.timeline__body { display: grid; gap: 6px; justify-items: start; max-width: 64ch; }
+.timeline__sport { cursor: default; font-size: var(--fs-xs); padding: 3px 10px; }
+.timeline__sport.is-basketball { border-color: var(--ion-gold); color: var(--ion-gold-600); }
+.timeline__sport.is-club { background: var(--ion-navy); border-color: var(--ion-navy); color: #fff; }
+.timeline__title { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-lg); line-height: 1.15; }
+.timeline__text { margin: 0; color: var(--text-muted); }
+.history-sources { margin-top: var(--sp-6); font-size: var(--fs-sm); color: var(--text-muted); }
+.history-sources ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+.history-sources a { color: var(--ion-navy); }
+@media (max-width: 560px) {
+  .timeline::before { left: 7px; }
+  .timeline__item { grid-template-columns: minmax(0, 1fr); gap: 6px; padding-left: 30px; }
+  .timeline__item::before { left: 1px; }
+  .timeline__year { text-align: left; font-size: var(--fs-lg); }
+}

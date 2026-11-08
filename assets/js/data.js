@@ -174,6 +174,52 @@
     price: 15
   };
 
+  /* ---- Ιστορία του συλλόγου -----------------------------------------------
+     Μόνο στοιχεία που αναφέρουν οι πηγές. Ό,τι αμφισβητείται, λείπει. */
+  const HISTORY = {
+    intro: "Ο Ιωνικός γεννήθηκε το 1965 στη Νίκαια, από τη συνένωση της Α.Ε. Νικαίας και του Άρη Πειραιώς. Από τότε παίζει στο Γήπεδο Νεάπολης και έχει περάσει από τα τοπικά πρωταθλήματα ως τον τελικό του Κυπέλλου και την Ευρώπη.",
+    facts: [
+      { label: "Ίδρυση", value: "29 Ιουνίου 1965, από τη συνένωση της Α.Ε. Νικαίας και του Α.Π.Σ. Άρη Πειραιώς" },
+      { label: "Χρώματα", value: "μπλε και λευκό, γι' αυτό και «Κυανόλευκοι». Λέγονται και «Κοκκινιώτες»" },
+      { label: "Έδρα", value: "Δημοτικό Γήπεδο Νεάπολης Νίκαιας, 5.500 θέσεις. Το μπάσκετ παίζει στο κλειστό «Παναγιώτης Γιαννάκης»" }
+    ],
+    timeline: [
+      { year: "1965", sport: "club", source: "el_club", title: "Ο σύλλογος γεννιέται",
+        text: "Η Α.Ε. Νικαίας και ο Άρης Πειραιώς ενώνονται και γίνονται ο Ιωνικός." },
+      { year: "1965-66", sport: "football", source: "el_football", title: "Πρώτη χρονιά στη Β΄ Εθνική",
+        text: "Ο πρώτος επίσημος αγώνας, στις 21 Νοεμβρίου 1965, λήγει 0-0 με τον Ατρόμητο Πειραιά." },
+      { year: "1974-75", sport: "basketball", source: "el_basketball", title: "Το μπάσκετ ανεβαίνει ψηλά",
+        text: "Μέσα από μπαράζ, η ομάδα μπάσκετ ανεβαίνει στην πρώτη εθνική κατηγορία και μένει εκεί για πάνω από δέκα χρόνια." },
+      { year: "1976", sport: "basketball", source: "el_basketball", title: "Πανελλήνιοι πρωταθλητές νέων",
+        text: "Η ομάδα νέων κατακτά το πανελλήνιο πρωτάθλημα. Την ίδια χρονιά ο 17χρονος Παναγιώτης Γιαννάκης κάνει ντεμπούτο στην Εθνική ομάδα." },
+      { year: "1981-82", sport: "football", source: "el_football", title: "Πρωταθλητές Γ΄ Εθνικής",
+        text: "Ο Ιωνικός κερδίζει το πρωτάθλημα της Γ΄ Εθνικής και επιστρέφει στη Β΄." },
+      { year: "1983-84", sport: "basketball", source: "el_basketball", title: "Οι 73 πόντοι του Γιαννάκη",
+        text: "Σε παράταση απέναντι στον Άρη στη Νίκαια, ο Γιαννάκης βάζει 73 πόντους, ρεκόρ του συλλόγου." },
+      { year: "1988-89", sport: "football", source: "el_football", title: "Για πρώτη φορά στην Α΄ Εθνική",
+        text: "Με την τρίτη θέση στη Β΄ Εθνική, ο Ιωνικός ανεβαίνει για πρώτη φορά στη μεγάλη κατηγορία." },
+      { year: "1999-2000", sport: "football", source: "en_football", title: "Ο Ιωνικός στην Ευρώπη",
+        text: "Πρώτη και μοναδική ως τώρα συμμετοχή στο Κύπελλο UEFA, απέναντι στη Ναντ (1-3 και 0-1)." },
+      { year: "2000", sport: "football", source: "en_football", title: "Τελικός Κυπέλλου Ελλάδας",
+        text: "Ο Ιωνικός φτάνει στον τελικό του Κυπέλλου και χάνει 0-3 από την ΑΕΚ. Περίπου 5.000 Ιωνικοί στις εξέδρες." },
+      { year: "2011", sport: "football", source: "en_football", title: "Η ομάδα περνά στους φιλάθλους",
+        text: "Μετά τα οικονομικά προβλήματα, την ομάδα αναλαμβάνει ο σύνδεσμος φιλάθλων «Rangers Club». Μοναδικό μοντέλο στην Ελλάδα." },
+      { year: "2020-21", sport: "football", source: "en_football", title: "Πρωταθλητές Super League 2",
+        text: "Ο Ιωνικός κερδίζει το πρωτάθλημα και επιστρέφει στη μεγάλη κατηγορία ύστερα από 14 χρόνια." },
+      { year: "2024-25", sport: "football", source: "en_football", title: "Νέα αρχή από τον Πειραιά",
+        text: "Πρωτάθλημα στην Α΄ κατηγορία της ΕΠΣ Πειραιά και άνοδος στη Γ΄ Εθνική." }
+    ],
+    sections: ["Ποδόσφαιρο", "Μπάσκετ ανδρών και γυναικών", "Βόλεϊ ανδρών και γυναικών", "Πόλο ανδρών και γυναικών",
+               "Κολύμβηση", "Άρση βαρών", "Πυγμαχία", "Τένις", "Softball", "Esports"],
+    sources: [
+      { id: "el_football",   name: "Βικιπαίδεια: Ιωνικός Νίκαιας (ποδόσφαιρο)", url: "https://el.wikipedia.org/wiki/%CE%99%CF%89%CE%BD%CE%B9%CE%BA%CF%8C%CF%82_%CE%9D%CE%AF%CE%BA%CE%B1%CE%B9%CE%B1%CF%82_(%CF%80%CE%BF%CE%B4%CF%8C%CF%83%CF%86%CE%B1%CE%B9%CF%81%CE%BF)" },
+      { id: "en_football",   name: "Wikipedia: Ionikos F.C.", url: "https://en.wikipedia.org/wiki/Ionikos_F.C." },
+      { id: "el_club",       name: "Βικιπαίδεια: Α.Ο. Ιωνικός Νίκαιας", url: "https://el.wikipedia.org/wiki/%CE%91.%CE%9F._%CE%99%CF%89%CE%BD%CE%B9%CE%BA%CF%8C%CF%82_%CE%9D%CE%AF%CE%BA%CE%B1%CE%B9%CE%B1%CF%82" },
+      { id: "el_basketball", name: "Βικιπαίδεια: Ιωνικός Νίκαιας (μπάσκετ ανδρών)", url: "https://el.wikipedia.org/wiki/%CE%99%CF%89%CE%BD%CE%B9%CE%BA%CF%8C%CF%82_%CE%9D%CE%AF%CE%BA%CE%B1%CE%B9%CE%B1%CF%82_(%CE%BA%CE%B1%CE%BB%CE%B1%CE%B8%CE%BF%CF%83%CF%86%CE%B1%CE%AF%CF%81%CE%B9%CF%83%CE%B7_%CE%B1%CE%BD%CE%B4%CF%81%CF%8E%CE%BD)" },
+      { id: "club_site",     name: "ionikos.gr", url: "https://ionikos.gr/" }
+    ]
+  };
+
   /* ---- Χορηγοί & προσφορές  ------------------------------------ */
   const OFFERS = [
     { id: "m_burgers",  name: "Nikaia Burgers",   category: "food",  icon: "🍔",
@@ -702,7 +748,7 @@
   global.ION_DATA = {
     ACCOUNTS, PROFILES, LEVELS, TIERS, TROPHIES, TROPHY_SEED,
     OFFERS, OFFER_FILTERS,
-    LIVE, REACTIONS, FANS, AWAY_TRIP, VOD, CHAT_ROOMS, CHAT_SEED, CHAT_AMBIENT, POLL,
+    LIVE, REACTIONS, FANS, AWAY_TRIP, HISTORY, VOD, CHAT_ROOMS, CHAT_SEED, CHAT_AMBIENT, POLL,
     EVENTS, STANDINGS, PLANS, BILLING, ADMIN, SCAN_STATES, KNOWN_CARDS
   };
 })(window);

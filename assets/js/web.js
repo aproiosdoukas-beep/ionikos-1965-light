@@ -14,7 +14,8 @@
     { id: "standings",    label: "Βαθμολογίες" },
     { id: "stand",        label: "Κερκίδα" },
     { id: "events",       label: "Εκδηλώσεις" },
-    { id: "subscription", label: "Συνδρομή" }
+    { id: "subscription", label: "Συνδρομή" },
+    { id: "history",      label: "Ιστορία" }
   ];
 
   const page = $("#page");
@@ -78,7 +79,7 @@
     page.innerHTML = "";
     renderNav();
     renderAuth();
-    ({ live: viewLive, vod: viewVod, standings: viewStandings, stand: viewStand, events: viewEvents, subscription: viewSubscription })[currentRoute()]();
+    ({ live: viewLive, vod: viewVod, standings: viewStandings, stand: viewStand, events: viewEvents, subscription: viewSubscription, history: viewHistory })[currentRoute()]();
     syncNavHeight();
     window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
   }
@@ -383,6 +384,47 @@
         league.next ? matchCard("Επόμενος αγώνας", league.next, true) : null
       ])
     ]);
+  }
+
+  /* ======================================================================
+     Ιστορία του συλλόγου
+     ====================================================================== */
+  const SPORT_LABEL = { football: "Ποδόσφαιρο", basketball: "Μπάσκετ", club: "Σύλλογος" };
+
+  function viewHistory() {
+    const H = D.HISTORY;
+    page.append(
+      el("section", { class: "matchday theme-dark crest-watermark history-hero" }, [
+        el("div", { class: "eyebrow", text: "Ιστορία" }),
+        el("h2", { class: "history-hero__title", text: "Από το 1965 στη Νίκαια" }),
+        el("p", { class: "history-hero__intro", text: H.intro })
+      ]),
+      el("div", { class: "grid-3", style: "margin-bottom:40px" }, H.facts.map(f =>
+        el("div", { class: "card card--rule history-fact" }, [
+          el("div", { class: "eyebrow", text: f.label }),
+          el("p", { text: f.value })
+        ]))),
+      el("h3", { class: "section-title", style: "font-size:var(--fs-xl);margin-bottom:16px", text: "Οι σταθμοί" }),
+      el("ol", { class: "timeline" }, H.timeline.map(t =>
+        el("li", { class: "timeline__item" }, [
+          el("div", { class: "timeline__year", text: t.year }),
+          el("div", { class: "timeline__body" }, [
+            el("span", { class: "chip timeline__sport is-" + t.sport, text: SPORT_LABEL[t.sport] }),
+            el("h4", { class: "timeline__title", text: t.title }),
+            el("p", { class: "timeline__text", text: t.text })
+          ])
+        ]))),
+      el("div", { class: "card", style: "margin-top:40px;display:grid;gap:12px" }, [
+        el("h3", { class: "section-title", text: "Τα τμήματα" }),
+        el("div", { class: "cluster", style: "gap:8px" }, H.sections.map(s => el("span", { class: "chip", text: s })))
+      ]),
+      el("div", { class: "history-sources" }, [
+        el("h4", { class: "card__title", text: "Πηγές" }),
+        el("ul", {}, H.sources.map(s => el("li", {}, [
+          el("a", { href: s.url, target: "_blank", rel: "noopener", text: s.name })
+        ])))
+      ])
+    );
   }
 
   /* ======================================================================

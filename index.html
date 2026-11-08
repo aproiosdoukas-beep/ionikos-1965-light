@@ -62,6 +62,17 @@
   .screen-link__name { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-md); }
   .screen-link__desc { font-size: var(--fs-sm); color: var(--text-muted); }
 
+  .history-link {
+    display: grid; gap: 8px; margin-bottom: 56px;
+    padding: 28px; border-radius: var(--r-xl);
+    background: var(--terrace), linear-gradient(120deg, var(--ion-navy), var(--ion-navy-700));
+    color: #fff; text-decoration: none;
+    box-shadow: inset 6px 0 0 var(--ion-gold), var(--shadow-md);
+  }
+  .history-link .eyebrow { color: var(--ion-gold-300); }
+  .history-link__title { font-family: var(--font-display); font-weight: 900; font-stretch: var(--stretch-headline); font-size: clamp(30px, 5vw, 46px); line-height: 1; }
+  .history-link__text { color: var(--ink-300); max-width: 60ch; }
+  .history-link:hover { box-shadow: inset 6px 0 0 var(--ion-gold), var(--shadow-lg); }
   .palette { display: flex; flex-wrap: wrap; gap: 12px; }
   .sw { display: grid; gap: 6px; justify-items: center; font-size: var(--fs-xs); font-family: var(--font-display); font-weight: 700; font-variant-numeric: tabular-nums; }
   .sw__chip { width: 56px; height: 56px; border-radius: var(--r-md); border: 1px solid rgba(0,0,0,.12); }
@@ -136,6 +147,12 @@
         <a class="btn btn--primary btn--block" href="web.html">Άνοιγμα ιστοσελίδας</a>
       </article>
     </section>
+
+    <a class="history-link" href="web.html#history">
+      <span class="eyebrow">Ιστορία</span>
+      <span class="history-link__title">Από το 1965 στη Νίκαια</span>
+      <span class="history-link__text">Η ίδρυση, η πρώτη άνοδος, ο τελικός Κυπέλλου, η Ευρώπη και η ομάδα που πέρασε στους φιλάθλους.</span>
+    </a>
 
     <h2 class="display" style="font-size:var(--fs-2xl);margin-bottom:6px">Όλες οι σελίδες</h2>
     <p class="muted" style="margin:0 0 20px">Κάθε οθόνη είναι διαδραστική και συνδέεται με τις υπόλοιπες.</p>
