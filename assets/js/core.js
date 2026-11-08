@@ -993,6 +993,7 @@
 
     function draw() {
       wrap.innerHTML = "";
+      wrap.className = "predict";
       const p = pid ? Predictions.get(pid, L.id) : null;
       wrap.appendChild(el("div", { class: "between" }, [
         el("span", { class: "predict__title", text: "Πρόβλεψη σκορ" }),
@@ -1025,29 +1026,31 @@
         return;
       }
 
-      wrap.appendChild(el("div", { class: "predict__locked" }, [
-        el("span", { text: "Η πρόβλεψή σας" }),
-        el("b", { class: "predict__score", text: p.home + "-" + p.away })
-      ]));
-
+      /* Μετά το κλείδωμα η κάρτα γίνεται μία λεπτή γραμμή, για να φαίνεται το chat. */
+      wrap.innerHTML = "";
+      wrap.className = "predict predict--slim";
       if (!p.result) {
-        wrap.appendChild(el("button", { class: "btn btn--ghost btn--block btn--sm", type: "button", text: "Λήξη αγώνα (επίδειξη)",
-          onclick() {
-            const r = Predictions.settle(pid, L.id, LiveScore.get());
-            if (!r) { draw(); return; }
-            LiveScore.end();
-            celebrate(r.unlocked);
-            draw();
-            if (onSettle) onSettle(r);
-          } }));
+        wrap.append(
+          el("span", { class: "predict__label", text: "Η πρόβλεψή σας" }),
+          el("b", { class: "predict__score", text: p.home + "-" + p.away }),
+          el("button", { class: "btn btn--ghost btn--sm", type: "button", text: "Λήξη αγώνα (επίδειξη)",
+            onclick() {
+              const r = Predictions.settle(pid, L.id, LiveScore.get());
+              if (!r) { draw(); return; }
+              LiveScore.end();
+              celebrate(r.unlocked);
+              draw();
+              if (onSettle) onSettle(r);
+            } })
+        );
         return;
       }
 
       const msg = { exact: "Ακριβές σκορ! +10 πόντοι", outcome: "Βρήκατε το σημείο, +3 πόντοι", miss: "Άλλη φορά" }[p.result];
-      wrap.appendChild(el("div", { class: "predict__result is-" + p.result }, [
-        el("span", { text: "Τελικό " + (p.final || LiveScore.get()) }),
-        el("b", { text: msg })
-      ]));
+      wrap.append(
+        el("span", { class: "predict__label", text: "Τελικό " + (p.final || LiveScore.get()) + ", πρόβλεψη " + p.home + "-" + p.away }),
+        el("b", { class: "predict__verdict is-" + p.result, text: msg })
+      );
     }
     draw();
     return wrap;

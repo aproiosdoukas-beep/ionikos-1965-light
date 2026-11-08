@@ -137,12 +137,12 @@
     ]);
 
     /* --- Κερκίδα --- */
-    const sidebar = el("aside", { class: "card card--ink", style: "display:grid;gap:16px;align-content:start" });
+    const sidebar = el("aside", { class: "card card--ink live-chat", "aria-label": "Κερκίδα" });
 
     const roomTabs = el("div", { class: "cluster", style: "gap:8px" });
     let room = "match";
 
-    const chatScroll = el("div", { class: "chat__scroll", style: "max-height:300px" });
+    const chatScroll = el("div", { class: "chat__scroll" });
 
     function loadRoom(id) {
       room = id;
@@ -193,7 +193,17 @@
     }
 
     const viewer = Auth.activeProfile();
-    sidebar.append(roomTabs, pollBlock(render), window.ION.predictionCard(viewer ? viewer.id : null), chatScroll, form);
+    sidebar.append(roomTabs, chatScroll, form);
+
+    /* Ψηφοφορία και πρόβλεψη κάτω από το βίντεο: φεύγουν μόλις ψηφίσετε. */
+    const actions = el("div", { class: "live-actions" });
+    const poll = pollBlock(function (label, pct) {
+      poll.remove();
+      if (room !== "match") loadRoom("match");
+      push({ user: "Ιωνικός TV", levelId: "ultra", text: "Ψηφίσατε " + label + " για MVP. Μαζί σας το " + pct + "% της κερκίδας." });
+    });
+    if (poll) actions.appendChild(poll);
+    actions.appendChild(window.ION.predictionCard(viewer ? viewer.id : null));
     loadRoom("match");
 
     const hype = window.ION.liveHype(player, (score, fresh) => {
@@ -220,6 +230,7 @@
         title,
         el("div", { class: "grid-live" }, [
           el("div", { class: "live-main" }, [player, hype.el]),
+          actions,
           sidebar
         ])
       ]),
@@ -240,10 +251,11 @@
 
   const chatMsg = m => window.ION.chatLine(m);
 
-  function pollBlock(rerender) {
+  function pollBlock(onVoted) {
     const poll = D.POLL;
     const counts = Store.get("poll:counts", poll.options.reduce((a, o) => (a[o.id] = o.votes, a), {}));
     const voted = Store.get("poll:voted", null);
+    if (voted) return null;   /* έχετε ψηφίσει: η κάρτα δεν ξαναεμφανίζεται */
     const total = Object.values(counts).reduce((a, b) => a + b, 0) || 1;
 
     const box = el("div", { class: "poll" }, [el("div", { class: "poll__q", text: poll.question })]);
@@ -263,7 +275,8 @@
             toast("Η ψήφος σας καταγράφηκε", "ok");
             const voter = Auth.activeProfile();
             if (voter) celebrate(Trophies.record(voter.id, "vote"));
-            rerender();
+            const newTotal = Object.values(counts).reduce((a, b) => a + b, 0) || 1;
+            onVoted(o.label, Math.round((counts[o.id] / newTotal) * 100));
           }
         }, [
           el("span", { class: "poll__fill", style: "width:" + pct + "%" }),

@@ -402,13 +402,15 @@
     view.append(el("div", { class: "stack" }, [
       el("div", { class: "live-pin" }, [player, hype.el]),
       scoreLine,
-      pollBlock(),
+      pollBlock(function (label, pct) {
+        pushMsg(chatScroll, { user: "Ιωνικός TV", levelId: "ultra", text: "Ψηφίσατε " + label + " για MVP. Μαζί σας το " + pct + "% της κερκίδας." });
+      }),
       window.ION.predictionCard(Auth.activeProfile().id),
-      standingsCard(),
       el("div", { class: "display bold gold t-sm", text: "Κερκίδα Live (" + L.stand + " online)" }),
       chatScroll,
-      form
-    ]));
+      form,
+      standingsCard()
+    ].filter(Boolean)));
 
     /* Προσομοίωση κίνησης στην κερκίδα */
     ambientTimer = setInterval(function () {
@@ -439,8 +441,9 @@
     scroll.scrollTop = scroll.scrollHeight;
   }
 
-  function pollBlock() {
+  function pollBlock(onVoted) {
     const poll = D.POLL;
+    if (state.voted) return null;   /* έχετε ψηφίσει: η κάρτα φεύγει */
     const votes = Store.get("poll:counts", poll.options.reduce((a, o) => (a[o.id] = o.votes, a), {}));
     const total = Object.values(votes).reduce((a, b) => a + b, 0) || 1;
 
@@ -461,7 +464,9 @@
             state.voted = o.id;
             toast("Η ψήφος σας καταγράφηκε", "ok");
             celebrate(Trophies.record(Auth.activeProfile().id, "vote"));
-            render();
+            box.remove();
+            const newTotal = Object.values(votes).reduce((a, b) => a + b, 0) || 1;
+            onVoted(o.label, Math.round((votes[o.id] / newTotal) * 100));
           }
         }, [
           el("span", { class: "poll__fill", style: "width:" + pct + "%" }),
@@ -471,9 +476,6 @@
       );
     });
 
-    if (state.voted) {
-      box.appendChild(el("p", { class: "t-xs muted", style: "margin:0", text: "Ψηφίσατε. Τα ποσοστά ενημερώνονται ζωντανά." }));
-    }
     return box;
   }
 
