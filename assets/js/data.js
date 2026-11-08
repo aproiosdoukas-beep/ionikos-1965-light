@@ -294,13 +294,50 @@
     ]
   };
 
+  /* Μηνύματα φιλάθλων στη διάρκεια του live. Δεν επαναλαμβάνονται πριν βγουν όλα. */
   const CHAT_AMBIENT = [
-    { user: "Θανάσης", levelId: "hooligan",    title: "viewer", text: "Τι έγινε με το κόρνερ;" },
+    { user: "Θανάσης", levelId: "hooligan", title: "viewer", text: "Τι έγινε με το κόρνερ;" },
     { user: "Βαγγέλης", levelId: "ultra", title: "since_1965", text: "Κερκίδα να ακουστείς!" },
-    { user: "Μαρία",   levelId: "casual", text: "Καλή συνέχεια παιδιά 💙" },
-    { user: "Σπύρος",  levelId: "ultra", title: "loyal", text: "Τριάντα χρόνια στη Νεάπολη, τέτοιο πάθος σπάνια." },
-    { user: "Λάκης",   levelId: "touristas", text: "Πρώτη φορά βλέπω από το κινητό, παίζει μια χαρά." },
-    { user: "Άννα",    levelId: "hooligan",    title: "voter", text: "Ο τερματοφύλακας τεράστιος." }
+    { user: "Μαρία", levelId: "casual", text: "Καλή συνέχεια παιδιά 💙" },
+    { user: "Σπύρος", levelId: "ultra", title: "loyal", text: "Τριάντα χρόνια στη Νεάπολη, τέτοιο πάθος σπάνια." },
+    { user: "Λάκης", levelId: "touristas", text: "Πρώτη φορά βλέπω από το κινητό, παίζει μια χαρά." },
+    { user: "Άννα", levelId: "hooligan", title: "voter", text: "Ο τερματοφύλακας τεράστιος." },
+    { user: "Μάκης", levelId: "ultra", title: "ever_present", text: "έλα ρε Ιωνικέ!!" },
+    { user: "Στέλιος", levelId: "casual", text: "Ο Νικολάου τρέχει για δύο σήμερα" },
+    { user: "Ηλίας", levelId: "firm", title: "traveler", text: "Ποιος έρχεται Ρόδο; Έκλεισα ήδη θέση στο λεωφορείο" },
+    { user: "Κατερίνα", levelId: "casual", text: "Ο μικρός μου παίζει στο Κ14, του το δείχνω να μάθει 😄" },
+    { user: "Γιάννης", levelId: "hooligan", text: "Διαιτητή, πού κοιτάς;" },
+    { user: "Παύλος", levelId: "ranger", title: "present", text: "Πιέζουμε ψηλά, ωραία εικόνα" },
+    { user: "Δήμητρα", levelId: "firm", text: "Από αριστερά μας έχουν βρει δύο φορές, προσοχή" },
+    { user: "Χρήστος", levelId: "touristas", text: "Πόση ώρα μένει;" },
+    { user: "Αντώνης", levelId: "ultra", title: "stand_voice", text: "ΟΛΟΙ ΜΑΖΙ ΤΩΡΑ" },
+    { user: "Φωτεινή", levelId: "casual", title: "first_voice", text: "Βλέπουμε από Μελβούρνη, χαιρετίσματα στη Νίκαια!" },
+    { user: "Μιχάλης", levelId: "hooligan", text: "Αυτό ήταν καθαρό φάουλ" },
+    { user: "Νίκος", levelId: "hooligan", title: "stand_voice", text: "Ο Δήμου να μπει λίγο πιο μέσα" },
+    { user: "Γεωργία", levelId: "ranger", title: "ticket", text: "Τα παιδιά φαίνονται πολύ πιο δεμένα φέτος" },
+    { user: "Τάσος", levelId: "firm", text: "Η άμυνα σήμερα είναι τοίχος" },
+    { user: "Ρένα", levelId: "casual", text: "Σε μένα κόλλησε λίγο η εικόνα, σε εσάς;" },
+    { user: "Μάνος", levelId: "touristas", text: "Παίζουμε μπάλα σήμερα" },
+    { user: "Βασίλης", levelId: "ultra", title: "since_1965", text: "Νεάπολη πάντα" },
+    { user: "Κώστας", levelId: "ultra", title: "present", text: "Μια φορά Ιωνικός, για πάντα Ιωνικός" },
+    { user: "Ζωή", levelId: "casual", text: "Καλή η κάμερα σήμερα, φαίνονται όλα" },
+    { user: "Πέτρος", levelId: "hooligan", title: "oracle", text: "Το είπα από πριν, το παίρνουμε" },
+    { user: "Ηλίας", levelId: "firm", title: "traveler", text: "Μπράβο στον προπονητή για την αλλαγή" },
+    { user: "Λευτέρης", levelId: "ranger", title: "customer", text: "Μετά τον αγώνα Nikaia Burgers, ποιος έρχεται;" },
+    { user: "Άννα", levelId: "hooligan", title: "voter", text: "Νικολάου MVP, δεν το συζητάω" },
+    { user: "Θοδωρής", levelId: "casual", text: "Πόσα παιδιά από το Κ16 ανεβαίνουν στους άνδρες;" },
+    { user: "Μάκης", levelId: "ultra", title: "ever_present", text: "Μπράβο μάγκες, συνεχίστε έτσι" },
+    { user: "Ειρήνη", levelId: "touristas", text: "Ποιος είναι το 7;" },
+    { user: "Σωτήρης", levelId: "firm", title: "loyal_customer", text: "Το 7 είναι πρώτη χρονιά στο Κ16, έχει πόδι" },
+    { user: "Γιάννης", levelId: "hooligan", text: "Κάρτα για αυτό; Σοβαρά τώρα 😤" },
+    { user: "Δημήτρης", levelId: "casual", text: "Τι γκολάρα ήταν αυτό στο πρώτο ημίχρονο" },
+    { user: "Παναγιώτης", levelId: "ultra", title: "loyal", text: "Οι γονείς στην εξέδρα ακούγονται μέχρι εδώ" },
+    { user: "Κατερίνα", levelId: "casual", text: "Πάμε παιδιά, λίγο ακόμα!" },
+    { user: "Αλέκος", levelId: "ranger", text: "Κρατάμε την μπάλα, ηρεμία" },
+    { user: "Σοφία", levelId: "firm", title: "present", text: "Κάθε Σάββατο εδώ, δεν χάνω αγώνα" },
+    { user: "Βαγγέλης", levelId: "ultra", title: "since_1965", text: "Μπλε και λευκό μέχρι το τέλος" },
+    { user: "Λάκης", levelId: "touristas", text: "Πώς ψηφίζω για MVP;" },
+    { user: "Μαρία", levelId: "casual", text: "Το πήρατε στα σοβαρά σήμερα παιδιά, μπράβο" }
   ];
 
   const POLL = {

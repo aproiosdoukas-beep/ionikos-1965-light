@@ -1056,6 +1056,38 @@
     return wrap;
   }
 
+  /** Επιλογή μηνυμάτων κερκίδας: κάθε μήνυμα βγαίνει μία φορά ανά γύρο,
+   *  και ο ίδιος φίλαθλος δεν γράφει δύο φορές στη σειρά. */
+  function ambientPicker(list) {
+    let bag = [];
+    let last = null;
+    const userAt = (arr, i) => (i >= 0 && i < arr.length ? arr[i].user : null);
+    function refill() {
+      bag = list.slice();
+      for (let i = bag.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const t = bag[i]; bag[i] = bag[j]; bag[j] = t;
+      }
+      for (let i = 0; i < bag.length; i++) {
+        const prev = i === 0 ? (last && last.user) : bag[i - 1].user;
+        if (bag[i].user !== prev) continue;
+        let k = -1;
+        for (let j = i + 1; j < bag.length && k < 0; j++) if (bag[j].user !== prev) k = j;
+        for (let j = 0; j < i - 1 && k < 0; j++) {
+          const fitsHere = bag[j].user !== prev && bag[j].user !== userAt(bag, i + 1);
+          const fitsThere = bag[i].user !== userAt(bag, j - 1) && bag[i].user !== userAt(bag, j + 1);
+          if (fitsHere && fitsThere && !(j === 0 && last && bag[i].user === last.user)) k = j;
+        }
+        if (k >= 0) { const t = bag[i]; bag[i] = bag[k]; bag[k] = t; }
+      }
+    }
+    return function next() {
+      if (!bag.length) refill();
+      last = bag.shift();
+      return last;
+    };
+  }
+
   /** Πίνακας κατάταξης φιλάθλων. limit: πόσες γραμμές πριν από τη δική σας. */
   function leaderboardTable(pid, limit) {
     let rows = Leaderboard.rows(pid);
@@ -1214,6 +1246,6 @@
   global.ION = {
     Store, Auth, Membership, Trophies, Predictions, Leaderboard, Trips, Rsvp, nextHomeGame, countdownParts, Noise, LiveScore, Token, QR, resolveCard,
     el, $, $$,
-    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, standingsTable, liveHype, predictionCard, leaderboardTable, tripCard, countdownCard, todayKey, hash32, upper
+    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, ambientPicker, standingsTable, liveHype, predictionCard, leaderboardTable, tripCard, countdownCard, todayKey, hash32, upper
   };
 })(window);
