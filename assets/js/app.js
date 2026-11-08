@@ -188,7 +188,7 @@
 
     view.append(
       el("div", { class: "stack" }, [
-        switcher,
+        Auth.profiles().length > 1 ? switcher : null,
         paused
           ? el("a", { class: "info", href: "web.html#subscription", style: "text-decoration:none;border-color:var(--danger)" }, [
               el("div", { class: "info__icon", style: "background:rgba(239,68,68,.14);color:var(--danger)", html: icon("warn", 20) }),
@@ -206,7 +206,7 @@
             el("div", { class: "info__text", text: "Ο κωδικός αλλάζει αυτόματα κάθε 60 δευτερόλεπτα. Ένα στιγμιότυπο οθόνης δεν ανοίγει τη θύρα, άρα η κάρτα δεν δανείζεται." })
           ])
         ]),
-        el("div", { class: "info" }, [
+        Auth.profiles().length < 2 ? null : el("div", { class: "info" }, [
           el("div", { class: "info__icon info__icon--navy", html: icon("users", 20) }),
           el("div", {}, [
             el("div", { class: "info__title", text: "Εναλλαγή προφίλ" }),
@@ -622,7 +622,7 @@
         ])
       ]),
 
-      el("h3", { class: "section-title", text: "Η οικογένειά μου" }),
+      el("h3", { class: "section-title", text: Auth.profiles().length > 1 ? "Η οικογένειά μου" : "Η συνδρομή μου" }),
       family,
 
       el("div", { class: "card" }, [
@@ -630,7 +630,8 @@
           el("span", { class: "bold", text: "Σύνολο Μήνα (Αυτόματη Χρέωση)" }),
           el("span", { class: "display bold t-lg", text: fmtEuro(total) })
         ]),
-        el("p", { class: "t-sm muted", style: "margin:8px 0 0", text: T.cycle.label + " πλάνο • " + Auth.profiles().length + " μέλη • έκπτωση ακαδημίας " + B.academyDiscountPct + "%" })
+        el("p", { class: "t-sm muted", style: "margin:8px 0 0", text: T.cycle.label + " πλάνο • " + (Auth.profiles().length === 1 ? "1 μέλος" : Auth.profiles().length + " μέλη")
+          + (Auth.profiles().some(p => p.kind === "academy") ? " • έκπτωση ακαδημίας " + B.academyDiscountPct + "%" : "") })
       ]),
 
       el("h3", { class: "section-title", text: "Τίτλος στο chat" }),

@@ -72,11 +72,13 @@
     merchant: "merchant.html"
   };
 
+  /* Ετικέτα ανά λογαριασμό: δύο είδη μέλους, μετά οι ρόλοι προσωπικού. */
   const DEMO_LABELS = {
-    member:   "Μέλος / Γονέας",
-    admin:    "Γραφείο Συλλόγου",
-    gate:     "Προσωπικό Θύρας",
-    merchant: "Κατάστημα-Χορηγός"
+    u_maria:   "Μέλος",
+    u_giorgos: "Μέλος με παιδί ακαδημίας",
+    u_admin:   "Γραφείο συλλόγου",
+    u_gate:    "Προσωπικό θύρας",
+    u_shop:    "Κατάστημα χορηγός"
   };
 
   /* ---- Λίστα demo λογαριασμών ---- */
@@ -93,7 +95,7 @@
           $("#password").focus();
         }
       }, [
-        el("b", { text: DEMO_LABELS[acc.role] || acc.role }),
+        el("b", { text: DEMO_LABELS[acc.id] || acc.displayName }),
         el("span", { text: acc.email })
       ])
     );
