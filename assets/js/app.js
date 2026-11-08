@@ -404,7 +404,7 @@
        Ψηφοφορία και πρόβλεψη κάθονται κάτω από το βίντεο μέχρι να τις χρησιμοποιήσετε. */
     const actions = el("div", { class: "live-app__actions" }, [
       pollBlock(function (label, pct) {
-        pushMsg(chatScroll, { user: "Ιωνικός TV", levelId: "ultra", text: "Ψηφίσατε " + label + " για MVP. Μαζί σας το " + pct + "% της κερκίδας." });
+        pushMsg(chatScroll, { user: "Ιωνικός TV", levelId: "ultra", text: "Η ψήφος σας για MVP: " + label + ". Μέχρι στιγμής έχει " + pct + "%." });
       }),
       window.ION.predictionCard(Auth.activeProfile().id)
     ].filter(Boolean));

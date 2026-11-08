@@ -543,7 +543,7 @@
     tap(n)   { return clamp100(n + 6); },
     crowd(n) { return clamp100(n + 3); },
     decay(n) { return clamp100(n - 2); },
-    label(n) { return n < 34 ? "Ζεσταίνεται" : n < 75 ? "Δυνατά" : "Η κερκίδα σείεται"; }
+    label(n) { return n < 34 ? "Ζεσταίνεται" : n < 75 ? "Ακούγεται" : "Σείεται η Νεάπολη"; }
   };
 
   /** Το σκορ του live, κοινό σε app και web. Το γκολ επίδειξης γίνεται μία φορά. */
@@ -1021,7 +1021,7 @@
         wrap.append(
           el("div", { class: "predict__pick" }, [stepper(0), stepper(1)]),
           el("button", { class: "btn btn--gold btn--block", type: "button", text: "Κλείδωμα πρόβλεψης",
-            onclick() { if (Predictions.lock(pid, L.id, pick[0], pick[1])) { toast("Η πρόβλεψή σας κλείδωσε: " + pick[0] + "-" + pick[1], "ok"); draw(); } } })
+            onclick() { if (Predictions.lock(pid, L.id, pick[0], pick[1])) { toast("Κλειδώσατε " + pick[0] + "-" + pick[1], "ok"); draw(); } } })
         );
         return;
       }
@@ -1046,7 +1046,7 @@
         return;
       }
 
-      const msg = { exact: "Ακριβές σκορ! +10 πόντοι", outcome: "Βρήκατε το σημείο, +3 πόντοι", miss: "Άλλη φορά" }[p.result];
+      const msg = { exact: "Ακριβές σκορ, +10 πόντοι", outcome: "Σωστό σημείο, +3 πόντοι", miss: "Δεν βγήκε αυτή τη φορά" }[p.result];
       wrap.append(
         el("span", { class: "predict__label", text: "Τελικό " + (p.final || LiveScore.get()) + ", πρόβλεψη " + p.home + "-" + p.away }),
         el("b", { class: "predict__verdict is-" + p.result, text: msg })
@@ -1172,7 +1172,7 @@
         text: going ? "Θα είμαι εκεί ✓" : "Θα είμαι εκεί",
         onclick() {
           const now = Rsvp.toggle(g.key, pid);
-          toast(now ? "Τα λέμε στο γήπεδο!" : "Η δήλωσή σας αφαιρέθηκε", now ? "ok" : null);
+          toast(now ? "Σας περιμένουμε στη Νεάπολη" : "Η δήλωσή σας αφαιρέθηκε", now ? "ok" : null);
           drawRsvp();
         }
       }));

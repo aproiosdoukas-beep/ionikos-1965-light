@@ -201,7 +201,7 @@
     const poll = pollBlock(function (label, pct) {
       poll.remove();
       if (room !== "match") loadRoom("match");
-      push({ user: "Ιωνικός TV", levelId: "ultra", text: "Ψηφίσατε " + label + " για MVP. Μαζί σας το " + pct + "% της κερκίδας." });
+      push({ user: "Ιωνικός TV", levelId: "ultra", text: "Η ψήφος σας για MVP: " + label + ". Μέχρι στιγμής έχει " + pct + "%." });
     });
     if (poll) actions.appendChild(poll);
     actions.appendChild(window.ION.predictionCard(viewer ? viewer.id : null));

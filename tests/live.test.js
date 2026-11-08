@@ -17,10 +17,10 @@ run({
     const L = ION.Noise.label;
     assert.strictEqual(L(0), "Ζεσταίνεται");
     assert.strictEqual(L(33), "Ζεσταίνεται");
-    assert.strictEqual(L(34), "Δυνατά");
-    assert.strictEqual(L(74), "Δυνατά");
-    assert.strictEqual(L(75), "Η κερκίδα σείεται");
-    assert.strictEqual(L(100), "Η κερκίδα σείεται");
+    assert.strictEqual(L(34), "Ακούγεται");
+    assert.strictEqual(L(74), "Ακούγεται");
+    assert.strictEqual(L(75), "Σείεται η Νεάπολη");
+    assert.strictEqual(L(100), "Σείεται η Νεάπολη");
   },
   reactions_four() {
     const { D } = loadCore();

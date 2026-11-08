@@ -122,19 +122,19 @@
   };
 
   const TROPHIES = [
-    { id: "first_voice",    name: "Πρώτη ιαχή",             tier: "bronze",   icon: "chat",   action: "chat",   goal: 1,  text: "Γράψατε το πρώτο σας μήνυμα στην κερκίδα." },
-    { id: "stand_voice",    name: "Ο Κάπο",                 tier: "silver",   icon: "chat",   action: "chat",   goal: 25, text: "Γράψατε 25 μηνύματα στην κερκίδα. Το σύνθημα το ξεκινάτε εσείς." },
-    { id: "voter",          name: "Ο Σκάουτερ",             tier: "bronze",   icon: "check",  action: "vote",   goal: 1,  text: "Ψηφίσατε τον MVP ενός αγώνα." },
-    { id: "customer",       name: "Πεινασμένος για νίκες",  tier: "bronze",   icon: "tag",    action: "redeem", goal: 1,  text: "Εξαργυρώσατε την πρώτη σας προσφορά σε χορηγό." },
-    { id: "loyal_customer", name: "Ο Δήμαρχος της Νίκαιας", tier: "silver",   icon: "store",  action: "shops",  goal: 4,  text: "Εξαργυρώσατε προσφορά και στους 4 χορηγούς του συλλόγου." },
-    { id: "present",        name: "Παιδί της θύρας",        tier: "silver",   icon: "ticket", action: "gate",   goal: 10, text: "Μπήκατε σε 10 εντός έδρας αγώνες." },
-    { id: "ever_present",   name: "Θρύλος της θύρας",       tier: "gold",     icon: "ticket", action: "gate",   goal: 30, text: "Μπήκατε σε 30 εντός έδρας αγώνες. Η θέση στη θύρα είναι πια δική σας." },
-    { id: "traveler",       name: "Ο Νομάδας",              tier: "silver",   icon: "bus",    action: "away",   goal: 3,  text: "Ακολουθήσατε την ομάδα σε 3 εκτός έδρας αγώνες." },
-    { id: "ticket",         name: "Πρώτη σειρά",            tier: "bronze",   icon: "ticket", action: "ticket", goal: 1,  text: "Κλείσατε το πρώτο σας εισιτήριο σε εκδήλωση του συλλόγου." },
-    { id: "viewer",         name: "Ο Αναλυτής",             tier: "bronze",   icon: "play",   action: "watch",  goal: 1,  text: "Είδατε αγώνα ζωντανά στο Ιωνικός TV." },
-    { id: "loyal",          name: "Μπλε αίμα",              tier: "gold",     icon: "shield", action: "months", goal: 12, text: "Συμπληρώσατε έναν χρόνο ως μέλος του Ιωνικού." },
-    { id: "oracle",         name: "Ο Μάντης",               tier: "bronze",   icon: "check",  action: "predict_hit", goal: 1, text: "Βρήκατε το ακριβές σκορ ενός αγώνα." },
-    { id: "since_1965",     name: "Ψυχή του Ιωνικού",       tier: "platinum", icon: "medal",  action: "all",    goal: 12, text: "Κατακτήσατε όλα τα υπόλοιπα τρόπαια." }
+    { id: "first_voice",    name: "Πρώτο σύνθημα",             tier: "bronze",   icon: "chat",   action: "chat",   goal: 1,  text: "Το πρώτο σας μήνυμα στο chat της κερκίδας." },
+    { id: "stand_voice",    name: "Ο Κάπο",                 tier: "silver",   icon: "chat",   action: "chat",   goal: 25, text: "25 μηνύματα στο chat της κερκίδας." },
+    { id: "voter",          name: "Ο Σκάουτερ",             tier: "bronze",   icon: "check",  action: "vote",   goal: 1,  text: "Μία ψήφος για τον MVP ενός αγώνα." },
+    { id: "customer",       name: "Πρώτη έκπτωση",  tier: "bronze",   icon: "tag",    action: "redeem", goal: 1,  text: "Η πρώτη προσφορά που εξαργυρώσατε σε χορηγό." },
+    { id: "loyal_customer", name: "Γνωστή φάτσα", tier: "silver",   icon: "store",  action: "shops",  goal: 4,  text: "Προσφορά και στους 4 χορηγούς του συλλόγου." },
+    { id: "present",        name: "Παιδί της θύρας",        tier: "silver",   icon: "ticket", action: "gate",   goal: 10, text: "Είσοδος σε 10 εντός έδρας αγώνες." },
+    { id: "ever_present",   name: "Θρύλος της θύρας",       tier: "gold",     icon: "ticket", action: "gate",   goal: 30, text: "Είσοδος σε 30 εντός έδρας αγώνες." },
+    { id: "traveler",       name: "Εκδρομέας",              tier: "silver",   icon: "bus",    action: "away",   goal: 3,  text: "3 εκτός έδρας αγώνες με το λεωφορείο του συλλόγου." },
+    { id: "ticket",         name: "Πρώτη σειρά",            tier: "bronze",   icon: "ticket", action: "ticket", goal: 1,  text: "Το πρώτο σας εισιτήριο σε εκδήλωση του συλλόγου." },
+    { id: "viewer",         name: "Από τον καναπέ",             tier: "bronze",   icon: "play",   action: "watch",  goal: 1,  text: "Ένας αγώνας ζωντανά στο Ιωνικός TV." },
+    { id: "loyal",          name: "Μπλε αίμα",              tier: "gold",     icon: "shield", action: "months", goal: 12, text: "Ένας χρόνος ως μέλος του συλλόγου." },
+    { id: "oracle",         name: "Ο Μάντης",               tier: "bronze",   icon: "check",  action: "predict_hit", goal: 1, text: "Ακριβές σκορ σε πρόβλεψη αγώνα." },
+    { id: "since_1965",     name: "Ψυχή του Ιωνικού",       tier: "platinum", icon: "medal",  action: "all",    goal: 12, text: "Όλα τα υπόλοιπα τρόπαια." }
   ];
 
   /* Αρχικοί μετρητές επίδειξης: κάτι ξεκλειδώνει με ένα πάτημα. */
@@ -295,17 +295,17 @@
   };
 
   const CHAT_AMBIENT = [
-    { user: "Θανάσης", levelId: "hooligan",    title: "viewer", text: "Τι φάση με το κόρνερ;" },
+    { user: "Θανάσης", levelId: "hooligan",    title: "viewer", text: "Τι έγινε με το κόρνερ;" },
     { user: "Βαγγέλης", levelId: "ultra", title: "since_1965", text: "Κερκίδα να ακουστείς!" },
     { user: "Μαρία",   levelId: "casual", text: "Καλή συνέχεια παιδιά 💙" },
-    { user: "Σπύρος",  levelId: "ultra", title: "loyal", text: "Από το 1965 εδώ." },
-    { user: "Λάκης",   levelId: "touristas", text: "Πρώτη φορά βλέπω live, τέλειο!" },
+    { user: "Σπύρος",  levelId: "ultra", title: "loyal", text: "Τριάντα χρόνια στη Νεάπολη, τέτοιο πάθος σπάνια." },
+    { user: "Λάκης",   levelId: "touristas", text: "Πρώτη φορά βλέπω από το κινητό, παίζει μια χαρά." },
     { user: "Άννα",    levelId: "hooligan",    title: "voter", text: "Ο τερματοφύλακας τεράστιος." }
   ];
 
   const POLL = {
     id: "poll_mvp",
-    question: "ΨΗΦΟΦΟΡΙΑ: MVP ΑΓΩΝΑ;",
+    question: "Ποιος είναι ο MVP του αγώνα;",
     options: [
       { id: "o1", label: "Νικολάου", votes: 72 },
       { id: "o2", label: "Δήμου",    votes: 28 }
