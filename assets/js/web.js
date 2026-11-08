@@ -92,6 +92,7 @@
   if ("ResizeObserver" in window) new ResizeObserver(syncNavHeight).observe(document.querySelector(".web__nav"));
   window.addEventListener("resize", syncNavHeight);
   syncNavHeight();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
 
   /* ======================================================================
      Ζωντανή μετάδοση, κερκίδα, ψηφοφορία
