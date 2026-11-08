@@ -194,28 +194,28 @@
 
   const CHAT_SEED = {
     match: [
-      { user: "Μάκης",  levelId: "ultra",  text: "Πάμε γερά!" },
-      { user: "Νίκος",  levelId: "hooligan",    text: "Γκολάρα το 10!" },
+      { user: "Μάκης",  levelId: "ultra",  title: "ever_present", text: "Πάμε γερά!" },
+      { user: "Νίκος",  levelId: "hooligan",    title: "stand_voice", text: "Γκολάρα το 10!" },
       { user: "Γιώργος", levelId: "ultra", text: "Τρομερή ασίστ!" },
-      { user: "Κώστας", levelId: "ultra",  text: "Πάμε για το 3-1!" }
+      { user: "Κώστας", levelId: "ultra",  title: "present", text: "Πάμε για το 3-1!" }
     ],
     transfers: [
-      { user: "Σταύρος", levelId: "hooligan",    text: "Ακούγεται κάτι για τον αριστερό μπακ;" },
+      { user: "Σταύρος", levelId: "hooligan",    title: "traveler", text: "Ακούγεται κάτι για τον αριστερό μπακ;" },
       { user: "Δημήτρης", levelId: "casual", text: "Μόνο φήμες μέχρι στιγμής." }
     ],
     academy: [
-      { user: "Ελένη",   levelId: "hooligan",   text: "Μπράβο στα παιδιά του Κ14!" },
-      { user: "Παναγιώτης", levelId: "ultra", text: "Η προπόνηση άλλαξε ώρα;" }
+      { user: "Ελένη",   levelId: "hooligan",   title: "ticket", text: "Μπράβο στα παιδιά του Κ14!" },
+      { user: "Παναγιώτης", levelId: "ultra", title: "loyal", text: "Η προπόνηση άλλαξε ώρα;" }
     ]
   };
 
   const CHAT_AMBIENT = [
-    { user: "Θανάσης", levelId: "hooligan",    text: "Τι φάση με το κόρνερ;" },
-    { user: "Βαγγέλης", levelId: "ultra", text: "Κερκίδα να ακουστείς!" },
+    { user: "Θανάσης", levelId: "hooligan",    title: "viewer", text: "Τι φάση με το κόρνερ;" },
+    { user: "Βαγγέλης", levelId: "ultra", title: "since_1965", text: "Κερκίδα να ακουστείς!" },
     { user: "Μαρία",   levelId: "casual", text: "Καλή συνέχεια παιδιά 💙" },
-    { user: "Σπύρος",  levelId: "ultra", text: "Από το 1965 εδώ." },
+    { user: "Σπύρος",  levelId: "ultra", title: "loyal", text: "Από το 1965 εδώ." },
     { user: "Λάκης",   levelId: "touristas", text: "Πρώτη φορά βλέπω live, τέλειο!" },
-    { user: "Άννα",    levelId: "hooligan",    text: "Ο τερματοφύλακας τεράστιος." }
+    { user: "Άννα",    levelId: "hooligan",    title: "voter", text: "Ο τερματοφύλακας τεράστιος." }
   ];
 
   const POLL = {

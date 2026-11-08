@@ -91,7 +91,7 @@
   max-height: calc(100dvh - 190px);
   min-height: 560px;
   border-radius: 36px;
-  overflow: hidden;
+  overflow: clip;   /* clip, όχι hidden: αφήνει το βίντεο του Live να καρφιτσώνεται */
   background: var(--paper-50);
   color: var(--text);
   display: flex;

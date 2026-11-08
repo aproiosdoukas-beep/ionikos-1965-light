@@ -683,7 +683,7 @@ img, svg { max-width: 100%; }
 .brandmark__sub { font-size: var(--fs-xs); color: var(--text-muted); line-height: 1.2; }
 
 /* Μεγάλο, αχνό έμβλημα σε σκοτεινές επιφάνειες. */
-.crest-watermark { position: relative; overflow: hidden; isolation: isolate; }
+.crest-watermark { position: relative; overflow: clip; isolation: isolate; }
 .crest-watermark::before {
   content: "";
   position: absolute;

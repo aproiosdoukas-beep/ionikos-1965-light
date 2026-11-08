@@ -382,7 +382,7 @@
         const text = input.value.trim();
         if (!text) return;
         const p = Auth.activeProfile();
-        pushMsg(chatScroll, { user: p.shortName, levelId: p.levelId, text: text, own: true });
+        pushMsg(chatScroll, { user: p.shortName, levelId: p.levelId, profileId: p.id, text: text, own: true });
         input.value = "";
         celebrate(Trophies.record(p.id, "chat"));
       }
@@ -392,7 +392,7 @@
     ]);
 
     view.append(el("div", { class: "stack" }, [
-      player,
+      el("div", { class: "live-pin" }, [player]),
       el("div", { class: "display bold", text: L.title + " " + L.score }),
       pollBlock(),
       el("div", { class: "display bold gold t-sm", text: "Κερκίδα Live (" + L.stand + " online)" }),
@@ -407,16 +407,7 @@
     }, 5200);
   }
 
-  function chatMsg(m) {
-    return el("div", { class: "chat__msg" }, [
-      el("span", {
-        class: "chat__user",
-        style: "color:" + levelColor(m.levelId),
-        text: m.user + " (" + (levelById(m.levelId).en || levelById(m.levelId).name) + "): "
-      }),
-      document.createTextNode(m.text)
-    ]);
-  }
+  const chatMsg = m => window.ION.chatLine(m);
 
   function pushMsg(scroll, m) {
     scroll.appendChild(chatMsg(m));

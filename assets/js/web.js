@@ -77,10 +77,20 @@
     renderNav();
     renderAuth();
     ({ live: viewLive, vod: viewVod, events: viewEvents, subscription: viewSubscription })[currentRoute()]();
+    syncNavHeight();
     window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
   }
 
   window.addEventListener("hashchange", render);
+
+  /* Το ύψος της κεφαλίδας αλλάζει στο κινητό: το βίντεο καρφιτσώνεται ακριβώς από κάτω. */
+  function syncNavHeight() {
+    const nav = document.querySelector(".web__nav");
+    if (nav) document.documentElement.style.setProperty("--nav-h", nav.offsetHeight + "px");
+  }
+  if ("ResizeObserver" in window) new ResizeObserver(syncNavHeight).observe(document.querySelector(".web__nav"));
+  window.addEventListener("resize", syncNavHeight);
+  syncNavHeight();
 
   /* ======================================================================
      Ζωντανή μετάδοση, κερκίδα, ψηφοφορία
@@ -163,7 +173,7 @@
           return;
         }
         const p = Auth.activeProfile();
-        push({ user: p ? p.shortName : acc.displayName, levelId: p ? p.levelId : "newcomer", text: text });
+        push({ user: p ? p.shortName : acc.displayName, levelId: p ? p.levelId : "touristas", profileId: p ? p.id : null, own: true, text: text });
         input.value = "";
         if (p) celebrate(Trophies.record(p.id, "chat"));
       }
@@ -194,8 +204,9 @@
     page.append(
       el("section", { class: "matchday theme-dark crest-watermark" }, [
         head("Ιωνικός TV", "Ζωντανή μετάδοση και κερκίδα"),
+        title,
         el("div", { class: "grid-live" }, [
-          el("div", { style: "min-width:0" }, [title, player]),
+          el("div", { class: "live-main" }, [player]),
           sidebar
         ])
       ]),
@@ -214,17 +225,7 @@
     return p ? p.cardCode : "ΕΠΙΣΚΕΠΤΗΣ";
   }
 
-  function chatMsg(m) {
-    const lv = levelById(m.levelId);
-    return el("div", { class: "chat__msg" }, [
-      el("span", {
-        class: "chat__user",
-        style: "color:" + levelColor(m.levelId),
-        text: m.user + " (" + (lv.en || lv.name) + "): "
-      }),
-      document.createTextNode(m.text)
-    ]);
-  }
+  const chatMsg = m => window.ION.chatLine(m);
 
   function pollBlock(rerender) {
     const poll = D.POLL;

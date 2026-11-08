@@ -700,6 +700,30 @@
     setTimeout(() => t.remove(), ms || 2800);
   }
 
+  /** Ο τίτλος (τρόπαιο) ενός μηνύματος: από το id του, ή από την επιλογή του προφίλ. */
+  function chatTitle(m) {
+    if (m.title) return D.TROPHIES.find(t => t.id === m.title) || null;
+    if (m.profileId) return Trophies.title(m.profileId);
+    return null;
+  }
+
+  /** Μία γραμμή chat, ίδια σε app και web. Το κείμενο μπαίνει πάντα ως text. */
+  function chatLine(m) {
+    const lv = levelById(m.levelId);
+    const t = chatTitle(m);
+    return el("div", { class: "chat__msg" + (m.own ? " chat__msg--own" : "") }, [
+      el("div", { class: "chat__head" }, [
+        el("span", { class: "chat__user", style: "color:" + levelColor(m.levelId), text: m.user }),
+        el("span", { class: "chat__level", text: lv.en || lv.name }),
+        t ? el("span", { class: "chat__title trophy-tier--" + t.tier, title: D.TIERS[t.tier].label }, [
+          el("span", { class: "tier-dot" }),
+          document.createTextNode(t.name)
+        ]) : null
+      ]),
+      el("div", { class: "chat__text", text: m.text })
+    ]);
+  }
+
   /** Ένα toast για κάθε τρόπαιο που μόλις ξεκλείδωσε. */
   function celebrate(list) {
     (list || []).forEach(t => {
@@ -718,6 +742,6 @@
   global.ION = {
     Store, Auth, Membership, Trophies, Token, QR, resolveCard,
     el, $, $$,
-    fmtEuro, mmss, levelById, levelColor, toast, celebrate, todayKey, hash32, upper
+    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, todayKey, hash32, upper
   };
 })(window);
