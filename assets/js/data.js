@@ -499,7 +499,7 @@
         },
         "source": {
           "name": "Ελληνική Ομοσπονδία Πετοσφαίρισης",
-          "date": "07/11/2026",
+          "date": "μετά την 4η αγωνιστική",
           "url": "https://volleyball.gr/table/a2-gynaikon-a-zoni-2026-2027/"
         },
         "liveUrl": "https://volleyball.gr/table/a2-gynaikon-a-zoni-2026-2027/",
