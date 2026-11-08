@@ -122,18 +122,18 @@
   };
 
   const TROPHIES = [
-    { id: "first_voice",    name: "Πρώτη Ιαχή",             tier: "bronze",   icon: "chat",   action: "chat",   goal: 1,  text: "Το πρώτο σας μήνυμα στην κερκίδα." },
-    { id: "stand_voice",    name: "Ο Κάπο",                 tier: "silver",   icon: "chat",   action: "chat",   goal: 25, text: "25 μηνύματα στην κερκίδα. Εσείς ξεκινάτε το σύνθημα." },
-    { id: "voter",          name: "Ο Σκάουτερ",             tier: "bronze",   icon: "check",  action: "vote",   goal: 1,  text: "Ψηφίσατε MVP αγώνα." },
-    { id: "customer",       name: "Πεινασμένος για Νίκες",  tier: "bronze",   icon: "tag",    action: "redeem", goal: 1,  text: "Η πρώτη σας προσφορά σε χορηγό." },
-    { id: "loyal_customer", name: "Ο Δήμαρχος της Νίκαιας", tier: "silver",   icon: "store",  action: "shops",  goal: 4,  text: "Προσφορά και στους 4 χορηγούς του συλλόγου." },
-    { id: "present",        name: "Παιδί της Θύρας",        tier: "silver",   icon: "ticket", action: "gate",   goal: 10, text: "10 είσοδοι σε εντός έδρας αγώνες." },
-    { id: "ever_present",   name: "Θρύλος της Θύρας",       tier: "gold",     icon: "ticket", action: "gate",   goal: 30, text: "30 είσοδοι. Η θέση σας στην κερκίδα είναι δεδομένη." },
-    { id: "traveler",       name: "Ο Νομάδας",              tier: "silver",   icon: "bus",    action: "away",   goal: 3,  text: "3 μετακινήσεις εκτός έδρας με τον σύλλογο." },
-    { id: "ticket",         name: "Πρώτη Σειρά",            tier: "bronze",   icon: "ticket", action: "ticket", goal: 1,  text: "Το πρώτο σας εισιτήριο σε εκδήλωση." },
-    { id: "viewer",         name: "Ο Αναλυτής",             tier: "bronze",   icon: "play",   action: "watch",  goal: 1,  text: "Παρακολουθήσατε αγώνα στο Ιωνικός TV." },
-    { id: "loyal",          name: "Μπλε Αίμα",              tier: "gold",     icon: "shield", action: "months", goal: 12, text: "12 μήνες μέλος του Ιωνικού." },
-    { id: "since_1965",     name: "Ψυχή του Ιωνικού",       tier: "platinum", icon: "medal",  action: "all",    goal: 11, text: "Όλα τα υπόλοιπα τρόπαια. Το απόλυτο." }
+    { id: "first_voice",    name: "Πρώτη ιαχή",             tier: "bronze",   icon: "chat",   action: "chat",   goal: 1,  text: "Γράψατε το πρώτο σας μήνυμα στην κερκίδα." },
+    { id: "stand_voice",    name: "Ο Κάπο",                 tier: "silver",   icon: "chat",   action: "chat",   goal: 25, text: "Γράψατε 25 μηνύματα στην κερκίδα. Το σύνθημα το ξεκινάτε εσείς." },
+    { id: "voter",          name: "Ο Σκάουτερ",             tier: "bronze",   icon: "check",  action: "vote",   goal: 1,  text: "Ψηφίσατε τον MVP ενός αγώνα." },
+    { id: "customer",       name: "Πεινασμένος για νίκες",  tier: "bronze",   icon: "tag",    action: "redeem", goal: 1,  text: "Εξαργυρώσατε την πρώτη σας προσφορά σε χορηγό." },
+    { id: "loyal_customer", name: "Ο Δήμαρχος της Νίκαιας", tier: "silver",   icon: "store",  action: "shops",  goal: 4,  text: "Εξαργυρώσατε προσφορά και στους 4 χορηγούς του συλλόγου." },
+    { id: "present",        name: "Παιδί της θύρας",        tier: "silver",   icon: "ticket", action: "gate",   goal: 10, text: "Μπήκατε σε 10 εντός έδρας αγώνες." },
+    { id: "ever_present",   name: "Θρύλος της θύρας",       tier: "gold",     icon: "ticket", action: "gate",   goal: 30, text: "Μπήκατε σε 30 εντός έδρας αγώνες. Η θέση στη θύρα είναι πια δική σας." },
+    { id: "traveler",       name: "Ο Νομάδας",              tier: "silver",   icon: "bus",    action: "away",   goal: 3,  text: "Ακολουθήσατε την ομάδα σε 3 εκτός έδρας αγώνες." },
+    { id: "ticket",         name: "Πρώτη σειρά",            tier: "bronze",   icon: "ticket", action: "ticket", goal: 1,  text: "Κλείσατε το πρώτο σας εισιτήριο σε εκδήλωση του συλλόγου." },
+    { id: "viewer",         name: "Ο Αναλυτής",             tier: "bronze",   icon: "play",   action: "watch",  goal: 1,  text: "Είδατε αγώνα ζωντανά στο Ιωνικός TV." },
+    { id: "loyal",          name: "Μπλε αίμα",              tier: "gold",     icon: "shield", action: "months", goal: 12, text: "Συμπληρώσατε έναν χρόνο ως μέλος του Ιωνικού." },
+    { id: "since_1965",     name: "Ψυχή του Ιωνικού",       tier: "platinum", icon: "medal",  action: "all",    goal: 11, text: "Κατακτήσατε όλα τα υπόλοιπα τρόπαια." }
   ];
 
   /* Αρχικοί μετρητές επίδειξης: κάτι ξεκλειδώνει με ένα πάτημα. */
@@ -368,7 +368,7 @@
         "rows": null,
         "note": "Η ΕΟΚ δεν έχει δημοσιεύσει ακόμη βαθμολογία για τη νέα σεζόν. Δείτε τη ζωντανή σελίδα της ομάδας.",
         "last": {
-          "text": "Νίκη 70-51 απέναντι στον ΑΟ Δάφνης"
+          "text": "Νίκη με 70-51 απέναντι στον ΑΟ Δάφνης"
         },
         "next": null,
         "source": {
@@ -506,7 +506,7 @@
         "liveName": "volleyball.gr"
       }
     ],
-    "academies": "Οι βαθμολογίες των ακαδημιών (Κ12 έως Κ16) δεν δημοσιεύονται online από τις ενώσεις. Θα εμφανίζονται εδώ όταν τις καταχωρεί το γραφείο του συλλόγου."
+    "academies": "Οι ενώσεις δεν δημοσιεύουν online βαθμολογίες για τις ακαδημίες (Κ12 έως Κ16). Θα εμφανίζονται εδώ μόλις τις περνά το γραφείο του συλλόγου."
   };
 
   /* ---- Εκδηλώσεις  --------------------------------------------- */
@@ -624,7 +624,7 @@
       badge: "OFFLINE READY",
       title: "ΕΓΚΥΡΗ ΚΑΡΤΑ",
       icon: "check",
-      action: "+1 προς το τρόπαιο «Παιδί της Θύρας»",
+      action: "Η είσοδος μετράει στα τρόπαια της θύρας",
       tone: "ok"
     },
     duplicate: {

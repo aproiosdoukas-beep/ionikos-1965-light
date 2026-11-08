@@ -129,7 +129,7 @@
     saveLog(entries);
 
     renderResult({ state: "valid", name: card.name, sub: card.sub });
-    toast("+1 προς «Παιδί της Θύρας»: " + card.name, "ok");
+    toast("Καλή είσοδος, " + card.name + ". Η είσοδος μετράει στα τρόπαια.", "ok");
     if (card.profileId) celebrate(Trophies.record(card.profileId, "gate"));
   }
 

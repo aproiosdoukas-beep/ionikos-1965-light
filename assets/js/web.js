@@ -313,7 +313,7 @@
 
     page.append(
       head("Βαθμολογίες", "Οι ομάδες του Ιωνικού"),
-      el("p", { class: "page-lead", text: "Οι πραγματικές βαθμολογίες των ομάδων μας. Για την τρέχουσα εικόνα πατήστε «Ζωντανή βαθμολογία»." }),
+      el("p", { class: "page-lead", text: "Οι βαθμολογίες των ομάδων μας στα πρωταθλήματά τους. Για την πιο πρόσφατη εικόνα πατήστε «Ζωντανή βαθμολογία»." }),
       el("div", { style: "margin-bottom:24px;max-width:640px" }, [sportSwitch]),
       standingsBody(league),
       el("div", { class: "card", style: "margin-top:20px;display:flex;gap:12px;align-items:flex-start" }, [

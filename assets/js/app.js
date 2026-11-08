@@ -410,12 +410,12 @@
 
   const chatMsg = m => window.ION.chatLine(m);
 
-  /** Βαθμολογία του τμήματος που παίζει τώρα, με σύνδεσμο για όλες. */
+  /** Βαθμολογία της ανδρικής ομάδας ποδοσφαίρου (οι ακαδημίες δεν έχουν δημοσιευμένους πίνακες). */
   function standingsCard() {
     const t = D.STANDINGS.leagues.find(l => l.id === "football");
     return el("div", { class: "card card--ink", style: "display:grid;gap:10px;padding:14px" }, [
       el("div", { class: "between" }, [
-        el("span", { class: "display bold", text: "Βαθμολογία ανδρών" }),
+        el("span", { class: "display bold", text: "Ποδόσφαιρο ανδρών" }),
         el("span", { class: "t-xs muted", text: t.competition })
       ]),
       window.ION.standingsTable(t, t, true),
@@ -477,7 +477,7 @@
     const next = D.LEVELS.find(l => l.order === level.order + 1);
 
     appbar.append(
-      el("span", { class: "appbar__title", text: "Το Επίπεδό μου" }),
+      el("span", { class: "appbar__title", text: "Το επίπεδό μου" }),
       el("span", { class: "grow" }),
       el("span", { class: "display bold t-sm gold", text: "Μέλος " + profile.monthsMember + (profile.monthsMember === 1 ? " μήνα" : " μήνες") })
     );
