@@ -27,11 +27,17 @@ function makeStorage(seed) {
 
 function loadCore(seedStorage) {
   const storage = makeStorage(seedStorage);
-  const node = () => ({ style: {}, appendChild() {}, setAttribute() {}, addEventListener() {}, remove() {} });
+  const node = () => ({
+    style: {}, classList: { toggle() {}, add() {}, remove() {} }, isConnected: false, innerHTML: "", textContent: "",
+    appendChild() {}, append() {}, setAttribute() {}, addEventListener() {}, remove() {}, querySelector() { return null; }
+  });
   const ctx = {
     localStorage: storage,
     document: { createElement: node, createTextNode: node, body: { appendChild() {} } },
-    setTimeout, clearTimeout, setInterval, clearInterval, Intl, Date, Math, JSON, console
+    /* Τα χρονόμετρα δεν κρατούν το Node ζωντανό μετά τα tests. */
+    setTimeout: (f, ms) => { const t = setTimeout(f, ms); if (t.unref) t.unref(); return t; },
+    setInterval: (f, ms) => { const t = setInterval(f, ms); if (t.unref) t.unref(); return t; },
+    clearTimeout, clearInterval, Intl, Date, Math, JSON, console
   };
   ctx.window = ctx;
   vm.createContext(ctx);

@@ -201,6 +201,7 @@
             ])
           : null,
         card,
+        window.ION.countdownCard(profile.id),
         window.ION.tripCard(profile.id),
         el("div", { class: "info" }, [
           el("div", { class: "info__icon", html: icon("refresh", 20) }),

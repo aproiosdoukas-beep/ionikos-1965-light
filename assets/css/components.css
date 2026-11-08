@@ -891,3 +891,26 @@ img, svg { max-width: 100%; }
   box-shadow: 0 0 0 4px rgba(255,255,255,.12);
   flex: 0 0 auto;
 }
+
+/* ==========================================================================
+   ΑΝΤΙΣΤΡΟΦΗ ΜΕΤΡΗΣΗ: επόμενος εντός έδρας
+   ========================================================================== */
+.countdown { display: grid; gap: 10px; }
+.countdown__match {
+  font-family: var(--font-display); font-weight: 900; font-stretch: var(--stretch-headline);
+  font-size: var(--fs-xl); line-height: 1.05;
+}
+.countdown__units { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-2); }
+.countdown__unit {
+  display: grid; justify-items: center; gap: 2px;
+  padding: var(--sp-3) var(--sp-2);
+  border-radius: var(--r-md);
+  background: rgba(0, 0, 0, .24);
+  border: 1px solid rgba(255, 255, 255, .1);
+}
+.countdown__unit b {
+  font-family: var(--font-display); font-weight: 900; font-stretch: var(--stretch-headline);
+  font-size: var(--fs-2xl); line-height: 1; font-variant-numeric: tabular-nums; color: var(--ion-gold-300);
+}
+.countdown__unit span { font-size: var(--fs-xs); color: var(--ink-300); }
+.countdown__count { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-sm); color: #fff; }

@@ -33,6 +33,7 @@
   .hero h1 span { display: block; color: var(--ion-gold); }
   .hero p.lead { color: var(--ink-300); font-size: var(--fs-md); max-width: 58ch; margin: 24px 0 32px; }
   .hero .crest-watermark::before { width: min(40%, 380px); right: 0; opacity: .1; }
+  .hero__countdown { max-width: 440px; margin: 0 0 28px; }
 
   .main { background: var(--bg); padding: 56px 24px 80px; }
   .main__wrap { max-width: 1120px; margin: 0 auto; }
@@ -94,6 +95,8 @@
       οι σαρώσεις, η διαχείριση συνδρομής και οι εγκρίσεις λειτουργούν κανονικά,
       απευθείας στον browser.
     </p>
+
+    <div class="hero__countdown" id="heroCountdown"></div>
 
     <div class="cluster">
       <a class="btn btn--gold btn--lg" href="login.html">ΣΥΝΔΕΣΗ ΚΑΙ ΕΝΑΡΞΗ</a>
@@ -213,5 +216,14 @@
   </div>
 </footer>
 
+<script src="assets/js/data.js?v=20261108v"></script>
+<script src="assets/js/core.js?v=20261108v"></script>
+<script src="assets/js/icons.js?v=20261108v"></script>
+<script>
+  (function () {
+    var ION = window.ION, p = ION.Auth.activeProfile();
+    document.getElementById("heroCountdown").appendChild(ION.countdownCard(p ? p.id : null, "login.html"));
+  })();
+</script>
 </body>
 </html>

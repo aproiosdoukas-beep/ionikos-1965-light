@@ -452,6 +452,48 @@
   };
 
   /* ======================================================================
+     ΕΠΟΜΕΝΟΣ ΕΝΤΟΣ ΕΔΡΑΣ: αντίστροφη μέτρηση και «Θα είμαι εκεί»
+     ====================================================================== */
+  /** Ο πλησιέστερος μελλοντικός εντός έδρας αγώνας από τις βαθμολογίες, ή null. */
+  function nextHomeGame(nowMs) {
+    const list = (D.STANDINGS.leagues || [])
+      .filter(l => l.next && l.next.date && l.next.time && String(l.next.home).indexOf("Ιωνικός") === 0)
+      .map(l => {
+        const [d, m, y] = l.next.date.split("/").map(Number);
+        const [hh, mm] = l.next.time.split(":").map(Number);
+        return {
+          key: l.id + ":" + l.next.date,
+          leagueId: l.id, label: l.label, team: l.team,
+          opponent: l.next.away, date: l.next.date, time: l.next.time, venue: l.next.venue,
+          at: new Date(y, m - 1, d, hh, mm).getTime()
+        };
+      })
+      .filter(g => g.at > nowMs)
+      .sort((a, b) => a.at - b.at);
+    return list[0] || null;
+  }
+
+  /** Μέρες, ώρες, λεπτά που απομένουν. Ποτέ αρνητικά. */
+  function countdownParts(ms) {
+    const total = Math.max(0, Math.floor(ms / 60000));
+    return { days: Math.floor(total / 1440), hours: Math.floor((total % 1440) / 60), minutes: total % 60 };
+  }
+
+  const RSVP_BASE = 412;
+  const Rsvp = {
+    _get(key) { return Store.get("rsvp:" + key, []); },
+    count(key) { return RSVP_BASE + Rsvp._get(key).length; },
+    mine(key, pid) { return Rsvp._get(key).indexOf(pid) !== -1; },
+    toggle(key, pid) {
+      const list = Rsvp._get(key);
+      const i = list.indexOf(pid);
+      if (i === -1) list.push(pid); else list.splice(i, 1);
+      Store.set("rsvp:" + key, list);
+      return i === -1;
+    }
+  };
+
+  /* ======================================================================
      ΠΡΟΒΛΕΨΗ ΣΚΟΡ: κλείδωμα μία φορά, κλείσιμο μία φορά
      ====================================================================== */
   const Predictions = {
@@ -1069,6 +1111,69 @@
     return wrap;
   }
 
+  /** Κάρτα «Επόμενος εντός έδρας» με αντίστροφη μέτρηση και «Θα είμαι εκεί». */
+  function countdownCard(pid, loginHref) {
+    const g = nextHomeGame(Date.now());
+    const wrap = el("div", { class: "card card--navy theme-dark countdown" });
+    if (!g) {
+      wrap.append(
+        el("div", { class: "eyebrow", text: "Επόμενος εντός έδρας" }),
+        el("p", { class: "t-sm", style: "margin:0", text: "Το πρόγραμμα ανακοινώνεται σύντομα." })
+      );
+      return wrap;
+    }
+    const boxes = { days: el("b"), hours: el("b"), minutes: el("b") };
+    const unit = (k, label) => el("div", { class: "countdown__unit" }, [boxes[k], el("span", { text: label })]);
+    const count = el("span", { class: "countdown__count" });
+    const btnBox = el("div");
+    let timer = null;
+
+    function tick() {
+      if (!wrap.isConnected && timer) { clearInterval(timer); return; }
+      const p = countdownParts(g.at - Date.now());
+      boxes.days.textContent = p.days;
+      boxes.hours.textContent = String(p.hours).padStart(2, "0");
+      boxes.minutes.textContent = String(p.minutes).padStart(2, "0");
+    }
+    function drawRsvp() {
+      btnBox.innerHTML = "";
+      const n = Rsvp.count(g.key);
+      count.textContent = "Έρχονται " + n.toLocaleString("el-GR") + " φίλαθλοι";
+      if (!pid) {
+        btnBox.appendChild(el("a", { class: "btn btn--gold btn--block", href: loginHref || "login.html", text: "Θα είμαι εκεί" }));
+        return;
+      }
+      const going = Rsvp.mine(g.key, pid);
+      btnBox.appendChild(el("button", {
+        class: "btn btn--block " + (going ? "btn--success" : "btn--gold"), type: "button",
+        "aria-pressed": String(going),
+        text: going ? "Θα είμαι εκεί ✓" : "Θα είμαι εκεί",
+        onclick() {
+          const now = Rsvp.toggle(g.key, pid);
+          toast(now ? "Τα λέμε στο γήπεδο!" : "Η δήλωσή σας αφαιρέθηκε", now ? "ok" : null);
+          drawRsvp();
+        }
+      }));
+    }
+
+    wrap.append(
+      el("div", { class: "between", style: "flex-wrap:wrap" }, [
+        el("div", { class: "eyebrow", text: "Επόμενος εντός έδρας" }),
+        el("span", { class: "t-xs", style: "color:var(--ink-300)", text: g.label + " " + g.team.toLowerCase() })
+      ]),
+      el("div", { class: "countdown__match", text: "Ιωνικός - " + g.opponent }),
+      el("div", { class: "t-sm", style: "color:var(--ink-300)", text: g.date + ", " + g.time + (g.venue ? ", " + g.venue : "") }),
+      el("div", { class: "countdown__units", role: "timer", "aria-label": "Χρόνος μέχρι τη σέντρα" },
+        [unit("days", "μέρες"), unit("hours", "ώρες"), unit("minutes", "λεπτά")]),
+      count,
+      btnBox
+    );
+    tick();
+    drawRsvp();
+    timer = setInterval(tick, 30000);
+    return wrap;
+  }
+
   /** Ένα toast για κάθε τρόπαιο που μόλις ξεκλείδωσε. */
   function celebrate(list) {
     (list || []).forEach(t => {
@@ -1085,8 +1190,8 @@
   }
 
   global.ION = {
-    Store, Auth, Membership, Trophies, Predictions, Leaderboard, Trips, Noise, LiveScore, Token, QR, resolveCard,
+    Store, Auth, Membership, Trophies, Predictions, Leaderboard, Trips, Rsvp, nextHomeGame, countdownParts, Noise, LiveScore, Token, QR, resolveCard,
     el, $, $$,
-    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, standingsTable, liveHype, predictionCard, leaderboardTable, tripCard, todayKey, hash32, upper
+    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, standingsTable, liveHype, predictionCard, leaderboardTable, tripCard, countdownCard, todayKey, hash32, upper
   };
 })(window);

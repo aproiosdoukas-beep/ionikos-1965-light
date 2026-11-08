@@ -410,6 +410,7 @@
   }
   /* Κάρτες της στήλης «Κερκίδα» (εκδρομή, αντίστροφη μέτρηση). */
   const standSideCards = [
+    profile => window.ION.countdownCard(profile ? profile.id : null, "login.html?next=web.html"),
     profile => window.ION.tripCard(profile ? profile.id : null)
   ];
 
