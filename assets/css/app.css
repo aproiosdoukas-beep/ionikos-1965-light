@@ -613,3 +613,42 @@
 .leaderboard .trophy-tier--silver.chat__title { color: #5D6579; }
 .leaderboard .trophy-tier--bronze.chat__title { color: #8A5226; }
 .card .leaderboard .trophy-tier--gold.chat__title { color: var(--ion-gold-600); }
+
+/* ---- Εκδρομή: λεωφορείο 50 θέσεων ----------------------------------------- */
+.trip { display: grid; gap: 10px; }
+.trip__match { font-family: var(--font-display); font-weight: 900; font-stretch: var(--stretch-headline); font-size: var(--fs-xl); line-height: 1.05; }
+.trip__meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: var(--fs-sm); color: var(--text-muted); }
+.trip__meta b { color: var(--text); }
+.bus {
+  border: 2px solid var(--ion-navy);
+  border-radius: 22px 22px 10px 10px;
+  padding: 10px 12px 12px;
+  background: var(--surface-2);
+}
+.bus__front {
+  margin: -2px -4px 10px;
+  padding: 6px 10px;
+  border-radius: 14px 14px 4px 4px;
+  background: var(--ion-navy);
+  color: #fff;
+  font-family: var(--font-display); font-weight: 800; font-size: var(--fs-xs);
+  text-align: center;
+  letter-spacing: .02em;
+}
+.bus__seats {
+  display: grid;
+  grid-template-columns: repeat(2, 22px) 16px repeat(3, 22px);
+  justify-content: center;
+  gap: 5px;
+}
+.bus__seat {
+  aspect-ratio: 1;
+  border-radius: 4px 4px 2px 2px;
+  border: 1.5px solid var(--paper-300);
+  background: var(--paper);
+}
+.bus__seats .bus__seat:nth-child(5n+3) { grid-column-start: 4; }
+.bus__seat.is-taken { background: var(--ion-gold); border-color: var(--ion-gold-600); }
+.bus__seat.is-mine { background: var(--ion-navy); border-color: var(--ion-navy); box-shadow: 0 0 0 2px var(--ion-gold-300); }
+.trip__left { font-family: var(--font-display); font-weight: 800; color: var(--ion-navy); }
+.trip__left.is-low { color: var(--danger-600); }

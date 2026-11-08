@@ -201,6 +201,7 @@
             ])
           : null,
         card,
+        window.ION.tripCard(profile.id),
         el("div", { class: "info" }, [
           el("div", { class: "info__icon", html: icon("refresh", 20) }),
           el("div", {}, [
@@ -682,6 +683,7 @@
           Trophies.reset();
           window.ION.LiveScore.reset();
           window.ION.Predictions.reset();
+          window.ION.Trips.reset();
           ["activeProfile", "poll:voted", "poll:counts", "app:tab"].forEach(k => Store.remove(k));
           toast("Τα δεδομένα επανήλθαν στην αρχική τους μορφή", "ok");
           render();

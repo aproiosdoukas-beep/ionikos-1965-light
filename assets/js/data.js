@@ -160,6 +160,20 @@
     { name: "Λάκης Χατζής",      levelId: "touristas", title: "first_voice",    points: 22 }
   ];
 
+  /* ---- Εκδρομή εκτός έδρας (δεδομένα επίδειξης) --------------------------- */
+  const AWAY_TRIP = {
+    id: "trip_rhodes",
+    title: "Λεωφορείο οπαδών",
+    match: "Διαγόρας - Ιωνικός",
+    destination: "Ρόδος, με πλοίο από τον Πειραιά",
+    date: "29/11/2026",
+    time: "07:30",
+    meet: "Πλατεία Νίκαιας",
+    seats: 50,
+    taken: 37,
+    price: 15
+  };
+
   /* ---- Χορηγοί & προσφορές  ------------------------------------ */
   const OFFERS = [
     { id: "m_burgers",  name: "Nikaia Burgers",   category: "food",  icon: "🍔",
@@ -688,7 +702,7 @@
   global.ION_DATA = {
     ACCOUNTS, PROFILES, LEVELS, TIERS, TROPHIES, TROPHY_SEED,
     OFFERS, OFFER_FILTERS,
-    LIVE, REACTIONS, FANS, VOD, CHAT_ROOMS, CHAT_SEED, CHAT_AMBIENT, POLL,
+    LIVE, REACTIONS, FANS, AWAY_TRIP, VOD, CHAT_ROOMS, CHAT_SEED, CHAT_AMBIENT, POLL,
     EVENTS, STANDINGS, PLANS, BILLING, ADMIN, SCAN_STATES, KNOWN_CARDS
   };
 })(window);

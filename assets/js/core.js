@@ -414,6 +414,44 @@
   };
 
   /* ======================================================================
+     ΕΚΔΡΟΜΗ: θέση στο λεωφορείο, η πρόοδος τροπαίου μετράει μία φορά
+     ====================================================================== */
+  const Trips = {
+    _key(pid) { return "trip:" + D.AWAY_TRIP.id + ":" + pid; },
+    _get(pid) { return Store.get(Trips._key(pid), { joined: false, everJoined: false }); },
+
+    state(pid) {
+      const t = D.AWAY_TRIP;
+      const joined = Trips._get(pid).joined;
+      const taken = Math.min(t.seats, t.taken + (joined ? 1 : 0));
+      return { joined: joined, taken: taken, left: t.seats - taken };
+    },
+
+    join(pid) {
+      const s = Trips._get(pid);
+      if (s.joined || Trips.state(pid).left <= 0) return { ok: false, unlocked: [] };
+      const first = !s.everJoined;
+      Store.set(Trips._key(pid), { joined: true, everJoined: true });
+      return { ok: true, unlocked: first ? Trophies.record(pid, "away") : [] };
+    },
+
+    reset() {
+      try {
+        Object.keys(localStorage)
+          .filter(k => k.indexOf(NS + "trip:") === 0)
+          .forEach(k => localStorage.removeItem(k));
+      } catch (_) {}
+    },
+
+    cancel(pid) {
+      const s = Trips._get(pid);
+      if (!s.joined) return false;
+      Store.set(Trips._key(pid), { joined: false, everJoined: s.everJoined });
+      return true;
+    }
+  };
+
+  /* ======================================================================
      ΠΡΟΒΛΕΨΗ ΣΚΟΡ: κλείδωμα μία φορά, κλείσιμο μία φορά
      ====================================================================== */
   const Predictions = {
@@ -980,6 +1018,57 @@
     ]);
   }
 
+  /** Κάρτα «Πάμε εκτός έδρας» με λεωφορείο 50 θέσεων. */
+  function tripCard(pid) {
+    const t = D.AWAY_TRIP;
+    const wrap = el("div", { class: "card trip" });
+    function draw() {
+      wrap.innerHTML = "";
+      const s = pid ? Trips.state(pid) : Trips.state("_guest");
+      const seats = [];
+      for (let i = 0; i < t.seats; i++) {
+        const mine = s.joined && i === s.taken - 1;
+        seats.push(el("span", { class: "bus__seat" + (i < s.taken ? " is-taken" : "") + (mine ? " is-mine" : "") }));
+      }
+      const action = !pid
+        ? el("a", { class: "btn btn--primary btn--block", href: "login.html?next=web.html", text: "Συνδεθείτε για να κλείσετε θέση" })
+        : s.joined
+          ? el("button", { class: "btn btn--ghost btn--block", type: "button", text: "Ακύρωση θέσης",
+              onclick() { Trips.cancel(pid); toast("Η θέση σας ακυρώθηκε", null); draw(); } })
+          : el("button", { class: "btn btn--gold btn--block", type: "button", disabled: s.left <= 0,
+              text: s.left <= 0 ? "Το λεωφορείο γέμισε" : "Κλείνω θέση",
+              onclick() {
+                const r = Trips.join(pid);
+                if (!r.ok) return;
+                toast("Κλείσατε θέση για " + t.match, "ok");
+                celebrate(r.unlocked);
+                draw();
+              } });
+      wrap.append(
+        el("div", { class: "between", style: "flex-wrap:wrap" }, [
+          el("div", { class: "eyebrow", text: "Πάμε εκτός έδρας" }),
+          el("span", { class: "badge", text: "Δεδομένα επίδειξης" })
+        ]),
+        el("div", { class: "trip__match", text: t.match }),
+        el("div", { class: "t-sm muted", text: t.destination }),
+        el("div", { class: "trip__meta" }, [
+          el("span", {}, [el("b", { text: t.date }), document.createTextNode(", αναχώρηση " + t.time)]),
+          el("span", { text: "Συνάντηση: " + t.meet }),
+          el("span", { text: "Τιμή μέλους: " + fmtEuro(t.price) })
+        ]),
+        el("div", { class: "bus", "aria-label": "Λεωφορείο: " + s.taken + " από " + t.seats + " θέσεις πιασμένες" }, [
+          el("div", { class: "bus__front", text: t.title }),
+          el("div", { class: "bus__seats" }, seats)
+        ]),
+        el("div", { class: "trip__left" + (s.left <= 5 ? " is-low" : ""),
+                    text: s.left === 0 ? "Το λεωφορείο γέμισε" : s.left === 1 ? "Έχει μείνει 1 θέση" : "Έχουν μείνει " + s.left + " θέσεις" }),
+        action
+      );
+    }
+    draw();
+    return wrap;
+  }
+
   /** Ένα toast για κάθε τρόπαιο που μόλις ξεκλείδωσε. */
   function celebrate(list) {
     (list || []).forEach(t => {
@@ -996,8 +1085,8 @@
   }
 
   global.ION = {
-    Store, Auth, Membership, Trophies, Predictions, Leaderboard, Noise, LiveScore, Token, QR, resolveCard,
+    Store, Auth, Membership, Trophies, Predictions, Leaderboard, Trips, Noise, LiveScore, Token, QR, resolveCard,
     el, $, $$,
-    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, standingsTable, liveHype, predictionCard, leaderboardTable, todayKey, hash32, upper
+    fmtEuro, mmss, levelById, levelColor, toast, celebrate, chatTitle, chatLine, standingsTable, liveHype, predictionCard, leaderboardTable, tripCard, todayKey, hash32, upper
   };
 })(window);

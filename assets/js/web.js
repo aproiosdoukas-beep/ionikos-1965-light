@@ -409,7 +409,9 @@
     standSideCards.forEach(fn => { const c = fn(profile); if (c) side.appendChild(c); });
   }
   /* Κάρτες της στήλης «Κερκίδα» (εκδρομή, αντίστροφη μέτρηση). */
-  const standSideCards = [];
+  const standSideCards = [
+    profile => window.ION.tripCard(profile ? profile.id : null)
+  ];
 
   /* ======================================================================
      Εκδηλώσεις & ηλεκτρονικά εισιτήρια
