@@ -534,7 +534,7 @@
       el("div", { class: "card", style: "display:grid;gap:10px;padding:14px" }, [
         el("div", { class: "between" }, [
           el("span", { class: "section-title", text: "Κατάταξη εβδομάδας" }),
-          el("span", { class: "display bold", style: "color:var(--ion-navy)", text: window.ION.Leaderboard.points(profile.id) + " πόντοι" })
+          el("span", { class: "display bold", style: "color:var(--accent-text, var(--ion-navy))", text: window.ION.Leaderboard.points(profile.id) + " πόντοι" })
         ]),
         el("span", { class: "badge", style: "justify-self:start", text: "Δεδομένα επίδειξης" }),
         window.ION.leaderboardTable(profile.id, 5),
@@ -671,7 +671,7 @@
       el("p", { class: "t-sm muted", style: "margin:-8px 0 0", text: "Διαλέξτε ποιο τρόπαιο φαίνεται δίπλα στο όνομά σας στην κερκίδα." }),
       titlePicker(profile.id),
 
-      el("a", { class: "btn btn--primary btn--block", href: "web.html#subscription", text: "ΔΙΑΧΕΙΡΙΣΗ ΣΥΝΔΡΟΜΗΣ" }),
+      el("a", { class: "btn btn--primary btn--block", href: "web.html#subscription", text: "Διαχείριση συνδρομής" }),
       el("a", { class: "btn btn--ghost btn--block", href: "web.html#events", text: "Εκδηλώσεις & Εισιτήρια" }),
       el("button", {
         class: "btn btn--ghost btn--block", type: "button",

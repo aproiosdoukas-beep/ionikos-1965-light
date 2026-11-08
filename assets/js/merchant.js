@@ -97,7 +97,7 @@
       class: "btn btn--success btn--lg btn--block",
       type: "button",
       disabled: !ok,
-      text: "ΕΠΙΒΕΒΑΙΩΣΗ & ΚΑΤΑΓΡΑΦΗ",
+      text: "Επιβεβαίωση και καταγραφή",
       onclick() { commit(info); }
     });
 

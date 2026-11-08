@@ -187,7 +187,7 @@
                     onclick() { markHandled(r.id, "approved"); toast("Εγκρίθηκε: " + r.child, "ok"); render(); }
                   }),
                   el("button", {
-                    class: "btn btn--danger", type: "button", text: "ΑΠΟΡΡΙΨΗ",
+                    class: "btn btn--danger", type: "button", text: "Απόρριψη",
                     onclick() { markHandled(r.id, "rejected"); toast("Απορρίφθηκε: " + r.child, "danger"); render(); }
                   })
                 ])

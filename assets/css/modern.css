@@ -1,0 +1,480 @@
+/* ==========================================================================
+   ΙΩΝΙΚΟΣ 1965 :: Μοντέρνο θέμα «προβολείς τη νύχτα»
+   Φορτώνεται τελευταίο και ξαναγράφει tokens και components:
+   σκοτεινό παντού, Inter, λευκά κουμπιά-χάπια, γυάλινη πλοήγηση,
+   διαγώνιες δέσμες φωτός σε μπλε και χρυσό στους ήρωες.
+   ========================================================================== */
+
+:root,
+.theme-dark,
+.theme-light,
+:root[data-theme="dark"] {
+  /* Σκοτεινή κλίμακα με απόχρωση του μπλε του εμβλήματος */
+  --ink-900: #07081A;
+  --ink-800: #0B0D22;
+  --ink-700: #0F1126;
+  --ink-600: #161936;
+  --ink-500: #2A2D52;
+  --ink-400: #6A6D96;
+  --ink-300: #8C8FB5;
+
+  /* Οι «χάρτινες» επιφάνειες γίνονται κι αυτές σκοτεινές */
+  --paper:     #0F1126;
+  --paper-50:  #0B0D22;
+  --paper-100: #07081A;
+  --paper-200: #161936;
+  --paper-300: #2A2D52;
+
+  --ion-navy-100: rgba(110, 113, 192, .16);
+  --ion-gold-100: rgba(207, 156, 29, .12);
+  --ion-gold-600: #E2B54A;   /* χρυσό κειμένου σε σκοτεινό φόντο */
+  --ok-600:       #3DDBA0;
+  --danger-600:   #D9434A;
+
+  --line-dark:      rgba(255, 255, 255, .10);
+  --line-dark-soft: rgba(255, 255, 255, .06);
+
+  --bg:          #07081A;
+  --surface:     #0F1126;
+  --surface-2:   #0B0D22;
+  --surface-3:   #161936;
+  --border:      rgba(255, 255, 255, .11);
+  --border-soft: rgba(255, 255, 255, .07);
+  --text:        #F5F6FB;
+  --text-muted:  #8C8FB5;
+  --text-invert: #07081A;
+  --text-soft:   #C9CBE6;
+
+  --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --stretch-ui: 100%;
+  --stretch-headline: 100%;
+
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 24px;
+  --r-2xl: 32px;
+
+  --hairline-top: inset 0 1px 0 rgba(255, 255, 255, .06);
+  --shadow-sm: var(--hairline-top);
+  --shadow-md: var(--hairline-top), 0 12px 28px -12px rgba(0, 0, 0, .7);
+  --shadow-lg: 0 30px 60px -20px rgba(0, 0, 0, .85), 0 0 0 1px rgba(255, 255, 255, .06);
+  --shadow-gold: 0 0 0 1px rgba(207, 156, 29, .55), 0 18px 40px -16px rgba(207, 156, 29, .45);
+  --ring: 0 0 0 3px rgba(255, 255, 255, .28);
+
+  /* Η ρίγα κασκόλ γίνεται λεπτή φωτεινή γραμμή, η υφή σκαλιών σβήνει */
+  --stripe: linear-gradient(90deg, transparent, rgba(207, 156, 29, .7) 30%, rgba(110, 113, 192, .8) 70%, transparent);
+  --terrace: none;
+  --floodlight:
+    radial-gradient(80% 50% at 50% -10%, rgba(52, 55, 149, .55), transparent 70%),
+    radial-gradient(40% 30% at 85% 0%, rgba(207, 156, 29, .10), transparent 70%);
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+
+  color-scheme: dark;
+}
+
+html { font-stretch: 100%; }
+body { font-feature-settings: "cv11", "ss01"; letter-spacing: -.006em; }
+
+/* ---- Τυπογραφία: Inter, σφιχτοί μεγάλοι τίτλοι ----------------------- */
+h1, h2, h3, h4, h5 { font-weight: 650; letter-spacing: -.028em; }
+h1, h2 { font-weight: 650; }
+[class*="__title"], [class*="__name"], [class*="__match"], [class*="__teams"],
+.section-title, .screen-title, .stat__value, .plan__price, .row__end, .row__title,
+.option__label, .perks__title, .field__label, .card__title, .display.bold {
+  font-weight: 650;
+  letter-spacing: -.02em;
+}
+.countdown__unit b, .stepper__value, .predict__score, .predict__result b,
+.scoreline__score, .match-card__score, .standings td.pts, .leaderboard td.pts {
+  font-weight: 700; letter-spacing: -.03em;
+}
+.chat__title, .chat__user, .badge, .seal, .tabbar__btn, .web__link,
+.admin__navbtn, .segmented__btn, .chip, .btn { font-weight: 600; }
+
+/* ---- Κεφαλίδες ενότητας ------------------------------------------------ */
+.eyebrow { color: var(--text-muted); font-weight: 500; letter-spacing: 0; }
+.eyebrow::before { width: 6px; height: 6px; border-radius: 50%; box-shadow: 0 0 10px rgba(207, 156, 29, .8); }
+.theme-dark .eyebrow { color: var(--text-muted); }
+
+/* ==========================================================================
+   ΚΟΥΜΠΙΑ: λευκό χάπι για το κύριο, γυάλινο για το δεύτερο
+   ========================================================================== */
+.btn {
+  border-radius: var(--r-pill);
+  border-width: 1px;
+  letter-spacing: -.01em;
+  min-height: 44px;
+  font-size: var(--fs-sm);
+  padding: 0 var(--sp-5);
+}
+.btn:focus-visible { border-radius: var(--r-pill); }
+.btn--lg { min-height: 52px; font-size: var(--fs-base); border-radius: var(--r-pill); padding: 0 var(--sp-6); }
+.btn--sm { min-height: 34px; font-size: var(--fs-sm); }
+.btn--icon { width: 44px; min-height: 44px; }
+
+.btn--primary, .btn:not([class*="btn--"]) {
+  --btn-bg: #F5F6FB;
+  --btn-fg: #07081A;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .18), 0 1px 0 rgba(255, 255, 255, .1), 0 8px 24px -10px rgba(255, 255, 255, .25);
+}
+.btn--primary:hover:not(:disabled) { filter: none; --btn-bg: #fff; }
+.btn--gold {
+  --btn-bg: var(--ion-gold);
+  --btn-fg: #07081A;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 10px 30px -10px rgba(207, 156, 29, .7);
+}
+.btn--ghost, .btn--outline,
+.theme-dark .btn--ghost, .theme-dark .btn--outline, .theme-light .btn--ghost {
+  --btn-bg: rgba(255, 255, 255, .06);
+  --btn-fg: var(--text);
+  --btn-bd: rgba(255, 255, 255, .12);
+  backdrop-filter: blur(10px);
+}
+.btn--ghost:hover:not(:disabled), .btn--outline:hover:not(:disabled),
+.theme-dark .btn--ghost:hover:not(:disabled) { background: rgba(255, 255, 255, .11); filter: none; }
+.btn--success { box-shadow: 0 10px 28px -12px rgba(18, 168, 116, .8); }
+.btn--danger  { box-shadow: 0 10px 28px -12px rgba(229, 72, 77, .8); }
+
+/* ==========================================================================
+   ΚΑΡΤΕΣ: μεγάλη καμπύλη, λεπτό περίγραμμα, φως στην πάνω ακμή
+   ========================================================================== */
+.card {
+  border-radius: var(--r-lg);
+  border-color: var(--border-soft);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .025), transparent 40%), var(--surface);
+  box-shadow: var(--hairline-top);
+}
+.card--raised { box-shadow: var(--shadow-md); }
+.card--navy {
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(110, 113, 192, .35), transparent 60%),
+    linear-gradient(180deg, #181B4A, #0F1126);
+  border-color: rgba(110, 113, 192, .3);
+}
+.card--ink { background: var(--surface-2); border-color: var(--border-soft); }
+.card--rule { padding-top: var(--sp-5); }
+.card--rule::before { height: 1px; }
+
+/* ---- Chips, segmented, badges ------------------------------------------- */
+.chip { background: rgba(255, 255, 255, .04); border-color: var(--border); }
+.chip:hover { border-color: rgba(255, 255, 255, .25); }
+.chip.is-active { background: #F5F6FB; border-color: #F5F6FB; color: #07081A; }
+
+.segmented, .theme-dark .segmented, .theme-light .segmented {
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-pill);
+}
+.segmented__btn { border-radius: var(--r-pill); }
+.segmented__btn.is-active { background: rgba(255, 255, 255, .12); color: #fff; box-shadow: var(--hairline-top); }
+
+.badge { text-transform: none; letter-spacing: 0; border-radius: var(--r-pill); padding: 4px 10px; }
+.badge--live { letter-spacing: .02em; box-shadow: 0 0 18px rgba(255, 59, 48, .55); }
+.badge--navy { background: rgba(110, 113, 192, .22); color: var(--text-soft); }
+.badge--gold { color: var(--ion-gold-300); }
+
+/* ---- Γραμμές, στατιστικά, φόρμες ---------------------------------------- */
+.row { border-radius: var(--r-md); background: var(--surface); }
+.row__icon, .theme-dark .row__icon { background: rgba(110, 113, 192, .16); color: var(--text-soft); border-radius: var(--r-sm); }
+.row--clickable:hover { border-color: rgba(255, 255, 255, .18); }
+.row--clickable:hover .row__icon { background: rgba(207, 156, 29, .18); color: var(--ion-gold-300); }
+.stat--navy .stat__value { color: #fff; }
+
+.input, .select { border-width: 1px; background: rgba(255, 255, 255, .04); }
+.input:focus, .select:focus { border-color: rgba(255, 255, 255, .32); }
+
+.option { border-width: 1px; background: rgba(255, 255, 255, .03); }
+.option:hover { border-color: rgba(255, 255, 255, .22); }
+.option.is-selected {
+  background: rgba(207, 156, 29, .08);
+  border-color: var(--ion-gold);
+  box-shadow: inset 0 0 0 1px var(--ion-gold);
+}
+.option.is-selected .option__mark { border-color: var(--ion-gold); }
+.option.is-selected .option__mark::after { background: var(--ion-gold); }
+
+.perks__icon, .theme-light .perks__icon { background: rgba(207, 156, 29, .16); color: var(--ion-gold-300); }
+
+.progress { background: rgba(255, 255, 255, .08); }
+
+/* ---- Toast και modal: γυαλί ------------------------------------------------ */
+.toast {
+  background: rgba(22, 25, 54, .82);
+  backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: var(--r-pill);
+  padding: 10px 18px;
+}
+.toast--ok     { background: rgba(11, 127, 87, .85); }
+.toast--danger { background: rgba(200, 54, 59, .88); }
+.toast--trophy { border-radius: var(--r-md); background: rgba(22, 25, 54, .9); }
+
+.modal-backdrop { background: rgba(3, 4, 14, .72); backdrop-filter: blur(8px); }
+.modal, .modal.theme-light {
+  background: linear-gradient(180deg, rgba(255, 255, 255, .04), transparent 30%), #0F1126;
+  background-image: none;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding-top: var(--sp-6);
+}
+.modal__text { color: var(--text-muted); }
+
+/* ---- Σφραγίδα και μάρκα --------------------------------------------------- */
+.seal, .theme-dark .seal {
+  color: var(--text-muted);
+  border-color: rgba(255, 255, 255, .16);
+  letter-spacing: .08em;
+  font-weight: 500;
+}
+.brandmark__name { font-weight: 650; letter-spacing: -.02em; }
+
+/* ==========================================================================
+   ΔΕΣΜΕΣ ΦΩΤΟΣ: η μία τολμηρή στιγμή, μόνο στους ήρωες
+   ========================================================================== */
+.hero, .matchday {
+  isolation: isolate;
+  overflow: clip;
+  background: var(--grain), var(--ink-900);
+}
+.hero::after, .matchday::after {
+  content: "";
+  position: absolute;
+  inset: -30% -10%;
+  z-index: -2;
+  pointer-events: none;
+  background: repeating-linear-gradient(118deg,
+    transparent 0 7%,
+    rgba(52, 55, 149, .95) 9% 14%,
+    transparent 17% 23%,
+    rgba(207, 156, 29, .55) 25% 27%,
+    transparent 30% 36%,
+    rgba(110, 113, 192, .6) 38% 41%,
+    transparent 44% 52%);
+  filter: blur(34px) saturate(1.2);
+  -webkit-mask-image: radial-gradient(70% 70% at 70% 30%, #000 20%, transparent 72%);
+          mask-image: radial-gradient(70% 70% at 70% 30%, #000 20%, transparent 72%);
+  opacity: .9;
+  animation: beams-drift 18s ease-in-out infinite alternate;
+}
+.matchday::after { opacity: .55; }
+@keyframes beams-drift { to { transform: translateX(4%); } }
+.crest-watermark::before { opacity: .05; }
+
+/* ==========================================================================
+   SHELLS
+   ========================================================================== */
+/* Σύνδεση */
+.auth { background: var(--grain), var(--floodlight), var(--ink-900); }
+.auth__card, .auth__card.theme-light {
+  background: rgba(15, 17, 38, .72);
+  backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, .09);
+  box-shadow: var(--hairline-top), var(--shadow-lg);
+  padding-top: var(--sp-8);
+}
+.auth__card::before { height: 1px; }
+.auth__title { font-weight: 650; letter-spacing: -.035em; }
+.auth__demos { background: rgba(255, 255, 255, .03); border-color: var(--border-soft); }
+.auth__demo { background: rgba(255, 255, 255, .04); color: var(--text); }
+.auth__demo:hover { border-color: rgba(255, 255, 255, .2); background: rgba(255, 255, 255, .07); }
+
+/* Σκηνή κινητού */
+.stage { background: var(--grain), var(--floodlight), var(--ink-900); background-attachment: fixed; }
+.phone {
+  background: #000;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .12), 0 0 0 7px #0A0B18, 0 0 0 8px rgba(255, 255, 255, .07),
+              0 50px 100px -20px rgba(0, 0, 0, .9), 0 0 120px -30px rgba(52, 55, 149, .7);
+}
+.statusbar__notch { background: #000; }
+.appbar, .appbar--ink {
+  background: rgba(7, 8, 26, .82);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-soft);
+  padding-bottom: var(--sp-3);
+}
+.appbar::after { display: none; }
+.appbar__title { font-weight: 650; letter-spacing: -.02em; }
+.tabbar, .phone--dark .tabbar {
+  background: rgba(11, 13, 34, .88);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border-soft);
+}
+.tabbar__btn.is-active, .phone--dark .tabbar__btn.is-active { color: #fff; }
+.tabbar__btn.is-active::before { top: -8px; left: 38%; right: 38%; height: 2px; border-radius: 2px; box-shadow: 0 0 10px rgba(207, 156, 29, .9); }
+.phone__body::-webkit-scrollbar-thumb { background: var(--ink-500); }
+
+/* Ιστοσελίδα: αιωρούμενη γυάλινη μπάρα */
+.web { background: var(--bg); }
+.web__nav {
+  top: 12px;
+  margin: 12px 16px 0;
+  border-radius: 18px;
+  background: rgba(15, 17, 38, .66);
+  backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, .08);
+  box-shadow: var(--hairline-top), 0 18px 40px -20px rgba(0, 0, 0, .9);
+  padding: 10px 12px 10px 18px;
+}
+.web__nav::after { display: none; }
+.web__link { color: var(--text-muted); font-weight: 500; padding: 8px 14px; }
+.web__link:hover { color: #fff; background: rgba(255, 255, 255, .06); }
+.web__link.is-active { color: #fff; background: rgba(255, 255, 255, .09); box-shadow: var(--hairline-top); }
+.web__who { color: var(--text-muted); }
+.web__wrap > .matchday:first-child { margin-top: calc(-1 * var(--main-pt) - var(--nav-h, 64px) - 24px); padding-top: calc(var(--nav-h, 64px) + 56px); }
+.web__nav { position: sticky; }
+.web__foot { background: var(--ink-900); border-top: 1px solid var(--border-soft); }
+.web__foot a { text-decoration-color: rgba(255, 255, 255, .3); }
+.page-head h2 { font-weight: 650; letter-spacing: -.035em; }
+@media (max-width: 1080px) {
+  .web__nav { padding: 10px 12px; margin: 8px 8px 0; top: 8px; }
+}
+@media (max-width: 960px) {
+  .live-main { top: calc(var(--nav-h, 0px) + 8px); background: var(--bg); }
+}
+
+/* Διαχείριση: πλαϊνή στήλη σαν εργαλείο */
+.admin { background: var(--bg); }
+.admin__side {
+  background: #04050F;
+  box-shadow: none;
+  border-right: 1px solid var(--border-soft);
+}
+.admin__navbtn {
+  display: flex; align-items: center; gap: 10px;
+  font-size: var(--fs-sm); font-weight: 500;
+  color: var(--text-soft);
+  padding: 9px 12px; border-radius: var(--r-sm);
+}
+.admin__navbtn::before {
+  content: "";
+  width: 18px; height: 18px; flex: 0 0 auto;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--ion-navy-300), var(--ion-navy));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3);
+}
+.admin__navbtn:nth-child(2)::before { background: linear-gradient(135deg, var(--ion-gold-300), var(--ion-gold)); }
+.admin__navbtn:nth-child(3)::before { background: linear-gradient(135deg, var(--ok-300), var(--ok)); }
+.admin__navbtn:nth-child(4)::before { background: linear-gradient(135deg, #FF9F7A, var(--danger)); }
+.admin__navbtn:nth-child(5)::before { background: linear-gradient(135deg, #A7C7E7, #5B7FB8); }
+.admin__navbtn.is-active { background: rgba(255, 255, 255, .08); color: #fff; box-shadow: var(--hairline-top); }
+@media (max-width: 860px) { .admin__side::after { height: 1px; } }
+
+/* Πίνακες */
+.table th { text-transform: none; letter-spacing: 0; font-weight: 500; }
+.table tbody tr:hover { background: rgba(255, 255, 255, .03); }
+
+/* ==========================================================================
+   ΕΦΑΡΜΟΓΗ ΚΑΙ ΖΩΝΤΑΝΑ
+   ========================================================================== */
+.info { border-radius: var(--r-lg); }
+.info__icon { color: var(--ok-300); }
+.info__icon--navy { background: rgba(110, 113, 192, .16); color: var(--text-soft); }
+
+.offer-hero, .levelcard, .history-link {
+  background:
+    radial-gradient(110% 120% at 100% 0%, rgba(207, 156, 29, .22), transparent 55%),
+    radial-gradient(120% 100% at 0% 100%, rgba(52, 55, 149, .7), transparent 60%),
+    #0F1126;
+  border: 1px solid rgba(255, 255, 255, .08);
+  box-shadow: var(--hairline-top), var(--shadow-md);
+}
+.offer-hero__name { color: #fff; }
+.levelcard__name { color: var(--ion-gold-300); }
+
+.trophy { border-radius: var(--r-md); box-shadow: inset 0 2px 0 var(--tier), var(--hairline-top); }
+.trophy--locked { box-shadow: inset 0 2px 0 var(--border); }
+.trophy--locked .trophy__name { color: var(--text-muted); }
+.trophy-summary { background: var(--surface-2); border: 1px solid var(--border-soft); }
+
+.ladder__item { box-shadow: inset 3px 0 0 var(--tier); }
+.ladder__perk { color: var(--text-soft); }
+.ladder__item.is-current { border-color: rgba(255, 255, 255, .3); box-shadow: inset 3px 0 0 var(--tier), 0 0 0 1px rgba(255, 255, 255, .18); }
+.ladder__item.is-high { background: linear-gradient(120deg, rgba(52, 55, 149, .6), rgba(52, 55, 149, .25)); }
+.ladder__item.is-top  { background: linear-gradient(120deg, rgba(207, 156, 29, .16), #0B0D22); }
+
+.player { border-radius: var(--r-lg); border-color: var(--border-soft); }
+.player__play { box-shadow: 0 0 0 10px rgba(207, 156, 29, .12), 0 0 50px rgba(207, 156, 29, .5); }
+.chat__msg { border-radius: var(--r-md); background: rgba(255, 255, 255, .04); }
+.chat__input { border-radius: var(--r-pill); padding: 0 var(--sp-4); }
+.chat__input:focus { border-color: rgba(255, 255, 255, .32); }
+.poll { border-width: 1px; border-color: rgba(207, 156, 29, .45); border-radius: var(--r-lg); background: rgba(207, 156, 29, .05); }
+.poll__opt { border-radius: var(--r-sm); }
+.reaction { border-radius: var(--r-pill); }
+.predict { border-radius: var(--r-lg); background: linear-gradient(180deg, rgba(52, 55, 149, .3), rgba(52, 55, 149, .08)); }
+.goal-banner { background: var(--ion-gold); letter-spacing: -.02em; font-weight: 800; box-shadow: 0 0 60px rgba(207, 156, 29, .7); }
+.live-pin { background: var(--ink-900); }
+.sheet { background: #0F1126; border-top: 1px solid var(--border); }
+
+.scan-state { border-radius: var(--r-xl); border: 1px solid rgba(255, 255, 255, .1); }
+.scan-state--ok     { background: radial-gradient(90% 60% at 50% 0%, rgba(61, 219, 160, .35), transparent 70%), #062A1E; }
+.scan-state--warn   { background: radial-gradient(90% 60% at 50% 0%, rgba(245, 195, 58, .35), transparent 70%), #2A1806; }
+.scan-state--danger { background: radial-gradient(90% 60% at 50% 0%, rgba(255, 122, 126, .35), transparent 70%), #2B070B; }
+.scan-state--idle   { background: var(--grain), var(--floodlight), #0B0D22; }
+.scan-state__glyph--ok     { box-shadow: 0 0 60px rgba(61, 219, 160, .55); }
+.scan-state__glyph--warn   { box-shadow: 0 0 60px rgba(245, 195, 58, .5); }
+.scan-state__glyph--danger { box-shadow: 0 0 60px rgba(255, 122, 126, .55); }
+.scan-state__title { font-weight: 700; letter-spacing: -.02em; }
+.scan-state__action { border-radius: var(--r-md); }
+
+/* Βαθμολογίες και κατάταξη */
+.standings tr.is-us td { background: rgba(207, 156, 29, .1); }
+.standings tr.is-us td.team { color: var(--ion-gold-300); }
+.leaderboard tr.is-you td { background: rgba(207, 156, 29, .1); }
+.leaderboard .leaderboard__name { filter: none; }
+.leaderboard .trophy-tier--silver.chat__title,
+.card .leaderboard .trophy-tier--gold.chat__title { color: var(--tier); }
+.leaderboard .trophy-tier--bronze.chat__title { color: #E0A070; }
+.match-card__score { border-radius: var(--r-sm); background: rgba(255, 255, 255, .1); }
+
+/* Λεωφορείο */
+.bus { border: 1px solid var(--border); border-radius: 24px 24px 12px 12px; background: rgba(255, 255, 255, .02); }
+.bus__front { background: rgba(110, 113, 192, .25); color: var(--text-soft); }
+.bus__seat { border-width: 1px; border-color: var(--border); background: rgba(255, 255, 255, .04); }
+.bus__seat.is-taken { background: rgba(207, 156, 29, .75); border-color: transparent; }
+.bus__seat.is-mine { background: #fff; border-color: #fff; box-shadow: 0 0 0 2px var(--ion-gold), 0 0 12px rgba(207, 156, 29, .8); }
+.trip__left { color: #fff; }
+.trip__left.is-low { color: var(--danger-300); }
+
+/* Ιστορία */
+.history-hero__title { font-weight: 650; letter-spacing: -.045em; }
+.timeline::before { width: 1px; background: linear-gradient(var(--ion-gold), rgba(110, 113, 192, .5), transparent); }
+.timeline__item::before { width: 11px; height: 11px; left: 129px; box-shadow: 0 0 0 4px var(--bg), 0 0 14px rgba(207, 156, 29, .8); }
+.timeline__year { color: #fff; font-weight: 650; letter-spacing: -.03em; }
+.timeline__sport.is-club { background: rgba(110, 113, 192, .22); border-color: transparent; color: var(--text-soft); }
+.history-sources a { color: var(--text-soft); }
+@media (max-width: 560px) { .timeline__item::before { left: 2px; } }
+
+/* Αντίστροφη μέτρηση */
+.countdown__unit { background: rgba(255, 255, 255, .04); border-color: rgba(255, 255, 255, .08); border-radius: var(--r-md); }
+.countdown__unit b { color: #fff; }
+
+/* Κάρτα διαρκείας: το QR μένει φωτεινό για να σαρώνεται */
+.pass {
+  background:
+    radial-gradient(120% 70% at 100% 0%, rgba(207, 156, 29, .28), transparent 55%),
+    radial-gradient(120% 90% at 0% 100%, rgba(110, 113, 192, .45), transparent 60%),
+    linear-gradient(165deg, #23266A, #12143A 60%, #0B0D22);
+  border: 1px solid rgba(255, 255, 255, .1);
+  box-shadow: var(--hairline-top), 0 40px 80px -30px rgba(52, 55, 149, .9);
+}
+.pass__band { background: var(--stripe), var(--ion-gold); background-size: 100% 2px, auto; background-repeat: no-repeat; background-position: bottom; }
+.pass__name { font-weight: 650; letter-spacing: -.035em; }
+.pass__club { letter-spacing: .06em; }
+
+/* Αρχική σελίδα */
+.hero h1 { font-weight: 650; letter-spacing: -.05em; line-height: .95; font-size: clamp(44px, 8vw, 96px); }
+.hero h1 span { color: var(--text-muted); }
+.hero__kicker { color: var(--text-muted); font-weight: 500; font-size: var(--fs-sm); }
+.screen-link { box-shadow: var(--hairline-top); border-color: var(--border-soft); background: var(--surface); }
+.screen-link:hover { border-color: rgba(255, 255, 255, .2); box-shadow: var(--hairline-top), 0 0 40px -12px rgba(110, 113, 192, .6); }
+.screen-link__no { color: var(--text-muted); }
+.mock__list li::before { border-radius: 50%; width: 6px; height: 6px; }
+.sw__chip { border-color: rgba(255, 255, 255, .12); }
+
+/* ---- Διορθώσεις μετά τον έλεγχο ------------------------------------------ */
+:root { --accent-text: var(--text-soft); }
+.hero .crest-watermark::before, .auth.crest-watermark::before { opacity: .04; }
+.btn--icon { padding: 0; }
+.matchday.crest-watermark::before { opacity: .035; }

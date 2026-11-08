@@ -56,12 +56,12 @@
       who.lastChild.textContent = acc.displayName;
       who.href = HOME[acc.role] || "app.html#profile";
       who.classList.remove("hidden");
-      btn.textContent = "ΑΠΟΣΥΝΔΕΣΗ";
+      btn.textContent = "Αποσύνδεση";
       btn.href = "#";
       btn.onclick = function (e) { e.preventDefault(); Auth.logout(); location.reload(); };
     } else {
       who.classList.add("hidden");
-      btn.textContent = "ΣΥΝΔΕΣΗ";
+      btn.textContent = "Σύνδεση";
       btn.href = "login.html";
       btn.onclick = null;
     }
@@ -599,7 +599,7 @@
         el("div", { class: "card card--rule", style: "display:grid;gap:16px;justify-items:start;max-width:640px" }, [
           el("p", { class: "modal__text",
                     text: "Συνδεθείτε για να δείτε και να αλλάξετε τη συνδρομή της οικογένειάς σας." }),
-          el("a", { class: "btn btn--primary", href: "login.html?next=web.html", text: "ΣΥΝΔΕΣΗ" })
+          el("a", { class: "btn btn--primary", href: "login.html?next=web.html", text: "Σύνδεση" })
         ])
       );
       return;
@@ -674,7 +674,7 @@
             p.kind === "academy"
               ? el("div", { class: "t-sm bold", style: "color:var(--ok-600)",
                             text: D.PLANS.academy.name + " " + p.kindLabel + ", έκπτωση " + p.discountPct + "%" })
-              : el("div", { class: "t-sm bold", style: "color:var(--ion-navy)",
+              : el("div", { class: "t-sm bold", style: "color:var(--accent-text, var(--ion-navy))",
                             text: D.PLANS.adult.name + " (ενήλικας)" }),
             el("div", { class: "row__meta", text: p.kind === "academy"
               ? "Είσοδος στους αγώνες, live του τμήματος, δωρεάν Summer Camp"
@@ -682,7 +682,7 @@
           ]),
           el("div", {
             class: "row__end",
-            style: "font-size:var(--fs-lg);color:" + (p.discountPct ? "var(--ok-600)" : "var(--ink-700)"),
+            style: "font-size:var(--fs-lg);color:" + (p.discountPct ? "var(--ok-600)" : "var(--text)"),
             text: fmtEuro(p.monthlyFee) + "/μήνα"
           }),
           p.removable
@@ -713,7 +713,7 @@
       el("div", { class: "between" }, [
         el("span", { class: "display bold", style: "font-size:var(--fs-md)",
                      text: yearly ? "Σύνολο έτους (αυτόματη χρέωση)" : "Σύνολο μήνα (αυτόματη χρέωση)" }),
-        el("span", { class: "display bold mono", style: "font-size:var(--fs-2xl);font-stretch:var(--stretch-headline);line-height:1;color:var(--ion-navy)", text: fmtEuro(t.base) })
+        el("span", { class: "display bold mono", style: "font-size:var(--fs-2xl);font-stretch:var(--stretch-headline);line-height:1;color:var(--accent-text, var(--ion-navy))", text: fmtEuro(t.base) })
       ]),
       yearly
         ? el("p", { class: "t-sm bold", style: "margin:-8px 0 0;color:var(--ok-600)",
@@ -769,7 +769,7 @@
       ]),
       el("button", {
         class: "btn btn--gold btn--lg btn--block", type: "button",
-        text: "ΕΠΑΝΕΝΕΡΓΟΠΟΙΗΣΗ ΣΥΝΔΡΟΜΗΣ",
+        text: "Επανενεργοποίηση συνδρομής",
         onclick() { confirmPay(true); }
       })
     ]);
