@@ -111,14 +111,6 @@
     { id: "ultra",     order: 6, name: "Ultra",     en: "",  range: "24+ ΜΗΝΕΣ",   minMonths: 24, perk: "Αναγραφή Ονόματος στο Γήπεδο" }
   ];
 
-  /* ---- Παράσημα (badges) -------------------------------------------------- */
-  const BADGES = [
-    { id: "present",  icon: "🎟️", name: "Παρών",        value: "10/10 Αγώνες", tone: "ok" },
-    { id: "customer", icon: "🛍️", name: "Πελάτης",      value: "4/5 Μαγαζιά",  tone: "muted" },
-    { id: "voice",    icon: "💬", name: "Φωνή Κερκίδας", value: "Ενεργό",       tone: "ok" },
-    { id: "traveler", icon: "🚌", name: "Ταξιδιώτης",   value: "2 Εκτός Έδρας", tone: "muted" }
-  ];
-
   /* ---- Τρόπαια: επιβράβευση για ό,τι κάνει ο φίλαθλος ------------------
      action: ο μετρητής που ανεβαίνει. shops = διαφορετικοί χορηγοί,
      months = μήνες συνδρομής, all = όλα τα υπόλοιπα τρόπαια. */
@@ -387,7 +379,7 @@
   };
 
   global.ION_DATA = {
-    ACCOUNTS, PROFILES, LEVELS, BADGES, TIERS, TROPHIES, TROPHY_SEED,
+    ACCOUNTS, PROFILES, LEVELS, TIERS, TROPHIES, TROPHY_SEED,
     OFFERS, OFFER_FILTERS,
     LIVE, VOD, CHAT_ROOMS, CHAT_SEED, CHAT_AMBIENT, POLL,
     EVENTS, PLANS, BILLING, ADMIN, SCAN_STATES, KNOWN_CARDS

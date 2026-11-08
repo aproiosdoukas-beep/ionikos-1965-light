@@ -41,7 +41,7 @@
     card:   "Ψηφιακή κάρτα και οικογενειακό προφίλ. Εναλλαγή ενήλικα ή παιδιού με ένα tap. Το QR ανανεώνεται αυτόματα κάθε 60 δευτερόλεπτα.",
     offers: "Εκπτώσεις χορηγών. Πατήστε μια προσφορά για να εμφανιστεί ο κωδικός σάρωσης στο κατάστημα.",
     live:   "Ζωντανή μετάδοση ακαδημιών με κερκίδα και ψηφοφορία MVP.",
-    level:  "Τα επίπεδα της κερκίδας, τα προνόμια και τα παράσημα του φιλάθλου.",
+    level:  "Τα επίπεδα της κερκίδας, τα προνόμια και τα τρόπαια του φιλάθλου.",
     profile:"Προφίλ μέλους: συνδρομή, οικογένεια και αποσύνδεση."
   };
 
@@ -495,16 +495,7 @@
       })
     ]);
 
-    const badges = el("div", { class: "badge-grid" });
-    D.BADGES.forEach(b => {
-      badges.appendChild(
-        el("div", { class: "badge-tile" }, [
-          el("div", { class: "badge-tile__icon" + (b.tone === "ok" ? " badge-tile__icon--ok" : ""), text: b.icon, style: "font-size:22px" }),
-          el("div", { class: "badge-tile__name", text: b.name }),
-          el("div", { class: "badge-tile__value" + (b.tone === "ok" ? " is-ok" : ""), text: b.value })
-        ])
-      );
-    });
+    const trophies = trophyBlock(profile.id);
 
     const ladder = el("div", { class: "ladder" });
     D.LEVELS.forEach(l => {
@@ -525,11 +516,74 @@
 
     view.append(el("div", { class: "stack" }, [
       card,
-      el("h3", { class: "section-title", text: "Τα παράσημά μου" }),
-      badges,
+      el("h3", { class: "section-title", text: "Τρόπαια" }),
+      trophies,
       el("h3", { class: "section-title", text: "Τα 6 επίπεδα της κερκίδας" }),
       ladder
     ]));
+  }
+
+  /** Σύνοψη ανά βαθμίδα και πλέγμα τροπαίων με πρόοδο για τα κλειδωμένα. */
+  function trophyBlock(pid) {
+    const s = Trophies.summary(pid);
+    const summary = el("div", { class: "trophy-summary" }, [
+      el("div", { class: "trophy-summary__count" }, [
+        el("b", { text: String(s.unlocked) }),
+        document.createTextNode(" από " + s.total)
+      ]),
+      el("div", { class: "trophy-summary__tiers" },
+        ["platinum", "gold", "silver", "bronze"].map(tier =>
+          el("span", { class: "trophy-summary__tier trophy-tier--" + tier, title: D.TIERS[tier].label }, [
+            el("span", { class: "tier-dot" }),
+            document.createTextNode(String(s[tier]))
+          ])
+        ))
+    ]);
+
+    const grid = el("div", { class: "trophy-grid" });
+    Trophies.forProfile(pid).forEach(t => {
+      grid.appendChild(
+        el("div", { class: "trophy trophy-tier--" + t.tier + (t.unlocked ? "" : " trophy--locked") }, [
+          el("div", { class: "trophy__icon", html: icon(t.unlocked ? t.icon : "lock", 20) }),
+          el("div", { class: "trophy__tier", text: D.TIERS[t.tier].label }),
+          el("div", { class: "trophy__name", text: t.name }),
+          el("div", { class: "trophy__text", text: t.text }),
+          t.unlocked ? null : el("div", { class: "trophy__progress" }, [
+            el("div", { class: "progress" }, [
+              el("div", { class: "progress__bar", style: "width:" + Math.round((t.progress / t.goal) * 100) + "%" })
+            ]),
+            el("span", { class: "mono", text: t.progress + "/" + t.goal })
+          ])
+        ])
+      );
+    });
+    return el("div", { class: "stack-3" }, [summary, grid]);
+  }
+
+  /** Επιλογή τίτλου για το chat, από τα ξεκλείδωτα τρόπαια. */
+  function titlePicker(pid) {
+    const current = Trophies.title(pid);
+    const box = el("div", { class: "cluster", style: "gap:8px", role: "radiogroup", "aria-label": "Τίτλος στο chat" });
+    const unlocked = Trophies.forProfile(pid).filter(t => t.unlocked);
+    [{ id: null, name: "Χωρίς τίτλο", tier: null }].concat(unlocked).forEach(t => {
+      const selected = (current ? current.id : null) === t.id;
+      box.appendChild(
+        el("button", {
+          class: "chip" + (selected ? " is-active" : "") + (t.tier ? " trophy-tier--" + t.tier : ""),
+          type: "button", role: "radio", "aria-checked": String(selected),
+          title: t.tier ? D.TIERS[t.tier].label : null,
+          onclick() {
+            if (!Trophies.setTitle(pid, t.id)) return;
+            toast(t.id ? "Ο τίτλος σας: " + t.name : "Χωρίς τίτλο στο chat", "ok");
+            render();
+          }
+        }, [
+          t.tier ? el("span", { class: "tier-dot" }) : null,
+          document.createTextNode(t.name)
+        ])
+      );
+    });
+    return box;
   }
 
   /* ======================================================================
@@ -588,6 +642,10 @@
         el("p", { class: "t-sm muted", style: "margin:8px 0 0", text: T.cycle.label + " πλάνο • " + Auth.profiles().length + " μέλη • έκπτωση ακαδημίας " + B.academyDiscountPct + "%" })
       ]),
 
+      el("h3", { class: "section-title", text: "Τίτλος στο chat" }),
+      el("p", { class: "t-sm muted", style: "margin:-8px 0 0", text: "Διαλέξτε ποιο τρόπαιο φαίνεται δίπλα στο όνομά σας στην κερκίδα." }),
+      titlePicker(profile.id),
+
       el("a", { class: "btn btn--primary btn--block", href: "web.html#subscription", text: "ΔΙΑΧΕΙΡΙΣΗ ΣΥΝΔΡΟΜΗΣ" }),
       el("a", { class: "btn btn--ghost btn--block", href: "web.html#events", text: "Εκδηλώσεις & Εισιτήρια" }),
       el("button", {
@@ -599,6 +657,7 @@
         class: "btn btn--ghost btn--sm btn--block", type: "button", text: "Επαναφορά δεδομένων επίδειξης",
         onclick() {
           Membership.reset();
+          Trophies.reset();
           ["activeProfile", "poll:voted", "poll:counts", "app:tab"].forEach(k => Store.remove(k));
           toast("Τα δεδομένα επανήλθαν στην αρχική τους μορφή", "ok");
           render();
